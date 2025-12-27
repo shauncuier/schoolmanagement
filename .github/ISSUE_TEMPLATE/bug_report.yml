@@ -1,0 +1,60 @@
+name: Bug report
+description: Create a report to help us improve
+title: "[BUG] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: Bug description
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        Steps to reproduce the behavior.
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+      placeholder: Steps to reproduce
+    validations:
+      required: true
+  - type: dropdown
+    id: multi-tenancy
+    attributes:
+      label: Multi-Tenancy Scope
+      description: Does this bug affect a single school or the entire platform?
+      options:
+        - Single School (Tenant-specific)
+        - Platform-wide (SaaS level)
+        - Super Admin module
+        - Unknown
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Log Output
+      description: Please provide relevant logs if available (Laravel/Browser Console).
+      render: shell
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
