@@ -91,6 +91,40 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('schools', \App\Http\Controllers\Admin\SchoolController::class);
         Route::post('schools/{school}/toggle-status', [\App\Http\Controllers\Admin\SchoolController::class, 'toggleStatus'])
             ->name('schools.toggle-status');
+
+        // Users Management
+        Route::get('users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+        Route::get('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'show'])->name('users.show');
+        Route::get('users/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('users.edit');
+        Route::put('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+        Route::post('users/{user}/toggle-status', [\App\Http\Controllers\Admin\UserController::class, 'toggleStatus'])
+            ->name('users.toggle-status');
+        Route::post('users/{user}/restore', [\App\Http\Controllers\Admin\UserController::class, 'restore'])->name('users.restore');
+        Route::delete('users/{user}/force-delete', [\App\Http\Controllers\Admin\UserController::class, 'forceDelete'])
+            ->name('users.force-delete');
+
+        // Subscriptions Management
+        Route::get('subscriptions', [\App\Http\Controllers\Admin\SubscriptionController::class, 'index'])
+            ->name('subscriptions.index');
+        Route::put('subscriptions/{tenant}', [\App\Http\Controllers\Admin\SubscriptionController::class, 'update'])
+            ->name('subscriptions.update');
+        Route::post('subscriptions/{tenant}/extend', [\App\Http\Controllers\Admin\SubscriptionController::class, 'extend'])
+            ->name('subscriptions.extend');
+        Route::post('subscriptions/{tenant}/cancel', [\App\Http\Controllers\Admin\SubscriptionController::class, 'cancel'])
+            ->name('subscriptions.cancel');
+
+        // System Settings
+        Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
+        Route::put('settings/general', [\App\Http\Controllers\Admin\SettingsController::class, 'updateGeneral'])
+            ->name('settings.general');
+        Route::put('settings/email', [\App\Http\Controllers\Admin\SettingsController::class, 'updateEmail'])
+            ->name('settings.email');
+        Route::put('settings/features', [\App\Http\Controllers\Admin\SettingsController::class, 'updateFeatures'])
+            ->name('settings.features');
+        Route::put('settings/security', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSecurity'])
+            ->name('settings.security');
+        Route::post('settings/clear-cache', [\App\Http\Controllers\Admin\SettingsController::class, 'clearCache'])
+            ->name('settings.clear-cache');
     });
 });
 
