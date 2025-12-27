@@ -60,7 +60,7 @@ interface Props {
     };
 }
 
-export default function SectionsIndex({ sections, classes, academicYears }: Props) {
+export default function SectionsIndex({ sections, classes = [], academicYears = [] }: Props) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedSection, setSelectedSection] = useState<Section | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -101,7 +101,7 @@ export default function SectionsIndex({ sections, classes, academicYears }: Prop
                 </div>
 
                 {/* Sections Grid */}
-                {sections.data.length > 0 ? (
+                {(sections?.data?.length ?? 0) > 0 ? (
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {sections.data.map((section) => (
                             <Card
@@ -182,11 +182,11 @@ export default function SectionsIndex({ sections, classes, academicYears }: Prop
                             No Sections
                         </h3>
                         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            {classes.length === 0
+                            {(classes ?? []).length === 0
                                 ? 'Create classes first before adding sections.'
                                 : 'Get started by creating your first section.'}
                         </p>
-                        {classes.length > 0 && (
+                        {(classes ?? []).length > 0 && (
                             <Button asChild className="mt-4">
                                 <Link href="/sections/create">
                                     <Plus className="h-4 w-4" />

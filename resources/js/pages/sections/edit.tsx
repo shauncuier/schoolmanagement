@@ -47,7 +47,7 @@ interface Props {
     teachers: Teacher[];
 }
 
-export default function EditSection({ section, classes, academicYears, teachers }: Props) {
+export default function EditSection({ section, classes = [], academicYears = [], teachers = [] }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Sections', href: '/sections' },
@@ -118,7 +118,7 @@ export default function EditSection({ section, classes, academicYears, teachers 
                                             <SelectValue placeholder="Select class" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {classes.map((c) => (
+                                            {(classes ?? []).map((c) => (
                                                 <SelectItem key={c.id} value={c.id.toString()}>
                                                     {c.name}
                                                 </SelectItem>
@@ -139,7 +139,7 @@ export default function EditSection({ section, classes, academicYears, teachers 
                                             <SelectValue placeholder="Select year" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {academicYears.map((y) => (
+                                            {(academicYears ?? []).map((y) => (
                                                 <SelectItem key={y.id} value={y.id.toString()}>
                                                     {y.name} {y.is_current && '(Current)'}
                                                 </SelectItem>
@@ -196,7 +196,7 @@ export default function EditSection({ section, classes, academicYears, teachers 
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="">None</SelectItem>
-                                            {teachers.map((t) => (
+                                            {(teachers ?? []).map((t) => (
                                                 <SelectItem key={t.id} value={t.id.toString()}>
                                                     {t.name}
                                                 </SelectItem>

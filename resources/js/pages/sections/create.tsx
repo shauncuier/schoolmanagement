@@ -49,12 +49,12 @@ interface FormData {
     is_active: boolean;
 }
 
-export default function CreateSection({ classes, academicYears, teachers }: Props) {
-    const currentYear = academicYears.find((y) => y.is_current);
+export default function CreateSection({ classes = [], academicYears = [], teachers = [] }: Props) {
+    const currentYear = academicYears?.find((y) => y.is_current);
 
     const { data, setData, post, processing, errors } = useForm<FormData>({
         class_id: '',
-        academic_year_id: currentYear?.id.toString() ?? '',
+        academic_year_id: currentYear?.id?.toString() ?? '',
         name: '',
         capacity: '40',
         class_teacher_id: '',
@@ -116,7 +116,7 @@ export default function CreateSection({ classes, academicYears, teachers }: Prop
                                             <SelectValue placeholder="Select class" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {classes.map((c) => (
+                                            {(classes ?? []).map((c) => (
                                                 <SelectItem key={c.id} value={c.id.toString()}>
                                                     {c.name}
                                                 </SelectItem>
@@ -137,7 +137,7 @@ export default function CreateSection({ classes, academicYears, teachers }: Prop
                                             <SelectValue placeholder="Select year" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {academicYears.map((y) => (
+                                            {(academicYears ?? []).map((y) => (
                                                 <SelectItem key={y.id} value={y.id.toString()}>
                                                     {y.name} {y.is_current && '(Current)'}
                                                 </SelectItem>
@@ -194,7 +194,7 @@ export default function CreateSection({ classes, academicYears, teachers }: Prop
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="">None</SelectItem>
-                                            {teachers.map((t) => (
+                                            {(teachers ?? []).map((t) => (
                                                 <SelectItem key={t.id} value={t.id.toString()}>
                                                     {t.name}
                                                 </SelectItem>
