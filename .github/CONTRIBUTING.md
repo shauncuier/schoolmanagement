@@ -149,26 +149,29 @@ docs(readme): update installation instructions
 
 We use [Semantic Versioning](https://semver.org/):
 
-- MAJOR version for incompatible API changes
-- MINOR version for new features (backwards compatible)
-- PATCH version for bug fixes (backwards compatible)
+- **Whole Numbers (e.g., v1.0.0)**: Stable/Production Release
+- **Fractional Versions (e.g., v0.1.0)**: Beta/Pre-release Development
 
 ### 🚀 Release Process
 
 To create a new release and trigger the deployment workflow:
 
-1. **Update Version**: Update any relevant version strings if applicable.
+1. **Update Version**: Identify if this is a **Stable** (whole number) or **Beta** (fractional) release.
 2. **Commit Changes**: Ensure all work is committed to `main`.
-3. **Draft Release Notes**: Ensure commits follow the [Conventional Commits](#commit-guidelines) spec so release notes are categorized correctly.
+3. **Draft Release Notes**: Ensure commits follow the [Conventional Commits](#commit-guidelines) spec.
 4. **Create Tag**:
    ```bash
-   git tag -a v0.1.0 -m "Release v0.1.0"
+   # For a Beta release
+   git tag -a v0.1.0 -m "Beta Release v0.1.0"
+   
+   # For a Stable release
+   git tag -a v1.0.0 -m "Stable Release v1.0.0"
    ```
 5. **Push Tag**:
    ```bash
-   git push origin v0.1.0
+   git push origin v1.0.0
    ```
-   *This will automatically trigger the GitHub Action to build assets and create a GitHub Release.*
+   *The workflow will automatically mark fractional versions as 'Prerelease' on GitHub.*
 
 ## 📞 Need Help?
 

@@ -24,8 +24,11 @@ When the user asks to "release" or "push a new version", follow these steps:
    git push origin main
    git push origin vX.Y.Z
    ```
-7. **Verify Release Notes**: The GitHub Action will categorize commits based on:
-   - `feat` -> 🚀 Features
-   - `fix` -> 🐛 Bug Fixes
-   - `docs` -> 📚 Documentation
-   - `chore/refactor` -> 🔧 Maintenance
+7. **Verify Release Notes**: The GitHub Action will categorize commits and set the release type:
+   - **Stable**: For tags like `v1.0.0`, `v2.1.0`.
+   - **Beta**: For tags starting with `v0.` (e.g., `v0.1.0`).
+   - Categorization based on:
+     - `feat` -> 🚀 Features
+     - `fix` -> 🐛 Bug Fixes
+     - `docs` -> 📚 Documentation
+     - `chore/refactor` -> 🔧 Maintenance
