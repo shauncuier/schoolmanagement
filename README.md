@@ -175,6 +175,22 @@ npm run build
 composer dev
 ```
 
+### 🔑 Test Credentials
+
+Once you have seeded the database, you can use the following credentials for testing:
+
+| Role | Email | Password |
+|------|-------|----------|
+| **Super Admin** | `admin@schoolsync.com` | `password` |
+| **School Admin** | `school@demo.com` | `password` |
+| **Principal** | `principal@demo.com` | `password` |
+| **Teacher** | `teacher@demo.com` | `password` |
+| **Student** | `student@demo.com` | `password` |
+| **Parent** | `parent@demo.com` | `password` |
+| **Accountant** | `accountant@demo.com` | `password` |
+
+---
+
 ### Development Commands
 
 ```bash

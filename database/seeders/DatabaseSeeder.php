@@ -40,6 +40,9 @@ class DatabaseSeeder extends Seeder
         );
         $schoolAdmin->assignRole('school-owner');
 
+        // Seed other demo users
+        $this->call(DemoUserSeeder::class);
+
         $this->command->info('✅ Roles, permissions, and default users seeded successfully!');
     }
 }
