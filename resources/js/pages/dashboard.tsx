@@ -1,19 +1,23 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type DashboardStats, type SharedData } from '@/types';
+import {
+    type BreadcrumbItem,
+    type DashboardStats,
+    type SharedData,
+} from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import {
-    GraduationCap,
-    Users,
-    BookOpen,
-    Layers,
-    TrendingUp,
-    TrendingDown,
-    Calendar,
-    Bell,
-    Clock,
-    CheckCircle2,
-    XCircle,
     AlertCircle,
+    Bell,
+    BookOpen,
+    Calendar,
+    CheckCircle2,
+    Clock,
+    GraduationCap,
+    Layers,
+    TrendingDown,
+    TrendingUp,
+    Users,
+    XCircle,
 } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -32,7 +36,14 @@ interface StatCardProps {
     color: 'blue' | 'green' | 'purple' | 'orange' | 'red' | 'indigo';
 }
 
-function StatCard({ title, value, icon: Icon, trend, trendLabel, color }: StatCardProps) {
+function StatCard({
+    title,
+    value,
+    icon: Icon,
+    trend,
+    trendLabel,
+    color,
+}: StatCardProps) {
     const colorClasses = {
         blue: 'from-blue-500 to-blue-600 shadow-blue-500/30',
         green: 'from-emerald-500 to-emerald-600 shadow-emerald-500/30',
@@ -46,8 +57,12 @@ function StatCard({ title, value, icon: Icon, trend, trendLabel, color }: StatCa
         <div className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:bg-gray-800">
             <div className="flex items-center justify-between">
                 <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
-                    <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        {title}
+                    </p>
+                    <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
+                        {value}
+                    </p>
                     {trend !== undefined && (
                         <div className="mt-2 flex items-center gap-1">
                             {trend >= 0 ? (
@@ -55,19 +70,30 @@ function StatCard({ title, value, icon: Icon, trend, trendLabel, color }: StatCa
                             ) : (
                                 <TrendingDown className="h-4 w-4 text-red-500" />
                             )}
-                            <span className={`text-sm font-medium ${trend >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
-                                {trend >= 0 ? '+' : ''}{trend}%
+                            <span
+                                className={`text-sm font-medium ${trend >= 0 ? 'text-emerald-500' : 'text-red-500'}`}
+                            >
+                                {trend >= 0 ? '+' : ''}
+                                {trend}%
                             </span>
-                            {trendLabel && <span className="text-xs text-gray-400">{trendLabel}</span>}
+                            {trendLabel && (
+                                <span className="text-xs text-gray-400">
+                                    {trendLabel}
+                                </span>
+                            )}
                         </div>
                     )}
                 </div>
-                <div className={`rounded-2xl bg-gradient-to-br p-4 shadow-lg ${colorClasses[color]}`}>
+                <div
+                    className={`rounded-2xl bg-gradient-to-br p-4 shadow-lg ${colorClasses[color]}`}
+                >
                     <Icon className="h-6 w-6 text-white" />
                 </div>
             </div>
             {/* Decorative gradient */}
-            <div className={`absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br opacity-10 ${colorClasses[color]}`} />
+            <div
+                className={`absolute -top-10 -right-10 h-32 w-32 rounded-full bg-gradient-to-br opacity-10 ${colorClasses[color]}`}
+            />
         </div>
     );
 }
@@ -85,7 +111,9 @@ function AttendanceCard({ attendance }: AttendanceCardProps) {
     return (
         <div className="overflow-hidden rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
             <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Today's Attendance</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Today's Attendance
+                </h3>
                 <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
                     {attendance.percentage}%
                 </span>
@@ -114,22 +142,34 @@ function AttendanceCard({ attendance }: AttendanceCardProps) {
                 <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-emerald-500" />
                     <div>
-                        <p className="text-lg font-bold text-gray-900 dark:text-white">{attendance.present}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Present</p>
+                        <p className="text-lg font-bold text-gray-900 dark:text-white">
+                            {attendance.present}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                            Present
+                        </p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                     <AlertCircle className="h-5 w-5 text-amber-500" />
                     <div>
-                        <p className="text-lg font-bold text-gray-900 dark:text-white">{attendance.late}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Late</p>
+                        <p className="text-lg font-bold text-gray-900 dark:text-white">
+                            {attendance.late}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                            Late
+                        </p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                     <XCircle className="h-5 w-5 text-red-500" />
                     <div>
-                        <p className="text-lg font-bold text-gray-900 dark:text-white">{attendance.absent}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Absent</p>
+                        <p className="text-lg font-bold text-gray-900 dark:text-white">
+                            {attendance.absent}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                            Absent
+                        </p>
                     </div>
                 </div>
             </div>
@@ -139,15 +179,37 @@ function AttendanceCard({ attendance }: AttendanceCardProps) {
 
 function QuickActions() {
     const actions = [
-        { icon: GraduationCap, label: 'Add Student', href: '/students/create', color: 'bg-blue-500' },
-        { icon: Users, label: 'Mark Attendance', href: '/attendance/mark', color: 'bg-emerald-500' },
-        { icon: Bell, label: 'New Notice', href: '/notices/create', color: 'bg-purple-500' },
-        { icon: Calendar, label: 'Schedule Exam', href: '/exams/create', color: 'bg-orange-500' },
+        {
+            icon: GraduationCap,
+            label: 'Add Student',
+            href: '/students/create',
+            color: 'bg-blue-500',
+        },
+        {
+            icon: Users,
+            label: 'Mark Attendance',
+            href: '/attendance/mark',
+            color: 'bg-emerald-500',
+        },
+        {
+            icon: Bell,
+            label: 'New Notice',
+            href: '/notices/create',
+            color: 'bg-purple-500',
+        },
+        {
+            icon: Calendar,
+            label: 'Schedule Exam',
+            href: '/exams/create',
+            color: 'bg-orange-500',
+        },
     ];
 
     return (
         <div className="overflow-hidden rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
-            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Quick Actions</h3>
+            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                Quick Actions
+            </h3>
             <div className="grid grid-cols-2 gap-3">
                 {actions.map((action) => (
                     <a
@@ -158,7 +220,9 @@ function QuickActions() {
                         <div className={`rounded-lg p-2 ${action.color}`}>
                             <action.icon className="h-4 w-4 text-white" />
                         </div>
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{action.label}</span>
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                            {action.label}
+                        </span>
                     </a>
                 ))}
             </div>
@@ -180,13 +244,18 @@ function WelcomeCard({ userName, role }: { userName: string; role: string }) {
                 <h2 className="mt-1 text-2xl font-bold">{userName}</h2>
                 <p className="mt-2 inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-sm backdrop-blur-sm">
                     <Clock className="h-4 w-4" />
-                    {now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                    {now.toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    })}
                 </p>
                 <p className="mt-2 text-sm opacity-75">Role: {role}</p>
             </div>
             {/* Decorative shapes */}
-            <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10" />
-            <div className="absolute -bottom-8 -right-4 h-32 w-32 rounded-full bg-white/10" />
+            <div className="absolute -top-8 -right-8 h-40 w-40 rounded-full bg-white/10" />
+            <div className="absolute -right-4 -bottom-8 h-32 w-32 rounded-full bg-white/10" />
         </div>
     );
 }
@@ -205,7 +274,13 @@ export default function Dashboard({ stats }: DashboardProps) {
         total_teachers: 0,
         total_classes: 0,
         total_sections: 0,
-        attendance_today: { present: 0, absent: 0, late: 0, total: 0, percentage: 0 },
+        attendance_today: {
+            present: 0,
+            absent: 0,
+            late: 0,
+            total: 0,
+            percentage: 0,
+        },
         fee_collection: { collected: 0, pending: 0, total: 0 },
         recent_notices: [],
         upcoming_events: [],
@@ -216,7 +291,12 @@ export default function Dashboard({ stats }: DashboardProps) {
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto p-4 md:p-6">
                 {/* Welcome Card */}
-                <WelcomeCard userName={user.name} role={userRole.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} />
+                <WelcomeCard
+                    userName={user.name}
+                    role={userRole
+                        .replace(/-/g, ' ')
+                        .replace(/\b\w/g, (l) => l.toUpperCase())}
+                />
 
                 {/* Stats Grid */}
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -250,7 +330,9 @@ export default function Dashboard({ stats }: DashboardProps) {
 
                 {/* Second Row */}
                 <div className="grid gap-6 lg:grid-cols-2">
-                    <AttendanceCard attendance={dashboardStats.attendance_today} />
+                    <AttendanceCard
+                        attendance={dashboardStats.attendance_today}
+                    />
                     <QuickActions />
                 </div>
 
@@ -259,27 +341,43 @@ export default function Dashboard({ stats }: DashboardProps) {
                     {/* Recent Notices */}
                     <div className="overflow-hidden rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
                         <div className="mb-4 flex items-center justify-between">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Notices</h3>
-                            <a href="/notices" className="text-sm text-blue-600 hover:underline dark:text-blue-400">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                Recent Notices
+                            </h3>
+                            <a
+                                href="/notices"
+                                className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                            >
                                 View all
                             </a>
                         </div>
                         {dashboardStats.recent_notices.length > 0 ? (
                             <div className="space-y-3">
-                                {dashboardStats.recent_notices.slice(0, 5).map((notice) => (
-                                    <div key={notice.id} className="flex items-start gap-3 rounded-lg bg-gray-50 p-3 dark:bg-gray-700">
-                                        <Bell className="mt-0.5 h-5 w-5 text-blue-500" />
-                                        <div>
-                                            <p className="font-medium text-gray-900 dark:text-white">{notice.title}</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">{notice.publish_date}</p>
+                                {dashboardStats.recent_notices
+                                    .slice(0, 5)
+                                    .map((notice) => (
+                                        <div
+                                            key={notice.id}
+                                            className="flex items-start gap-3 rounded-lg bg-gray-50 p-3 dark:bg-gray-700"
+                                        >
+                                            <Bell className="mt-0.5 h-5 w-5 text-blue-500" />
+                                            <div>
+                                                <p className="font-medium text-gray-900 dark:text-white">
+                                                    {notice.title}
+                                                </p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                    {notice.publish_date}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
                             </div>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
                                 <Bell className="mb-2 h-12 w-12 text-gray-300 dark:text-gray-600" />
-                                <p className="text-gray-500 dark:text-gray-400">No recent notices</p>
+                                <p className="text-gray-500 dark:text-gray-400">
+                                    No recent notices
+                                </p>
                             </div>
                         )}
                     </div>
@@ -287,29 +385,56 @@ export default function Dashboard({ stats }: DashboardProps) {
                     {/* Upcoming Events */}
                     <div className="overflow-hidden rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
                         <div className="mb-4 flex items-center justify-between">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Upcoming Events</h3>
-                            <a href="/events" className="text-sm text-blue-600 hover:underline dark:text-blue-400">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                Upcoming Events
+                            </h3>
+                            <a
+                                href="/events"
+                                className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                            >
                                 View all
                             </a>
                         </div>
                         {dashboardStats.upcoming_events.length > 0 ? (
                             <div className="space-y-3">
-                                {dashboardStats.upcoming_events.slice(0, 5).map((event) => (
-                                    <div key={event.id} className="flex items-start gap-3 rounded-lg bg-gray-50 p-3 dark:bg-gray-700">
-                                        <div className="rounded-lg p-2" style={{ backgroundColor: event.color + '20' }}>
-                                            <Calendar className="h-4 w-4" style={{ color: event.color }} />
+                                {dashboardStats.upcoming_events
+                                    .slice(0, 5)
+                                    .map((event) => (
+                                        <div
+                                            key={event.id}
+                                            className="flex items-start gap-3 rounded-lg bg-gray-50 p-3 dark:bg-gray-700"
+                                        >
+                                            <div
+                                                className="rounded-lg p-2"
+                                                style={{
+                                                    backgroundColor:
+                                                        event.color + '20',
+                                                }}
+                                            >
+                                                <Calendar
+                                                    className="h-4 w-4"
+                                                    style={{
+                                                        color: event.color,
+                                                    }}
+                                                />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-gray-900 dark:text-white">
+                                                    {event.title}
+                                                </p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                    {event.start_date}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="font-medium text-gray-900 dark:text-white">{event.title}</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">{event.start_date}</p>
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
                             </div>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-8 text-center">
                                 <Calendar className="mb-2 h-12 w-12 text-gray-300 dark:text-gray-600" />
-                                <p className="text-gray-500 dark:text-gray-400">No upcoming events</p>
+                                <p className="text-gray-500 dark:text-gray-400">
+                                    No upcoming events
+                                </p>
                             </div>
                         )}
                     </div>
@@ -318,4 +443,3 @@ export default function Dashboard({ stats }: DashboardProps) {
         </AppLayout>
     );
 }
-

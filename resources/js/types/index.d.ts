@@ -190,7 +190,13 @@ export interface Notice {
     id: number;
     title: string;
     content: string;
-    type: 'notice' | 'announcement' | 'circular' | 'event' | 'holiday' | 'urgent';
+    type:
+        | 'notice'
+        | 'announcement'
+        | 'circular'
+        | 'event'
+        | 'holiday'
+        | 'urgent';
     publish_date: string;
     created_by?: User;
 }
@@ -216,4 +222,3 @@ export interface PaginatedResponse<T> {
     from: number;
     to: number;
 }
-
