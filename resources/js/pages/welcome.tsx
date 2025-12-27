@@ -45,17 +45,19 @@ export default function Welcome({
                         <div className="flex h-16 items-center justify-between">
                             {/* Logo */}
                             <div className="flex items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-500/30">
-                                    <GraduationCap className="h-6 w-6 text-white" />
-                                </div>
-                                <div>
-                                    <span className="text-xl font-bold text-slate-900 dark:text-white">
-                                        SchoolSync
-                                    </span>
-                                    <span className="ml-2 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-2 py-0.5 text-xs font-medium text-white">
-                                        Pro
-                                    </span>
-                                </div>
+                                <Link href="/" className="flex items-center gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-lg shadow-blue-500/10 dark:bg-slate-800">
+                                        <img src="/favicon.png" alt="SchoolSync" className="h-8 w-8" />
+                                    </div>
+                                    <div>
+                                        <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+                                            SchoolSync
+                                        </span>
+                                        <span className="ml-2 hidden rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-2 py-0.5 text-[10px] font-medium text-white sm:inline-block">
+                                            v0.0.2
+                                        </span>
+                                    </div>
+                                </Link>
                             </div>
 
                             {/* Nav Links */}
@@ -740,7 +742,7 @@ export default function Welcome({
                             </div>
                         </div>
                         <div className="mt-12 border-t border-slate-200 pt-8 text-center text-sm text-slate-600 dark:border-slate-800 dark:text-slate-400">
-                            <p>© 2024 SchoolSync. All rights reserved.</p>
+                            <p>© 2024 SchoolSync. Developed by <a href="https://3s-soft.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 hover:text-blue-500 dark:text-blue-400">3s-Soft</a>. All rights reserved.</p>
                         </div>
                     </div>
                 </footer>

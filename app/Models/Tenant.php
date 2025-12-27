@@ -42,6 +42,39 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     ];
 
     /**
+     * Define custom columns for the tenant model.
+     * This is required by Stancl/Tenancy to map attributes to actual database columns.
+     */
+    public static function getCustomColumns(): array
+    {
+        return [
+            'id',
+            'name',
+            'slug',
+            'email',
+            'phone',
+            'website',
+            'logo',
+            'favicon',
+            'address',
+            'city',
+            'state',
+            'country',
+            'postal_code',
+            'primary_color',
+            'secondary_color',
+            'theme',
+            'status',
+            'subscription_plan',
+            'subscription_ends_at',
+            'settings',
+            'created_at',
+            'updated_at',
+            'deleted_at',
+        ];
+    }
+
+    /**
      * The attributes that should be cast.
      */
     protected $casts = [

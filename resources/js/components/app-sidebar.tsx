@@ -74,7 +74,7 @@ const superAdminNav: NavItem[] = [
 const academicNav: NavItem[] = [
     {
         title: 'Academic Years',
-        href: '/academic/years',
+        href: '/academic-years',
         icon: CalendarDays,
         permission: 'view-academic-years',
     },
