@@ -4,7 +4,9 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -41,6 +43,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Teacher Management
     Route::resource('teachers', TeacherController::class);
+
+    // Guardian (Parents) Management
+    Route::resource('guardians', GuardianController::class);
+
+    // Staff Management
+    Route::resource('staff', StaffController::class)->except(['show']);
 
     // Attendance Management
     Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
