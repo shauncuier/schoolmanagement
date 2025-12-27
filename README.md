@@ -363,9 +363,10 @@ For support, please contact:
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Roadmap & Architecture
 
-See [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md) for detailed development progress and upcoming features.
+- [System Architecture](SYSTEM_ARCHITECTURE.md) - Full technical specification and feature list
+- [Implementation Progress](IMPLEMENTATION_CHECKLIST.md) - Detailed development progress and upcoming features
 
 ---
 

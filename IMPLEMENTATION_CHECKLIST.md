@@ -10,6 +10,16 @@ This document tracks the implementation progress of all modules and features in 
 
 ---
 
+### 📖 Related Documentation
+- [README.md](README.md) - Project Overview & Setup
+- [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md) - Full Technical Specification
+- [CONTRIBUTING.md](.github/CONTRIBUTING.md) - Contributing Guidelines
+
+> [!NOTE]
+> This document allows us to track development progress in real-time. For the full system scope, see the [System Architecture](SYSTEM_ARCHITECTURE.md) document.
+
+---
+
 ## 📊 Implementation Progress Summary
 
 | Module | Status | Progress |
