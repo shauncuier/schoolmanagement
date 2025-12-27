@@ -29,10 +29,10 @@ This project and everyone participating in it is governed by our Code of Conduct
 
 ### Prerequisites
 
-- PHP 8.2+
+- PHP 8.3+
 - Composer 2.x
-- Node.js 18+
-- npm or yarn
+- Node.js 22+
+- npm (version 10+)
 
 ### Installation
 
@@ -152,6 +152,23 @@ We use [Semantic Versioning](https://semver.org/):
 - MAJOR version for incompatible API changes
 - MINOR version for new features (backwards compatible)
 - PATCH version for bug fixes (backwards compatible)
+
+### 🚀 Release Process
+
+To create a new release and trigger the deployment workflow:
+
+1. **Update Version**: Update any relevant version strings if applicable.
+2. **Commit Changes**: Ensure all work is committed to `main`.
+3. **Draft Release Notes**: Ensure commits follow the [Conventional Commits](#commit-guidelines) spec so release notes are categorized correctly.
+4. **Create Tag**:
+   ```bash
+   git tag -a v0.1.0 -m "Release v0.1.0"
+   ```
+5. **Push Tag**:
+   ```bash
+   git push origin v0.1.0
+   ```
+   *This will automatically trigger the GitHub Action to build assets and create a GitHub Release.*
 
 ## 📞 Need Help?
 
