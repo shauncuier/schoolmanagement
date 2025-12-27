@@ -41,6 +41,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **System Info**: Real-time display of environment details including PHP/Laravel versions and server limits.
 - **Utility**: Added "Clear System Cache" button for rapid troubleshooting.
 
+#### 📊 Super Admin - Dashboard
+- **Platform Analytics**: Real-time stats for Total Schools, Total Users, Active Subscriptions, and Monthly Revenue.
+- **Recent Activity**: Tracking list for the latest school registrations.
+- **Adaptive UI**: Dashboard switching logic between school-level and platform-level views based on user role.
+- **Admin Quick Actions**: Direct access to critical management tools from the dashboard.
+
 #### 🔧 UI Components & Infrastructure
 - **New Component**: Added `Tabs` UI component using Radix UI primitives.
 - **Navigation**: Updated `app-sidebar.tsx` with restricted "Platform Admin" section for Super Admins.

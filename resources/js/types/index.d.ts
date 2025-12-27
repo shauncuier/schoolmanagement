@@ -165,7 +165,7 @@ export interface Guardian {
 }
 
 // Dashboard Stats
-export interface DashboardStats {
+export interface SchoolDashboardStats {
     total_students: number;
     total_teachers: number;
     total_classes: number;
@@ -186,17 +186,33 @@ export interface DashboardStats {
     upcoming_events: Event[];
 }
 
+export interface SuperAdminDashboardStats {
+    is_super_admin: boolean;
+    total_schools: number;
+    total_users: number;
+    active_subscriptions: number;
+    monthly_revenue: number;
+    recent_schools: Array<{
+        id: string;
+        name: string;
+        subscription_plan: string;
+        created_at: string;
+    }>;
+}
+
+export type DashboardStats = SchoolDashboardStats | SuperAdminDashboardStats;
+
 export interface Notice {
     id: number;
     title: string;
     content: string;
     type:
-        | 'notice'
-        | 'announcement'
-        | 'circular'
-        | 'event'
-        | 'holiday'
-        | 'urgent';
+    | 'notice'
+    | 'announcement'
+    | 'circular'
+    | 'event'
+    | 'holiday'
+    | 'urgent';
     publish_date: string;
     created_by?: User;
 }

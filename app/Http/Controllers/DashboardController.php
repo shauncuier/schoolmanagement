@@ -40,15 +40,33 @@ class DashboardController extends Controller
      */
     private function superAdminDashboard(): Response
     {
-        // For now, return basic stats
-        // TODO: Add tenant counts, revenue, etc.
+        $totalSchools = \App\Models\Tenant::count();
+        $totalUsers = \App\Models\User::count();
+        $activeSubscriptions = \App\Models\Tenant::whereNotNull('subscription_plan')
+            ->where('subscription_plan', '!=', 'free')
+            ->count();
+            
+        // Mock revenue calculation for demo based on plan prices
+        $revenue = \App\Models\Tenant::all()->sum(function($tenant) {
+            $prices = ['free' => 0, 'basic' => 999, 'standard' => 2499, 'premium' => 4999];
+            return $prices[$tenant->subscription_plan] ?? 0;
+        });
+
         return Inertia::render('dashboard', [
             'stats' => [
                 'is_super_admin' => true,
-                'total_schools' => 0, // Tenant::count(),
-                'total_users' => \App\Models\User::count(),
-                'active_subscriptions' => 0,
-                'monthly_revenue' => 0,
+                'total_schools' => $totalSchools,
+                'total_users' => $totalUsers,
+                'active_subscriptions' => $activeSubscriptions,
+                'monthly_revenue' => $revenue,
+                'recent_schools' => \App\Models\Tenant::latest()->take(5)->get()->map(function($tenant) {
+                    return [
+                        'id' => $tenant->id,
+                        'name' => $tenant->name,
+                        'subscription_plan' => $tenant->subscription_plan,
+                        'created_at' => $tenant->created_at->diffForHumans(),
+                    ];
+                }),
             ],
         ]);
     }
