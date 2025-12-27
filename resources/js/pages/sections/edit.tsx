@@ -195,7 +195,7 @@ export default function EditSection({ section, classes = [], academicYears = [],
                                             <SelectValue placeholder="Select teacher (optional)" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="">None</SelectItem>
+                                            <SelectItem value="none">None</SelectItem>
                                             {(teachers ?? []).map((t) => (
                                                 <SelectItem key={t.id} value={t.id.toString()}>
                                                     {t.name}
