@@ -87,7 +87,6 @@ class StudentController extends Controller
             'academicYear',
             'guardians',
             'attendances' => fn($q) => $q->latest()->take(30),
-            'examResults' => fn($q) => $q->latest()->take(10),
         ]);
 
         return Inertia::render('students/show', [
