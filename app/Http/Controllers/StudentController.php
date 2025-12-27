@@ -158,8 +158,8 @@ class StudentController extends Controller
         ]);
         $studentUser->assignRole('student');
 
-        // Create student record
-        Student::create([
+        // Create student record - filter out empty values for nullable fields with defaults
+        $studentData = [
             'tenant_id' => $user->tenant_id,
             'user_id' => $studentUser->id,
             'admission_no' => $validated['admission_no'],
@@ -167,15 +167,33 @@ class StudentController extends Controller
             'class_id' => $validated['class_id'],
             'section_id' => $validated['section_id'],
             'academic_year_id' => $validated['academic_year_id'],
-            'date_of_birth' => $validated['date_of_birth'] ?? null,
-            'gender' => $validated['gender'] ?? null,
-            'blood_group' => $validated['blood_group'] ?? null,
-            'religion' => $validated['religion'] ?? null,
-            'nationality' => $validated['nationality'] ?? null,
-            'present_address' => $validated['present_address'] ?? null,
-            'permanent_address' => $validated['permanent_address'] ?? null,
             'status' => $validated['status'],
-        ]);
+        ];
+
+        // Only add optional fields if they have values
+        if (!empty($validated['date_of_birth'])) {
+            $studentData['date_of_birth'] = $validated['date_of_birth'];
+        }
+        if (!empty($validated['gender'])) {
+            $studentData['gender'] = $validated['gender'];
+        }
+        if (!empty($validated['blood_group'])) {
+            $studentData['blood_group'] = $validated['blood_group'];
+        }
+        if (!empty($validated['religion'])) {
+            $studentData['religion'] = $validated['religion'];
+        }
+        if (!empty($validated['nationality'])) {
+            $studentData['nationality'] = $validated['nationality'];
+        }
+        if (!empty($validated['present_address'])) {
+            $studentData['present_address'] = $validated['present_address'];
+        }
+        if (!empty($validated['permanent_address'])) {
+            $studentData['permanent_address'] = $validated['permanent_address'];
+        }
+
+        Student::create($studentData);
 
         return redirect()->route('students.index')
             ->with('success', 'Student created successfully.');

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SectionController;
@@ -35,8 +36,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Student Management
     Route::resource('students', StudentController::class);
+
+    // Attendance Management
+    Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('attendance/select-section', [AttendanceController::class, 'selectSection'])->name('attendance.select-section');
+    Route::get('attendance/mark', [AttendanceController::class, 'mark'])->name('attendance.mark');
+    Route::post('attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
 });
 
 require __DIR__.'/settings.php';
-
-
