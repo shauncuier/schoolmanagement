@@ -130,6 +130,12 @@ const peopleNav: NavItem[] = [
 // Attendance & Leave
 const attendanceNav: NavItem[] = [
     {
+        title: 'Dashboard',
+        href: '/attendance',
+        icon: LayoutGrid,
+        permission: 'view-attendance',
+    },
+    {
         title: 'Mark Attendance',
         href: '/attendance/mark',
         icon: ClipboardList,
@@ -137,7 +143,7 @@ const attendanceNav: NavItem[] = [
     },
     {
         title: 'Attendance Report',
-        href: '/attendance/reports',
+        href: '/attendance/report',
         icon: BarChart3,
         permission: 'view-attendance-reports',
     },
