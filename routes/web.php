@@ -77,6 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('payments', [FeePaymentController::class, 'store'])->name('payments.store');
         Route::get('payments/{payment}/receipt', [FeePaymentController::class, 'receipt'])->name('payments.receipt');
         Route::get('students/{student}/fees', [FeePaymentController::class, 'getStudentFees'])->name('students.fees');
+        Route::get('reports', [\App\Http\Controllers\FeeReportController::class, 'index'])->name('reports.index');
     });
 });
 
