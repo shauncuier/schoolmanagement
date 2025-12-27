@@ -84,6 +84,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('leave-requests', \App\Http\Controllers\LeaveRequestController::class)->except(['edit', 'update']);
     Route::post('leave-requests/{leave_request}/approve', [\App\Http\Controllers\LeaveRequestController::class, 'approve'])->name('leave-requests.approve');
     Route::post('leave-requests/{leave_request}/reject', [\App\Http\Controllers\LeaveRequestController::class, 'reject'])->name('leave-requests.reject');
+
+    // Admin Routes (Super Admin Only)
+    Route::prefix('admin')->name('admin.')->group(function () {
+        // Schools (Tenants) Management
+        Route::resource('schools', \App\Http\Controllers\Admin\SchoolController::class);
+        Route::post('schools/{school}/toggle-status', [\App\Http\Controllers\Admin\SchoolController::class, 'toggleStatus'])
+            ->name('schools.toggle-status');
+    });
 });
 
 require __DIR__.'/settings.php';
+
