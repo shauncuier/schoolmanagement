@@ -91,7 +91,9 @@ class TeacherController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('teachers/create');
+        return Inertia::render('teachers/create', [
+            'availableRoles' => ['teacher', 'class-teacher'],
+        ]);
     }
 
     /**
@@ -102,6 +104,7 @@ class TeacherController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'password' => 'nullable|string|min:8', // Optional - defaults to password123
             'employee_id' => 'nullable|string|max:50',
             'designation' => 'nullable|string|max:100',
             'department' => 'nullable|string|max:100',
@@ -110,18 +113,20 @@ class TeacherController extends Controller
             'specialization' => 'nullable|string|max:500',
             'salary' => 'nullable|numeric|min:0',
             'employment_type' => 'required|in:full-time,part-time,contract,substitute',
+            'role' => 'required|in:teacher,class-teacher',
         ]);
 
         $user = $request->user();
 
         // Create user account for teacher
+        $password = $validated['password'] ?? 'password123';
         $teacherUser = \App\Models\User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => bcrypt('password'), // Default password
+            'password' => bcrypt($password),
             'tenant_id' => $user->tenant_id,
         ]);
-        $teacherUser->assignRole('teacher');
+        $teacherUser->assignRole($validated['role']);
 
         // Create teacher record
         $teacherData = [
@@ -167,10 +172,15 @@ class TeacherController extends Controller
     {
         $this->authorizeForTenant($teacher);
 
-        $teacher->load(['user']);
+        $teacher->load(['user.roles']);
+        
+        // Get the teacher's current role
+        $currentRole = $teacher->user->roles->first()?->name ?? 'teacher';
 
         return Inertia::render('teachers/edit', [
             'teacher' => $teacher,
+            'currentRole' => $currentRole,
+            'availableRoles' => ['teacher', 'class-teacher'],
         ]);
     }
 
@@ -193,6 +203,7 @@ class TeacherController extends Controller
             'salary' => 'nullable|numeric|min:0',
             'employment_type' => 'required|in:full-time,part-time,contract,substitute',
             'is_active' => 'boolean',
+            'role' => 'nullable|in:teacher,class-teacher',
         ]);
 
         // Update user
@@ -200,6 +211,11 @@ class TeacherController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
         ]);
+
+        // Update role if changed
+        if (!empty($validated['role'])) {
+            $teacher->user->syncRoles([$validated['role']]);
+        }
 
         // Update teacher
         $teacher->update([

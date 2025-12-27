@@ -18,7 +18,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { ArrowLeft, Save, UserCheck } from 'lucide-react';
+import { ArrowLeft, Key, Save, Shield, UserCheck } from 'lucide-react';
 import InputError from '@/components/input-error';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -27,10 +27,16 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Create', href: '/teachers/create' },
 ];
 
-export default function CreateTeacher() {
+interface Props {
+    availableRoles?: string[];
+}
+
+export default function CreateTeacher({ availableRoles = ['teacher', 'class-teacher'] }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',
+        password: '',
+        role: 'teacher',
         employee_id: '',
         designation: '',
         department: '',
@@ -63,13 +69,75 @@ export default function CreateTeacher() {
                             Add Teacher
                         </h1>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                            Register a new teacher
+                            Register a new teacher with login credentials
                         </p>
                     </div>
                 </div>
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Login Credentials */}
+                    <Card className="border-blue-200 dark:border-blue-800">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
+                                <Key className="h-5 w-5" />
+                                Login Credentials
+                            </CardTitle>
+                            <CardDescription>
+                                The teacher will use these credentials to login to the system
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="grid gap-4 sm:grid-cols-2">
+                            <div className="space-y-2">
+                                <Label htmlFor="email">
+                                    Email (Username) <span className="text-destructive">*</span>
+                                </Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    placeholder="teacher@school.com"
+                                    className={errors.email ? 'border-destructive' : ''}
+                                />
+                                <InputError message={errors.email} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="password">
+                                    Password
+                                </Label>
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    placeholder="Leave empty for default: password123"
+                                    className={errors.password ? 'border-destructive' : ''}
+                                />
+                                <p className="text-xs text-gray-500">Min 8 characters. Default: password123</p>
+                                <InputError message={errors.password} />
+                            </div>
+                            <div className="space-y-2 sm:col-span-2">
+                                <Label className="flex items-center gap-2">
+                                    <Shield className="h-4 w-4" />
+                                    Role <span className="text-destructive">*</span>
+                                </Label>
+                                <Select value={data.role} onValueChange={(v) => setData('role', v)}>
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="teacher">Teacher (Regular)</SelectItem>
+                                        <SelectItem value="class-teacher">Class Teacher (Extended permissions)</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <p className="text-xs text-gray-500">
+                                    Class teachers can edit student details and create notices
+                                </p>
+                            </div>
+                        </CardContent>
+                    </Card>
+
                     {/* Basic Information */}
                     <Card>
                         <CardHeader>
@@ -78,7 +146,7 @@ export default function CreateTeacher() {
                                 Basic Information
                             </CardTitle>
                             <CardDescription>
-                                Teacher account and identification details
+                                Teacher profile and identification details
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="grid gap-4 sm:grid-cols-2">
@@ -93,19 +161,6 @@ export default function CreateTeacher() {
                                     className={errors.name ? 'border-destructive' : ''}
                                 />
                                 <InputError message={errors.name} />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="email">
-                                    Email <span className="text-destructive">*</span>
-                                </Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)}
-                                    className={errors.email ? 'border-destructive' : ''}
-                                />
-                                <InputError message={errors.email} />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="employee_id">Employee ID</Label>

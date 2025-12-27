@@ -19,7 +19,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { ArrowLeft, Save, UserCheck } from 'lucide-react';
+import { ArrowLeft, Save, Shield, UserCheck } from 'lucide-react';
 import InputError from '@/components/input-error';
 
 interface User {
@@ -44,9 +44,11 @@ interface Teacher {
 
 interface Props {
     teacher: Teacher;
+    currentRole?: string;
+    availableRoles?: string[];
 }
 
-export default function EditTeacher({ teacher }: Props) {
+export default function EditTeacher({ teacher, currentRole = 'teacher', availableRoles = ['teacher', 'class-teacher'] }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Teachers', href: '/teachers' },
@@ -56,6 +58,7 @@ export default function EditTeacher({ teacher }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         name: teacher.user?.name ?? '',
         email: teacher.user?.email ?? '',
+        role: currentRole,
         employee_id: teacher.employee_id ?? '',
         designation: teacher.designation ?? '',
         department: teacher.department ?? '',
@@ -223,9 +226,9 @@ export default function EditTeacher({ teacher }: Props) {
                         </CardContent>
                     </Card>
 
-                    {/* Status */}
+                    {/* Status & Role */}
                     <Card>
-                        <CardContent className="p-4">
+                        <CardContent className="p-4 space-y-4">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <Label>Active Status</Label>
@@ -233,8 +236,23 @@ export default function EditTeacher({ teacher }: Props) {
                                 </div>
                                 <Switch
                                     checked={data.is_active}
-                                    onCheckedChange={(v) => setData('is_active', v)}
+                                    onCheckedChange={(v: boolean) => setData('is_active', v)}
                                 />
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="flex items-center gap-2">
+                                    <Shield className="h-4 w-4" />
+                                    Role
+                                </Label>
+                                <Select value={data.role} onValueChange={(v) => setData('role', v)}>
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="teacher">Teacher (Regular)</SelectItem>
+                                        <SelectItem value="class-teacher">Class Teacher (Extended permissions)</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </CardContent>
                     </Card>
