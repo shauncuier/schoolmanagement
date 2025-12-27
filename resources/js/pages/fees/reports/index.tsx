@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
+
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import {
@@ -21,11 +21,9 @@ import {
 } from '@/components/ui/table';
 import {
     AlertTriangle,
-    ArrowUpRight,
     Banknote,
     Calendar,
     CreditCard,
-    DollarSign,
     Receipt,
     TrendingUp,
     Users

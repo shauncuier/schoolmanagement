@@ -34,27 +34,7 @@ return new class extends Migration
             $table->index(['class_id', 'section_id', 'date']);
         });
 
-        // Leave Requests
-        Schema::create('leave_requests', function (Blueprint $table) {
-            $table->id();
-            $table->string('tenant_id')->index();
-            $table->morphs('requestable'); // Can be student, teacher, or staff
-            $table->foreignId('academic_year_id')->constrained()->onDelete('cascade');
-            $table->string('leave_type'); // sick, casual, earned, etc.
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->integer('total_days');
-            $table->text('reason');
-            $table->string('attachment')->nullable();
-            $table->enum('status', ['pending', 'approved', 'rejected', 'cancelled'])->default('pending');
-            $table->text('admin_remarks')->nullable();
-            $table->foreignId('approved_by')->nullable()->constrained('users')->onDelete('set null');
-            $table->timestamp('approved_at')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
 
-            $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
-        });
 
         // Teacher Attendance
         Schema::create('teacher_attendances', function (Blueprint $table) {
@@ -80,7 +60,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('teacher_attendances');
-        Schema::dropIfExists('leave_requests');
+
         Schema::dropIfExists('attendances');
     }
 };

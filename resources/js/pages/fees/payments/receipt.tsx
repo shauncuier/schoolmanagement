@@ -7,7 +7,7 @@ import {
     Card,
     CardContent,
 } from '@/components/ui/card';
-import { ArrowLeft, Download, Printer } from 'lucide-react';
+import { ArrowLeft, Printer } from 'lucide-react';
 
 interface Student {
     id: number;

@@ -17,7 +17,6 @@ import { Input } from '@/components/ui/input';
 import {
     Card,
     CardContent,
-    CardHeader,
 } from '@/components/ui/card';
 import {
     DropdownMenu,
@@ -88,7 +87,6 @@ interface Filters {
 interface Props {
     students: PaginatedResponse<Student>;
     classes: SchoolClass[];
-    sections: Section[];
     filters: Filters;
 }
 
@@ -99,7 +97,7 @@ const statusColors: Record<string, string> = {
     transferred: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
 };
 
-export default function StudentsIndex({ students, classes = [], sections = [], filters }: Props) {
+export default function StudentsIndex({ students, classes = [], filters }: Props) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);

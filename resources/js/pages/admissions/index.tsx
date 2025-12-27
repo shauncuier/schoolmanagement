@@ -20,8 +20,6 @@ import { Input } from '@/components/ui/input';
 import {
     Card,
     CardContent,
-    CardHeader,
-    CardTitle,
 } from '@/components/ui/card';
 import {
     DropdownMenu,
@@ -84,7 +82,7 @@ const statusColors: Record<string, string> = {
     rejected: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
 };
 
-const statusIcons: Record<string, any> = {
+const statusIcons: Record<string, React.ElementType> = {
     pending: Clock,
     under_review: Search,
     interview_scheduled: Calendar,

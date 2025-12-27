@@ -35,7 +35,7 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Calendar, Check, Clock, FileText, Plus, Search, Users, X } from 'lucide-react';
+import { Calendar, Check, Clock, FileText, Plus, Search, X } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [

@@ -151,8 +151,7 @@ export default function DocsIndex({ content, currentSlug, menu }: Props) {
                                         rehypePlugins={[rehypeRaw]}
                                         components={{
                                             pre: ({ children }) => <pre className="relative group/code">{children}</pre>,
-                                            code: ({ node, inline, className, children, ...props }: any) => {
-                                                const match = /language-(\w+)/.exec(className || '');
+                                            code: ({ inline, className, children, ...props }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { inline?: boolean }) => {
                                                 const content = String(children).replace(/\n$/, '');
 
                                                 if (!inline) {

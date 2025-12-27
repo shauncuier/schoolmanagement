@@ -7,9 +7,9 @@ import { Label } from '@/components/ui/label';
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
+    CardDescription,
 } from '@/components/ui/card';
 import {
     Select,
@@ -27,11 +27,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Create', href: '/teachers/create' },
 ];
 
-interface Props {
-    availableRoles?: string[];
-}
 
-export default function CreateTeacher({ availableRoles = ['teacher', 'class-teacher'] }: Props) {
+
+export default function CreateTeacher() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',

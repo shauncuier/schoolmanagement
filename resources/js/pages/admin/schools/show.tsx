@@ -409,7 +409,7 @@ export default function ShowSchool({ school, recentUsers }: Props) {
                         </DialogDescription>
                     </DialogHeader>
                     <div className="py-4">
-                        <Select value={newStatus} onValueChange={setNewStatus}>
+                        <Select value={newStatus} onValueChange={(v) => setNewStatus(v as School['status'])}>
                             <SelectTrigger>
                                 <SelectValue />
                             </SelectTrigger>

@@ -70,7 +70,7 @@ const typeColors: Record<string, string> = {
 export default function ManageSlots({ slots = [] }: Props) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const { data, setData, post, processing, reset, errors } = useForm({
+    const { data, setData, post, processing, reset } = useForm({
         name: '',
         start_time: '',
         end_time: '',

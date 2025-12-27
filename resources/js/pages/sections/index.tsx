@@ -53,14 +53,13 @@ interface Section {
 interface Props {
     sections: PaginatedResponse<Section>;
     classes: SchoolClass[];
-    academicYears: AcademicYear[];
     filters: {
         class_id?: string;
         academic_year_id?: string;
     };
 }
 
-export default function SectionsIndex({ sections, classes = [], academicYears = [] }: Props) {
+export default function SectionsIndex({ sections, classes = [] }: Props) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedSection, setSelectedSection] = useState<Section | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);

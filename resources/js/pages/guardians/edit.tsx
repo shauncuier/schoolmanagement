@@ -61,12 +61,11 @@ interface Guardian {
 
 interface Props {
     guardian: Guardian;
-    relationTypes?: string[];
     students?: Student[];
     linkedStudentIds?: number[];
 }
 
-export default function EditGuardian({ guardian, relationTypes = [], students = [], linkedStudentIds = [] }: Props) {
+export default function EditGuardian({ guardian, students = [], linkedStudentIds = [] }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Parents', href: '/guardians' },
@@ -259,8 +258,8 @@ export default function EditGuardian({ guardian, relationTypes = [], students = 
                                         <div
                                             key={student.id}
                                             className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${data.student_ids.includes(student.id)
-                                                    ? 'border-green-500 bg-green-50 dark:bg-green-950'
-                                                    : 'border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800'
+                                                ? 'border-green-500 bg-green-50 dark:bg-green-950'
+                                                : 'border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800'
                                                 }`}
                                             onClick={() => toggleStudent(student.id)}
                                         >

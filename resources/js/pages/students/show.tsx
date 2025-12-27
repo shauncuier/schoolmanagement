@@ -61,24 +61,24 @@ const statusColors: Record<string, string> = {
     transferred: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
 };
 
+const InfoItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string | null }) => (
+    <div className="flex items-start gap-3">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+            <Icon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+        </div>
+        <div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
+            <p className="font-medium text-gray-900 dark:text-white">{value || '-'}</p>
+        </div>
+    </div>
+);
+
 export default function ShowStudent({ student }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Students', href: '/students' },
         { title: student.user?.name ?? 'Student', href: `/students/${student.id}` },
     ];
-
-    const InfoItem = ({ icon: Icon, label, value }: { icon: typeof User; label: string; value: string | null }) => (
-        <div className="flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
-                <Icon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-            </div>
-            <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
-                <p className="font-medium text-gray-900 dark:text-white">{value || '-'}</p>
-            </div>
-        </div>
-    );
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

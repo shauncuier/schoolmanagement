@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, Link, router } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select';
 import { ArrowLeft, Banknote, Save, User } from 'lucide-react';
 import InputError from '@/components/input-error';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
@@ -74,7 +74,6 @@ interface Props {
 export default function CreateFeePayment({ students = [] }: Props) {
     const [allocations, setAllocations] = useState<Allocation[]>([]);
     const [loadingFees, setLoadingFees] = useState(false);
-    const [selectedAllocation, setSelectedAllocation] = useState<Allocation | null>(null);
 
     const { data, setData, post, processing, errors } = useForm({
         student_id: '',
@@ -90,6 +89,7 @@ export default function CreateFeePayment({ students = [] }: Props) {
 
     useEffect(() => {
         if (data.student_id) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setLoadingFees(true);
             fetch(`/fees/students/${data.student_id}/fees`)
                 .then(res => res.json())
@@ -103,17 +103,16 @@ export default function CreateFeePayment({ students = [] }: Props) {
         }
     }, [data.student_id]);
 
-    useEffect(() => {
-        if (data.allocation_id) {
-            const alloc = allocations.find(a => a.id.toString() === data.allocation_id);
-            setSelectedAllocation(alloc || null);
-            if (alloc) {
-                setData('amount', alloc.due_amount.toString());
-            }
-        } else {
-            setSelectedAllocation(null);
-        }
+    const selectedAllocation = useMemo(() => {
+        if (!data.allocation_id) return null;
+        return allocations.find(a => a.id.toString() === data.allocation_id) || null;
     }, [data.allocation_id, allocations]);
+
+    useEffect(() => {
+        if (selectedAllocation) {
+            setData('amount', selectedAllocation.due_amount.toString());
+        }
+    }, [selectedAllocation, setData]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

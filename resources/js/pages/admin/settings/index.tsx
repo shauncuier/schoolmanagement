@@ -2,14 +2,11 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
 import {
-    Bell,
     Globe,
-    Key,
     Mail,
     RefreshCw,
     Save,
     Server,
-    Settings,
     Shield,
     ToggleLeft,
 } from 'lucide-react';
@@ -141,7 +138,8 @@ export default function SettingsIndex({ settings, systemInfo }: Props) {
     const handleFeaturesSubmit: FormEventHandler = (e) => {
         e.preventDefault();
         setIsSavingFeatures(true);
-        router.put('/admin/settings/features', features, {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        router.put('/admin/settings/features', features as unknown as any, {
             onFinish: () => setIsSavingFeatures(false),
         });
     };

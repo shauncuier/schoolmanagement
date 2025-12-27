@@ -58,24 +58,24 @@ const employmentTypeColors: Record<string, string> = {
     'substitute': 'bg-purple-100 text-purple-700',
 };
 
+const InfoItem = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string | null }) => (
+    <div className="flex items-start gap-3">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+            <Icon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+        </div>
+        <div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
+            <p className="font-medium text-gray-900 dark:text-white">{value || '-'}</p>
+        </div>
+    </div>
+);
+
 export default function ShowTeacher({ teacher }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Teachers', href: '/teachers' },
         { title: teacher.user?.name ?? 'Teacher', href: `/teachers/${teacher.id}` },
     ];
-
-    const InfoItem = ({ icon: Icon, label, value }: { icon: typeof User; label: string; value: string | null }) => (
-        <div className="flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
-                <Icon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-            </div>
-            <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
-                <p className="font-medium text-gray-900 dark:text-white">{value || '-'}</p>
-            </div>
-        </div>
-    );
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

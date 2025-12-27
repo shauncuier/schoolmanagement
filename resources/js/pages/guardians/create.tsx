@@ -47,11 +47,10 @@ interface Student {
 }
 
 interface Props {
-    relationTypes?: string[];
     students?: Student[];
 }
 
-export default function CreateGuardian({ relationTypes = [], students = [] }: Props) {
+export default function CreateGuardian({ students = [] }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',
@@ -269,8 +268,8 @@ export default function CreateGuardian({ relationTypes = [], students = [] }: Pr
                                         <div
                                             key={student.id}
                                             className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${data.student_ids.includes(student.id)
-                                                    ? 'border-green-500 bg-green-50 dark:bg-green-950'
-                                                    : 'border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800'
+                                                ? 'border-green-500 bg-green-50 dark:bg-green-950'
+                                                : 'border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800'
                                                 }`}
                                             onClick={() => toggleStudent(student.id)}
                                         >

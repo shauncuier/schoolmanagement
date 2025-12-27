@@ -1,0 +1,85 @@
+
+> lint
+> eslint . --fix
+
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\components\app-logo.tsx
+  1:10  error  'GraduationCap' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\components\ui\textarea.tsx
+  5:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\admin\settings\index.tsx
+    5:5   error  'Bell' is defined but never used          @typescript-eslint/no-unused-vars
+    7:5   error  'Key' is defined but never used           @typescript-eslint/no-unused-vars
+  144:60  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\admin\subscriptions\index.tsx
+  6:5  error  'Building2' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\admissions\index.tsx
+  23:5   error  'CardHeader' is defined but never used    @typescript-eslint/no-unused-vars
+  24:5   error  'CardTitle' is defined but never used     @typescript-eslint/no-unused-vars
+  87:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\admissions\show.tsx
+    6:5   error  'Calendar' is defined but never used         @typescript-eslint/no-unused-vars
+   13:5   error  'XCircle' is defined but never used          @typescript-eslint/no-unused-vars
+   15:5   error  'CalendarDays' is defined but never used     @typescript-eslint/no-unused-vars
+   87:46  error  'errors' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  234:90  error  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\attendance\mark.tsx
+   59:7   error  'statusConfig' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   87:13  error  'processing' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  119:54  error  Unexpected any. Specify a different type           @typescript-eslint/no-explicit-any
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\attendance\report.tsx
+  30:32  error  'Download' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\docs\index.tsx
+  154:54   error  'node' is defined but never used            @typescript-eslint/no-unused-vars
+  154:101  error  Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  155:55   error  'match' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\fees\payments\create.tsx
+    3:31  error    'router' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+   93:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\fees\payments\create.tsx:93:13
+  91 |     useEffect(() => {
+  92 |         if (data.student_id) {
+> 93 |             setLoadingFees(true);
+     |             ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  94 |             fetch(`/fees/students/${data.student_id}/fees`)
+  95 |                 .then(res => res.json())
+  96 |                 .then(result => {                                                                       react-hooks/set-state-in-effect
+  109:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\fees\payments\create.tsx:109:13
+  107 |         if (data.allocation_id) {
+  108 |             const alloc = allocations.find(a => a.id.toString() === data.allocation_id);
+> 109 |             setSelectedAllocation(alloc || null);
+      |             ^^^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  110 |             if (alloc) {
+  111 |                 setData('amount', alloc.due_amount.toString());
+  112 |             }  react-hooks/set-state-in-effect
+  116:8   warning  React Hook useEffect has a missing dependency: 'setData'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react-hooks/exhaustive-deps
+
+D:\Laravel And PHP Project\schoolmanagement\resources\js\pages\fees\payments\receipt.tsx
+  10:21  error  'Download' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 26 problems (25 errors, 1 warning)
+

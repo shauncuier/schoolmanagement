@@ -3,16 +3,13 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import {
     ArrowLeft,
-    Calendar,
     CheckCircle2,
     Clock,
     FileText,
     Mail,
     Phone,
     UserCheck,
-    XCircle,
     Building2,
-    CalendarDays,
     Info,
     AlertCircle,
 } from 'lucide-react';
@@ -84,7 +81,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function AdmissionShow({ application }: Props) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing } = useForm({
         status: application.status,
         admin_remarks: application.admin_remarks || '',
         interview_date: application.interview_date || '',
@@ -231,7 +228,7 @@ export default function AdmissionShow({ application }: Props) {
                                         <Label>Current Status</Label>
                                         <Select
                                             value={data.status}
-                                            onValueChange={(v) => setData('status', v as any)}
+                                            onValueChange={(v) => setData('status', v as 'pending' | 'under_review' | 'interview_scheduled' | 'approved' | 'rejected')}
                                             disabled={application.status === 'approved'}
                                         >
                                             <SelectTrigger>

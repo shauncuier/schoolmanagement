@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -56,12 +56,7 @@ interface AttendanceRecord {
     remarks: string;
 }
 
-const statusConfig = {
-    present: { icon: CheckCircle, color: 'bg-emerald-500', label: 'Present' },
-    absent: { icon: XCircle, color: 'bg-red-500', label: 'Absent' },
-    late: { icon: Clock, color: 'bg-amber-500', label: 'Late' },
-    excused: { icon: UserX, color: 'bg-blue-500', label: 'Excused' },
-};
+
 
 export default function MarkAttendance({ section, students = [], date, isMarked }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
@@ -83,7 +78,8 @@ export default function MarkAttendance({ section, students = [], date, isMarked 
         return initial;
     });
 
-    const { post, processing } = useForm();
+    const [isSaving, setIsSaving] = useState(false);
+    // Reusing useForm only for overall site consistency if needed, but router is better for this complex state
 
     const updateStatus = (studentId: number, status: string) => {
         setAttendance((prev) => ({
@@ -112,12 +108,14 @@ export default function MarkAttendance({ section, students = [], date, isMarked 
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/attendance', {
-            data: {
-                section_id: section.id,
-                date,
-                attendance: Object.values(attendance),
-            },
+        router.post('/attendance', {
+            section_id: section.id,
+            date,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            attendance: Object.values(attendance) as unknown as any,
+        }, {
+            onStart: () => setIsSaving(true),
+            onFinish: () => setIsSaving(false),
         });
     };
 
@@ -277,9 +275,9 @@ export default function MarkAttendance({ section, students = [], date, isMarked 
                     {/* Submit Button */}
                     {(students?.length ?? 0) > 0 && (
                         <div className="mt-4 flex justify-end">
-                            <Button type="submit" disabled={processing} size="lg">
+                            <Button type="submit" disabled={isSaving} size="lg">
                                 <Save className="h-4 w-4" />
-                                {processing ? 'Saving...' : isMarked ? 'Update Attendance' : 'Save Attendance'}
+                                {isSaving ? 'Saving...' : isMarked ? 'Update Attendance' : 'Save Attendance'}
                             </Button>
                         </div>
                     )}

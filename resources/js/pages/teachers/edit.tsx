@@ -8,7 +8,6 @@ import { Switch } from '@/components/ui/switch';
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
@@ -45,10 +44,9 @@ interface Teacher {
 interface Props {
     teacher: Teacher;
     currentRole?: string;
-    availableRoles?: string[];
 }
 
-export default function EditTeacher({ teacher, currentRole = 'teacher', availableRoles = ['teacher', 'class-teacher'] }: Props) {
+export default function EditTeacher({ teacher, currentRole = 'teacher' }: Props) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
         { title: 'Teachers', href: '/teachers' },

@@ -3,7 +3,6 @@ import { type BreadcrumbItem, type PaginatedResponse } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
     AlertTriangle,
-    Building2,
     Calendar,
     Clock,
     CreditCard,

@@ -27,7 +27,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { ArrowLeft, BarChart3, Download, FileText } from 'lucide-react';
+import { ArrowLeft, BarChart3, FileText } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [

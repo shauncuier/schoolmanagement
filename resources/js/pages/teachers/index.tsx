@@ -29,7 +29,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Edit, Eye, MoreHorizontal, Plus, Search, Trash2, UserCheck, Users } from 'lucide-react';
+import { Edit, Eye, MoreHorizontal, Plus, Search, Trash2, Users } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -64,7 +64,6 @@ interface PaginatedData {
 
 interface Props {
     teachers: PaginatedData;
-    departments: string[];
     filters: {
         status?: string;
         employment_type?: string;
@@ -80,7 +79,7 @@ const employmentTypeColors: Record<string, string> = {
     'substitute': 'bg-purple-100 text-purple-700',
 };
 
-export default function TeachersIndex({ teachers, departments = [], filters }: Props) {
+export default function TeachersIndex({ teachers, filters }: Props) {
     const [search, setSearch] = useState(filters.search ?? '');
 
     const handleSearch = (e: React.FormEvent) => {
