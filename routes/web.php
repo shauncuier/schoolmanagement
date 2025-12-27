@@ -79,6 +79,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('students/{student}/fees', [FeePaymentController::class, 'getStudentFees'])->name('students.fees');
         Route::get('reports', [\App\Http\Controllers\FeeReportController::class, 'index'])->name('reports.index');
     });
+
+    // Leave Requests
+    Route::resource('leave-requests', \App\Http\Controllers\LeaveRequestController::class)->except(['edit', 'update']);
+    Route::post('leave-requests/{leave_request}/approve', [\App\Http\Controllers\LeaveRequestController::class, 'approve'])->name('leave-requests.approve');
+    Route::post('leave-requests/{leave_request}/reject', [\App\Http\Controllers\LeaveRequestController::class, 'reject'])->name('leave-requests.reject');
 });
 
 require __DIR__.'/settings.php';
