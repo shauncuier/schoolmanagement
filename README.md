@@ -1,6 +1,6 @@
 # 🏫 School Management System (SchoolSync)
 
-![Version](https://img.shields.io/badge/version-v0.2.1-blue.svg)
+![Version](https://img.shields.io/badge/version-v1.0.0-blue.svg)
 ![Laravel](https://img.shields.io/badge/Laravel-12-red.svg)
 ![React](https://img.shields.io/badge/React-18-61dafb.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-red.svg)
