@@ -180,14 +180,20 @@ const examNav: NavItem[] = [
 // Finance
 const financeNav: NavItem[] = [
     {
+        title: 'Fee Categories',
+        href: '/fees/categories',
+        icon: Package,
+        permission: 'view-fees',
+    },
+    {
         title: 'Fee Structure',
-        href: '/fees/structure',
+        href: '/fees/structures',
         icon: CreditCard,
         permission: 'view-fees',
     },
     {
         title: 'Collect Fees',
-        href: '/fees/collect',
+        href: '/fees/payments',
         icon: CreditCard,
         permission: 'collect-fees',
     },
