@@ -38,14 +38,43 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
-            'quote' => ['message' => trim($message), 'author' => trim($author)],
+            'quote' => ['message' => trim($message), 'author' => trim($author ?? '')],
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'tenant_id' => $user->tenant_id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'avatar' => $user->avatar,
+                    'status' => $user->status ?? 'active',
+                    'email_verified_at' => $user->email_verified_at,
+                    'two_factor_enabled' => (bool) $user->two_factor_secret,
+                    'last_login_at' => $user->last_login_at,
+                    'created_at' => $user->created_at,
+                    'updated_at' => $user->updated_at,
+                ] : null,
             ],
+            'roles' => $user ? $user->getRoleNames()->toArray() : [],
+            'permissions' => $user ? $user->getAllPermissions()->pluck('name')->toArray() : [],
+            'tenant' => $user?->tenant ? [
+                'id' => $user->tenant->id,
+                'name' => $user->tenant->name,
+                'slug' => $user->tenant->slug,
+                'logo' => $user->tenant->logo,
+                'primary_color' => $user->tenant->primary_color,
+                'secondary_color' => $user->tenant->secondary_color,
+                'theme' => $user->tenant->theme,
+                'status' => $user->tenant->status,
+                'subscription_plan' => $user->tenant->subscription_plan,
+            ] : null,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
 }
+
