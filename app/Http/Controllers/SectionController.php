@@ -21,15 +21,26 @@ class SectionController extends Controller
         $user = $request->user();
         $tenantId = $user->tenant_id;
 
-        $sections = Section::forTenant($tenantId)
+        // Super-admin can see all, others see only their tenant
+        $sectionQuery = Section::query();
+        $classQuery = SchoolClass::query();
+        $yearQuery = AcademicYear::query();
+        
+        if ($tenantId) {
+            $sectionQuery->forTenant($tenantId);
+            $classQuery->forTenant($tenantId);
+            $yearQuery->forTenant($tenantId);
+        }
+
+        $sections = $sectionQuery
             ->with(['schoolClass', 'academicYear', 'classTeacher'])
             ->withCount('students')
             ->orderBy('class_id')
             ->orderBy('name')
             ->paginate(15);
 
-        $classes = SchoolClass::forTenant($tenantId)->active()->ordered()->get();
-        $academicYears = AcademicYear::forTenant($tenantId)->orderByDesc('start_date')->get();
+        $classes = $classQuery->active()->ordered()->get();
+        $academicYears = $yearQuery->orderByDesc('start_date')->get();
 
         return Inertia::render('sections/index', [
             'sections' => $sections,
@@ -50,9 +61,19 @@ class SectionController extends Controller
         $user = $request->user();
         $tenantId = $user->tenant_id;
 
-        $classes = SchoolClass::forTenant($tenantId)->active()->ordered()->get();
-        $academicYears = AcademicYear::forTenant($tenantId)->orderByDesc('start_date')->get();
-        $teachers = User::where('tenant_id', $tenantId)
+        $classQuery = SchoolClass::query();
+        $yearQuery = AcademicYear::query();
+        $teacherQuery = User::query();
+        
+        if ($tenantId) {
+            $classQuery->forTenant($tenantId);
+            $yearQuery->forTenant($tenantId);
+            $teacherQuery->where('tenant_id', $tenantId);
+        }
+
+        $classes = $classQuery->active()->ordered()->get();
+        $academicYears = $yearQuery->orderByDesc('start_date')->get();
+        $teachers = $teacherQuery
             ->whereHas('roles', fn($q) => $q->whereIn('name', ['teacher', 'class-teacher']))
             ->get(['id', 'name']);
 
@@ -80,9 +101,9 @@ class SectionController extends Controller
 
         $user = $request->user();
 
-        // Verify the class belongs to same tenant
+        // Super-admin can create for any tenant; regular users need class tenant match
         $class = SchoolClass::findOrFail($validated['class_id']);
-        if ($class->tenant_id !== $user->tenant_id) {
+        if ($user->tenant_id !== null && $class->tenant_id !== $user->tenant_id) {
             abort(403, 'Invalid class selection.');
         }
 
@@ -111,9 +132,19 @@ class SectionController extends Controller
         $user = request()->user();
         $tenantId = $user->tenant_id;
 
-        $classes = SchoolClass::forTenant($tenantId)->active()->ordered()->get();
-        $academicYears = AcademicYear::forTenant($tenantId)->orderByDesc('start_date')->get();
-        $teachers = User::where('tenant_id', $tenantId)
+        $classQuery = SchoolClass::query();
+        $yearQuery = AcademicYear::query();
+        $teacherQuery = User::query();
+        
+        if ($tenantId) {
+            $classQuery->forTenant($tenantId);
+            $yearQuery->forTenant($tenantId);
+            $teacherQuery->where('tenant_id', $tenantId);
+        }
+
+        $classes = $classQuery->active()->ordered()->get();
+        $academicYears = $yearQuery->orderByDesc('start_date')->get();
+        $teachers = $teacherQuery
             ->whereHas('roles', fn($q) => $q->whereIn('name', ['teacher', 'class-teacher']))
             ->get(['id', 'name']);
 
@@ -169,10 +200,16 @@ class SectionController extends Controller
 
     /**
      * Ensure the section belongs to the user's tenant.
+     * Super-admins (no tenant_id) can access any section.
      */
     private function authorizeForTenant(Section $section): void
     {
         $user = request()->user();
+        
+        // Super-admin can access all
+        if ($user->tenant_id === null) {
+            return;
+        }
         
         if ($section->tenant_id !== $user->tenant_id) {
             abort(403, 'Unauthorized access to this section.');

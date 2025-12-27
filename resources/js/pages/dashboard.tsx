@@ -103,10 +103,12 @@ interface AttendanceCardProps {
 }
 
 function AttendanceCard({ attendance }: AttendanceCardProps) {
-    const total = attendance.total || 1; // Prevent division by zero
-    const presentPercent = Math.round((attendance.present / total) * 100) || 0;
-    const absentPercent = Math.round((attendance.absent / total) * 100) || 0;
-    const latePercent = Math.round((attendance.late / total) * 100) || 0;
+    // Provide defaults if attendance is undefined
+    const safeAttendance = attendance ?? { total: 0, present: 0, absent: 0, late: 0, percentage: 0 };
+    const total = safeAttendance.total || 1; // Prevent division by zero
+    const presentPercent = Math.round((safeAttendance.present / total) * 100) || 0;
+    const absentPercent = Math.round((safeAttendance.absent / total) * 100) || 0;
+    const latePercent = Math.round((safeAttendance.late / total) * 100) || 0;
 
     return (
         <div className="overflow-hidden rounded-2xl bg-white p-6 shadow-lg dark:bg-gray-800">
@@ -115,7 +117,7 @@ function AttendanceCard({ attendance }: AttendanceCardProps) {
                     Today's Attendance
                 </h3>
                 <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-                    {attendance.percentage}%
+                    {safeAttendance.percentage}%
                 </span>
             </div>
 
@@ -143,7 +145,7 @@ function AttendanceCard({ attendance }: AttendanceCardProps) {
                     <CheckCircle2 className="h-5 w-5 text-emerald-500" />
                     <div>
                         <p className="text-lg font-bold text-gray-900 dark:text-white">
-                            {attendance.present}
+                            {safeAttendance.present}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                             Present
@@ -154,7 +156,7 @@ function AttendanceCard({ attendance }: AttendanceCardProps) {
                     <AlertCircle className="h-5 w-5 text-amber-500" />
                     <div>
                         <p className="text-lg font-bold text-gray-900 dark:text-white">
-                            {attendance.late}
+                            {safeAttendance.late}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                             Late
@@ -165,7 +167,7 @@ function AttendanceCard({ attendance }: AttendanceCardProps) {
                     <XCircle className="h-5 w-5 text-red-500" />
                     <div>
                         <p className="text-lg font-bold text-gray-900 dark:text-white">
-                            {attendance.absent}
+                            {safeAttendance.absent}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                             Absent
@@ -351,9 +353,9 @@ export default function Dashboard({ stats }: DashboardProps) {
                                 View all
                             </a>
                         </div>
-                        {dashboardStats.recent_notices.length > 0 ? (
+                        {(dashboardStats.recent_notices?.length ?? 0) > 0 ? (
                             <div className="space-y-3">
-                                {dashboardStats.recent_notices
+                                {(dashboardStats.recent_notices ?? [])
                                     .slice(0, 5)
                                     .map((notice) => (
                                         <div
@@ -395,9 +397,9 @@ export default function Dashboard({ stats }: DashboardProps) {
                                 View all
                             </a>
                         </div>
-                        {dashboardStats.upcoming_events.length > 0 ? (
+                        {(dashboardStats.upcoming_events?.length ?? 0) > 0 ? (
                             <div className="space-y-3">
-                                {dashboardStats.upcoming_events
+                                {(dashboardStats.upcoming_events ?? [])
                                     .slice(0, 5)
                                     .map((event) => (
                                         <div

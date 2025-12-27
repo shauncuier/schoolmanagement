@@ -80,19 +80,19 @@ const academicNav: NavItem[] = [
     },
     {
         title: 'Classes',
-        href: '/academic/classes',
+        href: '/classes',
         icon: BookOpen,
         permission: 'view-classes',
     },
     {
         title: 'Sections',
-        href: '/academic/sections',
+        href: '/sections',
         icon: Users,
         permission: 'view-sections',
     },
     {
         title: 'Subjects',
-        href: '/academic/subjects',
+        href: '/subjects',
         icon: BookOpenCheck,
         permission: 'view-subjects',
     },

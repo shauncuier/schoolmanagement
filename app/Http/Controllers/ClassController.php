@@ -18,10 +18,13 @@ class ClassController extends Controller
         $user = $request->user();
         $tenantId = $user->tenant_id;
 
-        $classes = SchoolClass::forTenant($tenantId)
-            ->withCount('sections')
-            ->ordered()
-            ->paginate(15);
+        // Super-admin can see all, others see only their tenant
+        $query = SchoolClass::query();
+        if ($tenantId) {
+            $query->forTenant($tenantId);
+        }
+
+        $classes = $query->withCount('sections')->ordered()->paginate(15);
 
         return Inertia::render('classes/index', [
             'classes' => $classes,
@@ -124,10 +127,16 @@ class ClassController extends Controller
 
     /**
      * Ensure the class belongs to the user's tenant.
+     * Super-admins (no tenant_id) can access any class.
      */
     private function authorizeForTenant(SchoolClass $class): void
     {
         $user = request()->user();
+        
+        // Super-admin can access all
+        if ($user->tenant_id === null) {
+            return;
+        }
         
         if ($class->tenant_id !== $user->tenant_id) {
             abort(403, 'Unauthorized access to this class.');

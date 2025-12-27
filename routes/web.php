@@ -4,6 +4,7 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -27,6 +28,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Section Management
     Route::resource('sections', SectionController::class)->except(['show']);
+
+    // Subject Management
+    Route::resource('subjects', SubjectController::class)->except(['show']);
 });
 
 require __DIR__.'/settings.php';

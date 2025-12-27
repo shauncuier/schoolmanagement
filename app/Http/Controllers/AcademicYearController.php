@@ -18,9 +18,13 @@ class AcademicYearController extends Controller
         $user = $request->user();
         $tenantId = $user->tenant_id;
 
-        $academicYears = AcademicYear::forTenant($tenantId)
-            ->orderByDesc('start_date')
-            ->paginate(10);
+        // Super-admin can see all, others see only their tenant
+        $query = AcademicYear::query();
+        if ($tenantId) {
+            $query->forTenant($tenantId);
+        }
+
+        $academicYears = $query->orderByDesc('start_date')->paginate(10);
 
         return Inertia::render('academic-years/index', [
             'academicYears' => $academicYears,
@@ -122,10 +126,16 @@ class AcademicYearController extends Controller
 
     /**
      * Ensure the academic year belongs to the user's tenant.
+     * Super-admins (no tenant_id) can access any academic year.
      */
     private function authorizeForTenant(AcademicYear $academicYear): void
     {
         $user = request()->user();
+        
+        // Super-admin can access all
+        if ($user->tenant_id === null) {
+            return;
+        }
         
         if ($academicYear->tenant_id !== $user->tenant_id) {
             abort(403, 'Unauthorized access to this academic year.');
