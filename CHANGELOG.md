@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-12-28
+
+### Added
+#### 🎓 Admission Workflow
+- **Public Application Form**: Multi-step online admission form for prospective families with real-time validation.
+- **Admission Management Hub**: Centralized dashboard for school staff to track, review, and process applications.
+- **Conversion Engine**: Automated logic to transform approved applications into active student and user accounts.
+- **Model Standard**: Integrated `AdmissionApplication` model with full lifecycle support.
+
+#### 🛡️ Multi-Tenancy Hardening
+- **Trait-Based Security**: Implemented `TenantAware` trait and `TenantScope` for platform-wide strict data isolation.
+- **Architectural Cleanup**: Refactored core models to eliminate manual scoping:
+    - `Student`, `Guardian`, `AcademicYear`, `SchoolClass`, `Section`.
+- **Automatic Scoping**: Enforced `tenant_id` injection and filtering at the Eloquent level.
+
+### Changed
+- **Navigation**: Integrated Admissions into the people management sidebar.
+- **Code Health**: Fixed Inertia route linting errors by transitioning to relative API paths.
+
+---
+
 ## [1.0.0] - 2025-12-28
 
 ### Added

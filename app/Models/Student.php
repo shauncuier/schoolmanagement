@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Student extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, TenantAware;
 
     protected $fillable = [
         'tenant_id',
@@ -156,14 +157,6 @@ class Student extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
-    }
-
-    /**
-     * Scope to filter by tenant.
-     */
-    public function scopeForTenant($query, string $tenantId)
-    {
-        return $query->where('tenant_id', $tenantId);
     }
 
     /**

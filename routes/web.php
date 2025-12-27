@@ -11,6 +11,7 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TimetableController;
@@ -26,6 +27,10 @@ Route::get('/', function () {
 
 // Documentation
 Route::get('docs/{slug?}', [\App\Http\Controllers\DocsController::class, 'index'])->name('docs');
+
+// Admissions Public Form
+Route::get('admissions/apply', [AdmissionController::class, 'create'])->name('admissions.apply');
+Route::post('admissions/apply', [AdmissionController::class, 'store'])->name('admissions.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -55,6 +60,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Staff Management
     Route::resource('staff', StaffController::class)->except(['show']);
+
+    // Admissions Management
+    Route::get('admissions', [AdmissionController::class, 'index'])->name('admissions.index');
+    Route::get('admissions/{application}', [AdmissionController::class, 'show'])->name('admissions.show');
+    Route::post('admissions/{application}/status', [AdmissionController::class, 'updateStatus'])->name('admissions.status.update');
 
     // Attendance Management
     Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');

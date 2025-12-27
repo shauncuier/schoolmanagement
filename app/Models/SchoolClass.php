@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SchoolClass extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, TenantAware;
 
     protected $table = 'classes';
 
@@ -58,14 +59,6 @@ class SchoolClass extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
-    }
-
-    /**
-     * Scope to filter by tenant.
-     */
-    public function scopeForTenant($query, string $tenantId)
-    {
-        return $query->where('tenant_id', $tenantId);
     }
 
     /**

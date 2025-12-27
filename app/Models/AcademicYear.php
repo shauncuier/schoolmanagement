@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AcademicYear extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, TenantAware;
 
     protected $fillable = [
         'tenant_id',
@@ -57,8 +58,8 @@ class AcademicYear extends Model
      */
     public function setAsCurrent(): void
     {
-        static::where('tenant_id', $this->tenant_id)
-            ->where('id', '!=', $this->id)
+        // TenantScope will already filter this to the current tenant
+        static::where('id', '!=', $this->id)
             ->update(['is_current' => false]);
 
         $this->update(['is_current' => true, 'status' => 'active']);
@@ -70,13 +71,5 @@ class AcademicYear extends Model
     public function scopeCurrent($query)
     {
         return $query->where('is_current', true);
-    }
-
-    /**
-     * Scope to filter by tenant.
-     */
-    public function scopeForTenant($query, string $tenantId)
-    {
-        return $query->where('tenant_id', $tenantId);
     }
 }

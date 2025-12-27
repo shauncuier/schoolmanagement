@@ -37,6 +37,7 @@ import {
     Shield,
     UserCheck,
     UserCog,
+    UserPlus,
     Users,
 } from 'lucide-react';
 import AppLogo from './app-logo';
@@ -111,6 +112,12 @@ const peopleNav: NavItem[] = [
         href: '/students',
         icon: GraduationCap,
         permission: 'view-students',
+    },
+    {
+        title: 'Admissions',
+        href: '/admissions',
+        icon: UserPlus,
+        permission: 'view-students', // Reusing student permission for now
     },
     {
         title: 'Teachers',
