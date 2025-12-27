@@ -24,6 +24,9 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Documentation
+Route::get('docs/{slug?}', [\App\Http\Controllers\DocsController::class, 'index'])->name('docs');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

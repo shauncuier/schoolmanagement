@@ -183,6 +183,7 @@ const examNav: NavItem[] = [
     },
 ];
 
+
 // Finance
 const financeNav: NavItem[] = [
     {
@@ -281,7 +282,7 @@ const settingsNav: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Documentation',
-        href: 'https://docs.schoolsync.com',
+        href: '/docs',
         icon: BookOpen,
     },
 ];
@@ -345,7 +346,7 @@ export function AppSidebar() {
                 {/* Super Admin Section */}
                 {isSuperAdmin && (
                     <SidebarGroup>
-                        <SidebarGroupLabel>Platform Admin</SidebarGroupLabel>
+                        <SidebarGroupLabel>Super Admin</SidebarGroupLabel>
                         <NavMain items={superAdminNav} />
                     </SidebarGroup>
                 )}

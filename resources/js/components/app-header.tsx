@@ -44,15 +44,16 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
+// Finance
 const rightNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        href: 'https://github.com/shauncuier/schoolmanagement',
         icon: Folder,
     },
     {
         title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
+        href: '/docs',
         icon: BookOpen,
     },
 ];
