@@ -48,7 +48,7 @@ class SubjectController extends Controller
             'name' => 'required|string|max:100',
             'code' => 'nullable|string|max:20',
             'description' => 'nullable|string|max:500',
-            'type' => 'nullable|string|max:50',
+            'type' => 'nullable|in:theory,practical,both',
             'is_optional' => 'boolean',
             'is_active' => 'boolean',
         ]);
@@ -60,7 +60,7 @@ class SubjectController extends Controller
             'name' => $validated['name'],
             'code' => $validated['code'] ?? null,
             'description' => $validated['description'] ?? null,
-            'type' => $validated['type'] ?? 'academic',
+            'type' => $validated['type'] ?? 'theory',
             'is_optional' => $validated['is_optional'] ?? false,
             'is_active' => $validated['is_active'] ?? true,
         ]);
@@ -92,7 +92,7 @@ class SubjectController extends Controller
             'name' => 'required|string|max:100',
             'code' => 'nullable|string|max:20',
             'description' => 'nullable|string|max:500',
-            'type' => 'nullable|string|max:50',
+            'type' => 'nullable|in:theory,practical,both',
             'is_optional' => 'boolean',
             'is_active' => 'boolean',
         ]);

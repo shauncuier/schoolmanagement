@@ -42,7 +42,7 @@ export default function CreateSubject() {
         name: '',
         code: '',
         description: '',
-        type: 'academic',
+        type: 'theory',
         is_optional: false,
         is_active: true,
     });
@@ -123,12 +123,9 @@ export default function CreateSubject() {
                                         <SelectValue placeholder="Select type" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="academic">Academic</SelectItem>
-                                        <SelectItem value="language">Language</SelectItem>
-                                        <SelectItem value="arts">Arts</SelectItem>
-                                        <SelectItem value="sports">Sports</SelectItem>
-                                        <SelectItem value="vocational">Vocational</SelectItem>
-                                        <SelectItem value="other">Other</SelectItem>
+                                        <SelectItem value="theory">Theory</SelectItem>
+                                        <SelectItem value="practical">Practical</SelectItem>
+                                        <SelectItem value="both">Both</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>

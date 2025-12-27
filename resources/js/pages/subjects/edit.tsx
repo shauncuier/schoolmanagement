@@ -47,7 +47,7 @@ export default function EditSubject({ subject }: Props) {
         name: subject.name,
         code: subject.code ?? '',
         description: subject.description ?? '',
-        type: subject.type ?? 'academic',
+        type: subject.type ?? 'theory',
         is_optional: subject.is_optional,
         is_active: subject.is_active,
     });
@@ -128,12 +128,9 @@ export default function EditSubject({ subject }: Props) {
                                         <SelectValue placeholder="Select type" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="academic">Academic</SelectItem>
-                                        <SelectItem value="language">Language</SelectItem>
-                                        <SelectItem value="arts">Arts</SelectItem>
-                                        <SelectItem value="sports">Sports</SelectItem>
-                                        <SelectItem value="vocational">Vocational</SelectItem>
-                                        <SelectItem value="other">Other</SelectItem>
+                                        <SelectItem value="theory">Theory</SelectItem>
+                                        <SelectItem value="practical">Practical</SelectItem>
+                                        <SelectItem value="both">Both</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
