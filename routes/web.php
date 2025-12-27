@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TimetableController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Student Management
     Route::resource('students', StudentController::class);
+
+    // Teacher Management
+    Route::resource('teachers', TeacherController::class);
 
     // Attendance Management
     Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
