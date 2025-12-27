@@ -268,6 +268,7 @@ This document outlines the complete, comprehensive architecture and feature set 
 ---
 
 <p align="center">
-  Developed by <a href="https://3s-soft.com/">3s-Soft</a>
+  Developed by <a href="https://3s-soft.com/">3s-Soft</a><br>
+  <b>Proprietary & Confidential - All Rights Reserved</b>
 </p>
 

@@ -1,9 +1,9 @@
-# 🏫 School Management System
+# 🏫 School Management System (SchoolSync)
 
-![Version](https://img.shields.io/badge/version-v0.0.2-blue.svg)
+![Version](https://img.shields.io/badge/version-v0.2.1-blue.svg)
 ![Laravel](https://img.shields.io/badge/Laravel-12-red.svg)
 ![React](https://img.shields.io/badge/React-18-61dafb.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+![License](https://img.shields.io/badge/license-Proprietary-red.svg)
 
 A comprehensive, enterprise-grade **Multi-Tenant School Management System** built with modern technologies. This SaaS-ready platform enables educational institutions to manage all aspects of school operations from a single, unified interface.
 
@@ -11,7 +11,15 @@ A comprehensive, enterprise-grade **Multi-Tenant School Management System** buil
 
 ## 🌟 Features Overview
 
-### Core Modules
+### 🎖️ Platform Admin (Super Admin)
+- **📊 Global Dashboard**: Real-time platform analytics (Total Schools, Users, Revenue).
+- **🏢 School Management**: Cross-tenant CRUD, registration, and domain mapping.
+- **🎨 Branding Engine**: Live preview for school-specific primary/secondary colors.
+- **💳 Subscription Management**: Multi-tier plans (Free, Basic, Standard, Premium), expiry controls, and extensions.
+- **👥 Global User Directory**: Manage every user across the platform with soft-delete recovery.
+- **⚙️ System Hub**: Configure SMTP, Security Policies, Feature Toggles, and clear system cache.
+
+### 🏫 School Operations
 - **🎓 Student Management** - Admissions, profiles, promotions, transfers, alumni
 - **👨‍🏫 Teacher Management** - Staff profiles, assignments, performance tracking
 - **📚 Academic Management** - Classes, sections, subjects, curriculum
@@ -366,16 +374,16 @@ composer test
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is proprietary software owned by **3s-Soft**. See the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## 📞 Support
 
 For support, please contact:
-- 📧 Email: support@example.com
-- 📖 Documentation: [docs.example.com](https://docs.example.com)
-- 💬 Discord: [Community Server](https://discord.gg/example)
+- 📧 Email: support@3s-soft.com
+- 🌐 Website: [3s-soft.com](https://3s-soft.com)
+- � Documentation: [docs.3s-soft.com](https://docs.3s-soft.com)
 
 ---
 
