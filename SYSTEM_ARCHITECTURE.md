@@ -264,3 +264,10 @@ This document outlines the complete, comprehensive architecture and feature set 
 
 > [!IMPORTANT]
 > This is the **Maximum Possible SMS Architecture**. It covers every feature, role, layer, integration, risk, and future scale path.
+
+---
+
+<p align="center">
+  Developed by <a href="https://3s-soft.com/">3s-Soft</a>
+</p>
+

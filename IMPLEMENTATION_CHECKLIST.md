@@ -749,4 +749,5 @@ This document tracks the implementation progress of all modules and features in 
 ## 🔄 Last Updated
 
 **Date:** December 27, 2024  
-**Version:** v0.0.1
+**Version:** v0.0.1  
+**Developed by:** [3s-Soft](https://3s-soft.com/)

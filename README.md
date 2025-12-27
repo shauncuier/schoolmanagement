@@ -371,5 +371,6 @@ For support, please contact:
 ---
 
 <p align="center">
+  Developed by <a href="https://3s-soft.com/">3s-Soft</a><br>
   Made with ❤️ for Education
 </p>
