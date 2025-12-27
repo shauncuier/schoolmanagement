@@ -1,40 +1,24 @@
-## 📝 Description
-<!-- Provide a brief description of the changes in this PR -->
+## Description
+Briefly describe the changes introduced by this pull request.
 
-## 🔗 Related Issue
-<!-- Link to the related issue: Fixes #123 -->
-Fixes #
+## Type of Change
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Refactoring (internal change with no user-facing impact)
+- [ ] Documentation update
 
-## 🎯 Type of Change
-<!-- Mark the relevant option with an 'x' -->
-- [ ] 🐛 Bug fix (non-breaking change which fixes an issue)
-- [ ] ✨ New feature (non-breaking change which adds functionality)
-- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] 📖 Documentation update
-- [ ] 🎨 Style/UI update
-- [ ] ♻️ Code refactoring
-- [ ] ⚡ Performance improvement
-- [ ] ✅ Test update
+## Checklist
+- [ ] I have followed the project's coding standards.
+- [ ] My changes generate no new warnings or errors.
+- [ ] I have added tests that prove my fix is effective or that my feature works.
+- [ ] New and existing unit tests pass locally with my changes.
+- [ ] **Multi-Tenancy**: I have verified that my changes do not leak data across tenants using the `TenantAware` trait or `TenantScope`.
+- [ ] **Migrations**: If I added a migration, I have verified it runs and rolls back correctly.
+- [ ] **UI**: If I modified the UI, I have verified it is responsive and matches the design system.
 
-## 📋 Checklist
-<!-- Mark completed items with an 'x' -->
-- [ ] My code follows the project's coding style
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] Any dependent changes have been merged and published
+## Related Issues
+Fixes # (issue number)
 
-## 📸 Screenshots (if applicable)
-<!-- Add screenshots to demonstrate visual changes -->
-
-## 🧪 Testing Instructions
-<!-- Describe how reviewers can test your changes -->
-1. 
-2. 
-3. 
-
-## 📝 Additional Notes
-<!-- Add any additional notes or context about the PR -->
+## Screenshots (if applicable)
+Add screenshots or screen recordings to demonstrate the changes.
