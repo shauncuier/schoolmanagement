@@ -98,7 +98,7 @@ const academicNav: NavItem[] = [
     },
     {
         title: 'Timetable',
-        href: '/academic/timetable',
+        href: '/timetable',
         icon: Clock,
         permission: 'view-timetable',
     },

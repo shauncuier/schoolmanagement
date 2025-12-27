@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TimetableController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -43,6 +44,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('attendance/mark', [AttendanceController::class, 'mark'])->name('attendance.mark');
     Route::post('attendance', [AttendanceController::class, 'store'])->name('attendance.store');
     Route::get('attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
+
+    // Timetable Management
+    Route::get('timetable', [TimetableController::class, 'index'])->name('timetable.index');
+    Route::get('timetable/edit', [TimetableController::class, 'edit'])->name('timetable.edit');
+    Route::post('timetable', [TimetableController::class, 'store'])->name('timetable.store');
+    Route::get('timetable/slots', [TimetableController::class, 'slots'])->name('timetable.slots');
+    Route::post('timetable/slots', [TimetableController::class, 'storeSlot'])->name('timetable.slots.store');
+    Route::delete('timetable/slots/{slot}', [TimetableController::class, 'destroySlot'])->name('timetable.slots.destroy');
 });
 
 require __DIR__.'/settings.php';
