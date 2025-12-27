@@ -5,55 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.1] - 2025-12-28
+## [1.0.0] - 2025-12-28
 
 ### Added
-#### 🚀 Super Admin - Schools (Tenants) Management
-- **School Dashboard**: Created a comprehensive list view for all schools in the system.
-- **Statistics**: Summary cards for total, active, pending, and suspended schools.
-- **Advanced Filtering**: Search by name/email/slug and filter by status or subscription plan.
-- **School Creation**: New form to register schools, including automatic slug generation and domain association.
-- **Branding Engine**: Implemented a color picker for Primary and Secondary branding colors with a **live preview** interface.
-- **Detailed Profiles**: "Show" page displaying school-specific stats (User/Student/Teacher counts) and recent activity.
-- **Status Control**: Platform-level ability to suspend, activate, or set schools to pending.
+#### 📖 Internal Documentation System
+- **Public Docs**: Implemented a dedicated `/docs` route accessible to all users.
+- **Markdown Support**: serving guides dynamically from `.md` files in the `docs/` directory.
+- **Advanced Viewer**: Created a premium React-based documentation viewer with:
+    - **Live Search**: Filter guides by title or content instantly.
+    - **Keyboard Shortcuts**: Added `CMD+K` (or `CTRL+K`) to focus the search input.
+    - **Code Copying**: One-click "Copy" button on all code blocks with hover effects.
+    - **Responsive Design**: Mobile-friendly navigation with an overlay menu.
+- **Styling**: Integrated `@tailwindcss/typography` for professional-grade markdown rendering.
 
-#### 👥 Super Admin - All Users Management
-- **Cross-Tenant View**: A centralized directory of every user in the entire system, regardless of which school they belong to.
-- **User Insights**: Detailed profiles showing login history, IP logs, and verification status.
-- **Global Search**: Search users across the entire platform by name or email.
-- **Role & School Management**: Ability for Super Admins to reassign users to different schools or change their roles globally.
-- **Recovery Tools**: Implemented support for **Soft Deletes**, allowing admins to view, restore, or permanently purge deleted users.
+#### 🚀 Super Admin - Platform Management
+- **School Dashboard**: Comprehensive management of all platform schools (tenants).
+- **Statistics**: Real-time analytics for total, active, pending, and suspended schools.
+- **Branding Engine**: Live color picker for school-specific primary/secondary branding with preview.
+- **Subscription Hub**: Manage multi-tier plans (Free, Basic, Standard, Premium) and expiry controls.
+- **User Directory**: Centralized management of every user across all tenants with recovery (Soft Delete) support.
+- **System Hub**: UI-based configuration for SMTP, Security Policies (Password complexity, lockout), and Feature Toggles.
 
-#### 💳 Super Admin - Subscriptions Management
-- **Subscription Overview**: Dedicated dashboard to track platform revenue and plan distribution.
-- **Plan Management**: Ability to upgrade or downgrade a school's plan (Free, Basic, Standard, Premium).
-- **Expiry Controls**: Tools to set specific expiry dates or extend subscriptions by a set number of days.
-- **Status Tracking**: Visual indicators for "Expiring Soon" (within 30 days) and "Expired" accounts.
-- **Plan Comparison**: Integrated plan feature list and pricing reference within the dashboard.
+#### 📊 Platform Dashboard
+- **Unified Analytics**: Platform-wide stats for Revenue, Users, and School registrations.
+- **Adaptive UI**: Seamless dashboard switching between Super Admin and School-level views.
 
-#### ⚙️ Super Admin - System Settings
-- **Configuration Hub**: A multi-tabbed interface for managing the entire platform's behavior.
-- **General Settings**: Manage platform branding (name/description), localizations (timezone/language), and date/time formats.
-- **Email Configuration**: Full SMTP/Mail driver management via UI, stored in a custom system settings layer.
-- **Feature Toggles**: Centralized switches for User Registration, Social Login, 2FA, API Access, and Notifications.
-- **Security Policy**: Manage session lifetimes, lockout durations, and **Password Complexity rules** (Uppercase, Numbers, Symbols).
-- **Maintenance Mode**: One-click toggle to put the entire platform into maintenance mode.
-- **System Info**: Real-time display of environment details including PHP/Laravel versions and server limits.
-- **Utility**: Added "Clear System Cache" button for rapid troubleshooting.
+#### 🔧 UI/UX Improvements
+- **Sidebar Refinement**: Renamed "Platform Admin" to **"Super Admin"** to improve clarity and reduce word repetition.
+- **Smart Navigation**: Updated header and footer documentation links to point to the new internal system.
+- **Logo Transition**: Improved consistency across branding logos.
 
-#### 📊 Super Admin - Dashboard
-- **Platform Analytics**: Real-time stats for Total Schools, Total Users, Active Subscriptions, and Monthly Revenue.
-- **Recent Activity**: Tracking list for the latest school registrations.
-- **Adaptive UI**: Dashboard switching logic between school-level and platform-level views based on user role.
-- **Admin Quick Actions**: Direct access to critical management tools from the dashboard.
-
-#### 🔧 UI Components & Infrastructure
-- **New Component**: Added `Tabs` UI component using Radix UI primitives.
-- **Navigation**: Updated `app-sidebar.tsx` with restricted "Platform Admin" section for Super Admins.
-- **Routes**: Registered **25 new administrative routes** covering all CRUD and utility actions.
-
-### Fixed
-- **Build Process**: Resolved TypeScript configuration nuances by properly installing `@radix-ui/react-tabs` and ensuring Vite build compatibility.
+### Changed
+- **Version Reset**: Transitioned from beta versioning (v0.2.x) to a clean, community-standard **v1.0.0** release.
+- **Tags**: Deleted all previous pre-release tags to start fresh.
 
 ---
 
