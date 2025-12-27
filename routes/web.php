@@ -4,6 +4,9 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeeCategoryController;
+use App\Http\Controllers\FeePaymentController;
+use App\Http\Controllers\FeeStructureController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StaffController;
@@ -64,6 +67,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('timetable/slots', [TimetableController::class, 'slots'])->name('timetable.slots');
     Route::post('timetable/slots', [TimetableController::class, 'storeSlot'])->name('timetable.slots.store');
     Route::delete('timetable/slots/{slot}', [TimetableController::class, 'destroySlot'])->name('timetable.slots.destroy');
+
+    // Fee Management
+    Route::prefix('fees')->name('fees.')->group(function () {
+        Route::resource('categories', FeeCategoryController::class)->except(['show']);
+        Route::resource('structures', FeeStructureController::class)->except(['show']);
+        Route::get('payments', [FeePaymentController::class, 'index'])->name('payments.index');
+        Route::get('payments/create', [FeePaymentController::class, 'create'])->name('payments.create');
+        Route::post('payments', [FeePaymentController::class, 'store'])->name('payments.store');
+        Route::get('payments/{payment}/receipt', [FeePaymentController::class, 'receipt'])->name('payments.receipt');
+        Route::get('students/{student}/fees', [FeePaymentController::class, 'getStudentFees'])->name('students.fees');
+    });
 });
 
 require __DIR__.'/settings.php';
