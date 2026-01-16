@@ -30,6 +30,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Record', href: '/fees/payments/create' },
 ];
 
+
 interface Section {
     id: number;
     name: string;
