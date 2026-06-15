@@ -110,7 +110,7 @@ class DemoOperationsSeeder extends Seeder
                     'receipt_number' => 'RCP'.str_pad((string) ($i + 1), 6, '0', STR_PAD_LEFT),
                     'amount' => $allocation->net_amount,
                     'total_amount' => $allocation->net_amount,
-                    'payment_method' => ['cash', 'bank_transfer', 'mobile_banking'][$roll % 3],
+                    'payment_method' => 'cash',
                     'status' => 'completed',
                     'collected_by' => $admin?->id,
                     'paid_at' => now()->subDays(rand(1, 20)),

@@ -14,6 +14,13 @@ return [
     |
     */
 
+    /*
+    | Master switch for online (MFS) payments. Disabled for now — fees are
+    | collected as cash/manual entry. Flip PAYMENT_ONLINE_ENABLED=true (and add a
+    | real gateway driver below) to turn the payer-facing online flow back on.
+    */
+    'online_enabled' => env('PAYMENT_ONLINE_ENABLED', false),
+
     'default' => env('PAYMENT_GATEWAY', 'sandbox'),
 
     'drivers' => [

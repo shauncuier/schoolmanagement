@@ -14,7 +14,14 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class PaymentController extends Controller
 {
-    public function __construct(private readonly PaymentService $payments) {}
+    public function __construct(private readonly PaymentService $payments)
+    {
+        // Online (MFS) payments are off for now — fees are collected as cash.
+        // Re-enable via PAYMENT_ONLINE_ENABLED=true.
+        if (! config('payment.online_enabled')) {
+            abort(404);
+        }
+    }
 
     /**
      * Online payment screen for a single fee allocation.

@@ -9,6 +9,7 @@ use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
     $this->seed(RolePermissionSeeder::class);
+    config(['payment.online_enabled' => true]); // exercise the online flow in tests
 });
 
 function staffPayer(Tenant $tenant): User
@@ -88,4 +89,14 @@ it('renders the payment status page', function () {
     actingAs($owner);
     $this->get("/fees/payment-status?reference={$intent->reference}")
         ->assertOk();
+});
+
+it('hides the online payment flow when disabled (cash-only)', function () {
+    config(['payment.online_enabled' => false]);
+
+    $tenant = payTenant();
+    ['alloc' => $alloc] = makeAllocation($tenant);
+    actingAs(staffPayer($tenant));
+
+    $this->get("/fees/pay/{$alloc->id}")->assertNotFound();
 });
