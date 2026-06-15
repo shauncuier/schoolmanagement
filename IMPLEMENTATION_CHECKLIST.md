@@ -32,9 +32,9 @@ This document tracks the implementation progress of all modules and features in 
 | Attendance System | ✅ | 90% |
 | Examination & Assessment | ✅ | 100% |
 | Super Admin Module | ✅ | 100% |
-| Fee Management | 🔄 | 70% |
+| Fee Management | 🔄 | 75% |
 | Timetable Management | ⏳ | 10% |
-| Communication System | ⏳ | 10% |
+| Communication System (SMS) | 🔄 | 40% |
 | HR & Staff Management | ⏳ | 25% |
 | Library Management | ⏳ | 0% |
 | Transport Management | ⏳ | 0% |
@@ -46,27 +46,41 @@ This document tracks the implementation progress of all modules and features in 
 
 ---
 
+## 🆕 What's New in v1.2.1
+
+Bangladesh-market Phase 1 shipped (see [CHANGELOG](CHANGELOG.md) and [ROADMAP_BANGLADESH.md](ROADMAP_BANGLADESH.md)):
+
+- ✅ **Masking SMS rail** — provider-agnostic engine (GSM-7 / Bangla-Unicode segments + cost), BD number validation, templates, bulk send, delivery console.
+- ✅ **Result publishing + public lookup by roll** (throttled, no enumeration leak) with optional guardian SMS.
+- ✅ **Exam & marks-entry engine** — GPA-5 grading scale, auto grade/point, ranked report-card generation.
+- ✅ **Role & permission management UI** (super-admin scoped) and per-school **settings** (branding, logo/favicon).
+- ✅ **Automatic fee allocation** to students on enrolment.
+- ✅ **Audit trail** + **route-level permission gating** on previously auth-only modules.
+- ✅ **MySQL production database** wired; 118 automated tests; green CI/CD.
+
+---
+
 ## 0️⃣ STAKEHOLDERS & USER ROLES
 
 ### Core Users Setup
 - [x] ✅ Super Admin role
-- [ ] ⏳ School Owner / Management role
-- [ ] ⏳ Principal role
-- [ ] ⏳ Vice Principal role
-- [ ] ⏳ Academic Coordinator role
-- [ ] ⏳ Admin Officer role
-- [x] ✅ Teacher role (basic)
+- [x] ✅ School Owner / Management role
+- [x] ✅ Principal role
+- [x] ✅ Vice Principal role
+- [x] ✅ Academic Coordinator role
+- [x] ✅ Admin Officer role
+- [x] ✅ Teacher role
 - [ ] ⏳ Substitute Teacher role
-- [ ] ⏳ Class Teacher role
-- [x] ✅ Student role (basic)
-- [x] ✅ Parent / Guardian role (basic)
-- [ ] ⏳ Accountant role
-- [ ] ⏳ Librarian role
-- [ ] ⏳ Transport Manager role
-- [ ] ⏳ Hostel Manager role
+- [x] ✅ Class Teacher role
+- [x] ✅ Student role
+- [x] ✅ Parent / Guardian role
+- [x] ✅ Accountant role
+- [x] ✅ Librarian role
+- [x] ✅ Transport Manager role
+- [x] ✅ Hostel Manager role
 - [ ] ⏳ Inventory Manager role
-- [ ] ⏳ IT Support role
-- [ ] ⏳ HR Manager role
+- [x] ✅ IT Support role
+- [x] ✅ HR Manager role
 
 ### External User Integrations
 - [ ] ⏳ Education Board / Government API
@@ -144,17 +158,19 @@ This document tracks the implementation progress of all modules and features in 
 - [x] ✅ School-level isolation (Multi-tenancy)
 - [ ] ⏳ Class-level permissions
 - [ ] ⏳ Feature toggles per school
-- [ ] ⏳ Permission seeder for all roles
+- [x] ✅ Permission seeder for all roles
+- [x] ✅ Role & permission management UI (super-admin scoped)
+- [x] ✅ Route-level permission gating (`permission:`/`role:` middleware)
 
 ### Security Features
 - [x] ✅ Password hashing (Bcrypt)
 - [x] ✅ 2FA columns ready in database
 - [ ] ⏳ 2FA / MFA implementation
 - [ ] ⏳ CAPTCHA integration
-- [ ] ⏳ Brute-force protection
+- [x] ✅ Brute-force protection (Fortify login throttle, 5/min)
 - [x] ✅ Session management
-- [ ] ⏳ Audit trails / Activity logs
-- [ ] ⏳ IP/device tracking
+- [x] ✅ Audit trails / Activity logs
+- [x] ✅ IP/device capture in audit log
 
 ---
 
@@ -295,28 +311,26 @@ This document tracks the implementation progress of all modules and features in 
 - [x] ✅ Report cards table
 
 #### Features
-- [ ] ⏳ Exam type configuration
-  - [ ] ⏳ Term exams
-  - [ ] ⏳ Unit tests
-  - [ ] ⏳ Board exams
-- [ ] ⏳ Grading system setup
-  - [ ] ⏳ GPA system
+- [x] ✅ Exam type configuration
+- [x] ✅ Grading system setup
+  - [x] ✅ GPA system (Bangladesh GPA-5, auto-provisioned)
   - [ ] ⏳ CGPA system
-  - [ ] ⏳ Percentage-based
-  - [ ] ⏳ Grade points configuration
-- [ ] ⏳ Exam management
-  - [ ] ⏳ Create exam
-  - [ ] ⏳ Exam scheduling
-  - [ ] ⏳ Hall/room assignment
-- [ ] ⏳ Result entry
-  - [ ] ⏳ Subject-wise marks entry
-  - [ ] ⏳ Bulk marks upload
-  - [ ] ⏳ Practical marks
-- [ ] ⏳ Result generation
-  - [ ] ⏳ Auto grade calculation
-  - [ ] ⏳ Rank calculation
-  - [ ] ⏳ Result publishing
-- [ ] ⏳ Report card generation
+  - [x] ✅ Percentage-based grade bands
+  - [x] ✅ Grade points configuration
+- [x] ✅ Exam management
+  - [x] ✅ Create exam
+  - [x] ✅ Exam scheduling (per subject/class/section)
+  - [x] ✅ Room assignment
+- [x] ✅ Result entry
+  - [x] ✅ Subject-wise marks entry (grid)
+  - [ ] ⏳ Bulk marks upload (CSV)
+  - [ ] ⏳ Practical marks entry
+- [x] ✅ Result generation
+  - [x] ✅ Auto grade calculation
+  - [x] ✅ Rank calculation (per class+section)
+  - [x] ✅ Result publishing + public lookup by roll
+- [ ] 🔄 Report card generation
+  - [x] ✅ Consolidated report-card records
   - [ ] ⏳ PDF report card
   - [ ] ⏳ Customizable template
   - [ ] ⏳ Bulk print
@@ -325,13 +339,13 @@ This document tracks the implementation progress of all modules and features in 
 - [ ] ⏳ Re-evaluation workflow
 
 #### UI Pages
-- [ ] ⏳ Exam type management
-- [ ] ⏳ Grading system setup
-- [ ] ⏳ Exam creation wizard
-- [ ] ⏳ Exam schedule calendar
-- [ ] ⏳ Marks entry page
-- [ ] ⏳ Result view/publish
-- [ ] ⏳ Report card generator
+- [ ] ⏳ Exam type management page
+- [ ] ⏳ Grading system setup page
+- [x] ✅ Exam create/edit
+- [x] ✅ Exam detail + subject scheduling
+- [x] ✅ Marks entry page
+- [x] ✅ Result publish console + public lookup page
+- [ ] 🔄 Report card generator (records done; PDF pending)
 
 ---
 
@@ -446,7 +460,11 @@ This document tracks the implementation progress of all modules and features in 
 #### Features
 - [ ] ⏳ Notice/Announcement creation
 - [ ] ⏳ Circular distribution
-- [ ] 🔮 SMS integration
+- [x] ✅ Masking SMS integration (provider-agnostic, BD-ready)
+  - [x] ✅ SMS templates + variables
+  - [x] ✅ Bulk send + delivery logging
+  - [x] ✅ Segment/cost calculation (GSM-7 + Bangla Unicode)
+  - [ ] 🔄 Real provider driver (SSL Wireless, etc.)
 - [ ] 🔮 Email notifications
 - [ ] 🔮 Push notifications
 - [ ] ⏳ Emergency alerts
@@ -455,6 +473,7 @@ This document tracks the implementation progress of all modules and features in 
 - [ ] ⏳ Event calendar
 
 #### UI Pages
+- [x] ✅ SMS console (compose, history, provider settings, test send)
 - [ ] ⏳ Notice board
 - [ ] ⏳ Create notice/announcement
 - [ ] ⏳ Event calendar view
@@ -555,8 +574,8 @@ This document tracks the implementation progress of all modules and features in 
 ## 5️⃣ DATA LAYER
 
 ### Databases
-- [x] ✅ Relational DB (SQLite for dev)
-- [ ] ⏳ PostgreSQL/MySQL for production
+- [x] ✅ Relational DB (SQLite for dev/tests)
+- [x] ✅ MySQL for production (live)
 - [ ] 🔮 NoSQL (MongoDB for logs, chat)
 - [ ] 🔮 Time-series DB (attendance, GPS)
 - [ ] ⏳ Cache (Redis)
@@ -633,10 +652,10 @@ This document tracks the implementation progress of all modules and features in 
 
 ### DevOps
 - [ ] ⏳ Docker configuration
-- [ ] ⏳ CI/CD pipeline (GitHub Actions)
+- [x] ✅ CI/CD pipeline (GitHub Actions — tests, types, lint, build, release)
 - [ ] 🔮 Auto scaling setup
 - [ ] 🔮 Load balancing
-- [ ] ⏳ Health check endpoints
+- [x] ✅ Health check endpoint (`/up`)
 - [ ] 🔮 Blue-green deployment
 
 ---
@@ -665,8 +684,8 @@ This document tracks the implementation progress of all modules and features in 
 - [ ] ⏳ GDPR-style data privacy
 - [ ] ⏳ Parental consent forms
 - [ ] ⏳ Data retention rules
-- [ ] ⏳ Audit logs implementation
-- [ ] ⏳ Access history tracking
+- [x] ✅ Audit logs implementation
+- [x] ✅ Access history tracking (activity log)
 - [ ] ⏳ Data export functionality
 - [ ] ⏳ Data deletion (right to forget)
 
