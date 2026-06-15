@@ -112,6 +112,7 @@ Concrete open items (priority order). Pull these into GitHub issues as needed.
 - Quality gate before merge: `composer test` · `./vendor/bin/pint` · `npm run types` · `npm run lint` · `npm run build`.
 - Tenancy: resolve tenant via `$user->tenant_id`; gate routes with `permission:`/`role:` middleware.
 - Versioning: SemVer in git tags + [CHANGELOG](CHANGELOG.md) + `package.json`; tagging `v*` triggers the release workflow.
+- **Project skills** in `.claude/skills/` encode these workflows for Claude Code: `quality-gate` (pre-merge checks), `new-feature` (scaffold a feature the project way), `release` (SemVer bump + tag), `db-reseed` (rebuild demo data).
 
 ---
 
