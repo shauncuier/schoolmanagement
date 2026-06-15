@@ -43,7 +43,10 @@ class DatabaseSeeder extends Seeder
         // Seed other demo users
         $this->call(DemoUserSeeder::class);
 
-        $this->command->info('✅ Roles, permissions, and default users seeded successfully!');
+        // Seed the demo school's academic structure, then realistic operations
+        $this->call(SampleDataSeeder::class);
+        $this->call(DemoOperationsSeeder::class);
+
+        $this->command->info('✅ Roles, permissions, users, and realistic demo data seeded successfully!');
     }
 }
-
