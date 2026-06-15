@@ -81,7 +81,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function AdmissionShow({ application }: Props) {
-    const { data, setData, post, processing } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         status: application.status,
         admin_remarks: application.admin_remarks || '',
         interview_date: application.interview_date || '',
@@ -228,7 +228,7 @@ export default function AdmissionShow({ application }: Props) {
                                         <Label>Current Status</Label>
                                         <Select
                                             value={data.status}
-                                            onValueChange={(v) => setData('status', v as 'pending' | 'under_review' | 'interview_scheduled' | 'approved' | 'rejected')}
+                                            onValueChange={(v) => setData('status', v as AdmissionApplication['status'])}
                                             disabled={application.status === 'approved'}
                                         >
                                             <SelectTrigger>
@@ -262,7 +262,11 @@ export default function AdmissionShow({ application }: Props) {
                                             value={data.admin_remarks}
                                             onChange={(e) => setData('admin_remarks', e.target.value)}
                                             rows={4}
+                                            className={errors.admin_remarks ? 'border-destructive' : ''}
                                         />
+                                        {errors.admin_remarks && (
+                                            <p className="text-sm text-destructive">{errors.admin_remarks}</p>
+                                        )}
                                     </div>
 
                                     <Button

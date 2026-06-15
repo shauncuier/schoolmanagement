@@ -138,8 +138,7 @@ export default function SettingsIndex({ settings, systemInfo }: Props) {
     const handleFeaturesSubmit: FormEventHandler = (e) => {
         e.preventDefault();
         setIsSavingFeatures(true);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        router.put('/admin/settings/features', features as unknown as any, {
+        router.put('/admin/settings/features', features as unknown as Record<string, unknown>, {
             onFinish: () => setIsSavingFeatures(false),
         });
     };

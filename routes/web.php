@@ -35,6 +35,19 @@ Route::post('admissions/apply', [AdmissionController::class, 'store'])->name('ad
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // School Settings
+    Route::prefix('school-settings')->name('school-settings.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\SchoolSettingsController::class, 'index'])->name('index');
+        Route::put('/general', [\App\Http\Controllers\SchoolSettingsController::class, 'updateGeneral'])->name('general');
+        Route::put('/branding', [\App\Http\Controllers\SchoolSettingsController::class, 'updateBranding'])->name('branding');
+        Route::put('/academic', [\App\Http\Controllers\SchoolSettingsController::class, 'updateAcademic'])->name('academic');
+        Route::post('/logo', [\App\Http\Controllers\SchoolSettingsController::class, 'uploadLogo'])->name('logo');
+        Route::post('/favicon', [\App\Http\Controllers\SchoolSettingsController::class, 'uploadFavicon'])->name('favicon');
+    });
+
+    // Roles & Permissions Management
+    Route::resource('roles', \App\Http\Controllers\RoleController::class);
+
     // Academic Year Management
     Route::resource('academic-years', AcademicYearController::class);
     Route::post('academic-years/{academic_year}/set-current', [AcademicYearController::class, 'setCurrent'])
@@ -84,6 +97,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Fee Management
     Route::prefix('fees')->name('fees.')->group(function () {
         Route::resource('categories', FeeCategoryController::class)->except(['show']);
+        Route::post('structures/{structure}/allocate', [FeeStructureController::class, 'allocate'])
+            ->name('structures.allocate');
         Route::resource('structures', FeeStructureController::class)->except(['show']);
         Route::get('payments', [FeePaymentController::class, 'index'])->name('payments.index');
         Route::get('payments/create', [FeePaymentController::class, 'create'])->name('payments.create');

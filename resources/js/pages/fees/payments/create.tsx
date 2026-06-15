@@ -89,19 +89,24 @@ export default function CreateFeePayment({ students = [] }: Props) {
     });
 
     useEffect(() => {
+        let isMounted = true;
         if (data.student_id) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setLoadingFees(true);
             fetch(`/fees/students/${data.student_id}/fees`)
                 .then(res => res.json())
                 .then(result => {
-                    setAllocations(result.allocations || []);
-                    setLoadingFees(false);
+                    if (isMounted) {
+                        setAllocations(result.allocations || []);
+                        setLoadingFees(false);
+                    }
                 })
-                .catch(() => setLoadingFees(false));
+                .catch(() => {
+                    if (isMounted) setLoadingFees(false);
+                });
         } else {
             setAllocations([]);
         }
+        return () => { isMounted = false; };
     }, [data.student_id]);
 
     const selectedAllocation = useMemo(() => {

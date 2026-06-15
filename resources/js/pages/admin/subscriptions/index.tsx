@@ -2,7 +2,6 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type PaginatedResponse } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
-    AlertTriangle,
     Calendar,
     Clock,
     CreditCard,
@@ -380,7 +379,6 @@ export default function SubscriptionsIndex({ subscriptions, stats, plans, filter
                                                 <TableCell>
                                                     {expiryStatus ? (
                                                         <Badge className={expiryStatus.color}>
-                                                            {school.is_expired && <AlertTriangle className="mr-1 h-3 w-3" />}
                                                             {expiryStatus.label}
                                                         </Badge>
                                                     ) : (

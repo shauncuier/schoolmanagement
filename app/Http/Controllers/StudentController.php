@@ -6,6 +6,7 @@ use App\Models\AcademicYear;
 use App\Models\SchoolClass;
 use App\Models\Section;
 use App\Models\Student;
+use App\Services\FeeAllocationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -23,7 +24,7 @@ class StudentController extends Controller
 
         // Build query
         $query = Student::query()->with(['user', 'schoolClass', 'section', 'academicYear']);
-        
+
         if ($tenantId) {
             $query->forTenant($tenantId);
         }
@@ -51,7 +52,7 @@ class StudentController extends Controller
         // Get filter data
         $classQuery = SchoolClass::query();
         $sectionQuery = Section::query();
-        
+
         if ($tenantId) {
             $classQuery->forTenant($tenantId);
             $sectionQuery->forTenant($tenantId);
@@ -126,7 +127,7 @@ class StudentController extends Controller
     /**
      * Store a newly created student.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, FeeAllocationService $allocationService): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -144,6 +145,7 @@ class StudentController extends Controller
             'present_address' => 'nullable|string|max:500',
             'permanent_address' => 'nullable|string|max:500',
             'status' => 'required|in:active,inactive,graduated,transferred',
+            'allocate_fees' => 'boolean',
         ]);
 
         $user = $request->user();
@@ -192,10 +194,20 @@ class StudentController extends Controller
             $studentData['permanent_address'] = $validated['permanent_address'];
         }
 
-        Student::create($studentData);
+        $student = Student::create($studentData);
+
+        $allocatedCount = 0;
+        if ($request->boolean('allocate_fees', true) && $student->status === 'active') {
+            $allocatedCount = $allocationService->allocateAllToStudent($student);
+        }
+
+        $message = 'Student created successfully.';
+        if ($allocatedCount > 0) {
+            $message .= " Allocated {$allocatedCount} fee structures.";
+        }
 
         return redirect()->route('students.index')
-            ->with('success', 'Student created successfully.');
+            ->with('success', $message);
     }
 
     /**

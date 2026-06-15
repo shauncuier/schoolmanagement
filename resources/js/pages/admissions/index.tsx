@@ -95,7 +95,7 @@ export default function AdmissionsIndex({ applications, filters }: Props) {
 
     const applyFilter = (key: string, value: string) => {
         const params = new URLSearchParams();
-        const newFilters = { ...filters, [key]: value };
+        const newFilters: Record<string, string> = { ...filters, [key]: value };
 
         Object.entries(newFilters).forEach(([k, v]) => {
             if (v && v !== 'all') params.set(k, v);

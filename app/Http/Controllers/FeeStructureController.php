@@ -6,6 +6,7 @@ use App\Models\AcademicYear;
 use App\Models\FeeCategory;
 use App\Models\FeeStructure;
 use App\Models\SchoolClass;
+use App\Services\FeeAllocationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,7 +21,7 @@ class FeeStructureController extends Controller
 
         $query = FeeStructure::query()
             ->with(['feeCategory', 'schoolClass', 'academicYear']);
-        
+
         if ($tenantId) {
             $query->forTenant($tenantId);
         }
@@ -85,7 +86,7 @@ class FeeStructureController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, FeeAllocationService $allocationService): RedirectResponse
     {
         $validated = $request->validate([
             'fee_category_id' => 'required|exists:fee_categories,id',
@@ -95,11 +96,12 @@ class FeeStructureController extends Controller
             'due_date' => 'nullable|date',
             'late_fee' => 'nullable|numeric|min:0',
             'late_fee_grace_days' => 'nullable|integer|min:0',
+            'allocate_to_existing' => 'boolean',
         ]);
 
         $user = $request->user();
 
-        FeeStructure::create([
+        $structure = FeeStructure::create([
             'tenant_id' => $user->tenant_id,
             'fee_category_id' => $validated['fee_category_id'],
             'class_id' => $validated['class_id'] ?? null,
@@ -111,8 +113,18 @@ class FeeStructureController extends Controller
             'is_active' => true,
         ]);
 
+        $allocatedCount = 0;
+        if ($request->boolean('allocate_to_existing', true)) {
+            $allocatedCount = $allocationService->allocate($structure);
+        }
+
+        $message = 'Fee structure created successfully.';
+        if ($allocatedCount > 0) {
+            $message .= " Allocated to {$allocatedCount} students.";
+        }
+
         return redirect()->route('fees.structures.index')
-            ->with('success', 'Fee structure created successfully.');
+            ->with('success', $message);
     }
 
     public function edit(FeeStructure $structure): Response
@@ -174,6 +186,16 @@ class FeeStructureController extends Controller
 
         return redirect()->route('fees.structures.index')
             ->with('success', 'Fee structure deleted successfully.');
+    }
+
+    public function allocate(FeeStructure $structure, FeeAllocationService $allocationService): RedirectResponse
+    {
+        $this->authorizeForTenant($structure);
+
+        $allocatedCount = $allocationService->allocate($structure);
+
+        return redirect()->back()
+            ->with('success', "Successfully allocated fees to {$allocatedCount} students.");
     }
 
     private function authorizeForTenant(FeeStructure $structure): void

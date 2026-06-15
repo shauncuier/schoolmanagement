@@ -111,8 +111,7 @@ export default function MarkAttendance({ section, students = [], date, isMarked 
         router.post('/attendance', {
             section_id: section.id,
             date,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            attendance: Object.values(attendance) as unknown as any,
+            attendance: Object.values(attendance) as unknown as Record<string, unknown>[],
         }, {
             onStart: () => setIsSaving(true),
             onFinish: () => setIsSaving(false),

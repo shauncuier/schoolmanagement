@@ -142,9 +142,9 @@ export default function DocsIndex({ content, currentSlug, menu }: Props) {
                     <main className="flex-1 min-w-0">
                         <div className="overflow-hidden rounded-3xl bg-white shadow-xl shadow-gray-200/50 border border-gray-100 dark:bg-gray-950 dark:shadow-none dark:border-gray-800">
                             <div className="p-6 md:p-10 lg:p-16">
-                                <article className="prose prose-slate prose-indigo max-w-none dark:prose-invert 
-                                    prose-headings:font-bold prose-h1:text-4xl prose-h1:tracking-tight 
-                                    prose-a:text-indigo-600 dark:prose-a:text-indigo-400 
+                                <article className="prose prose-slate prose-indigo max-w-none dark:prose-invert
+                                    prose-headings:font-bold prose-h1:text-4xl prose-h1:tracking-tight
+                                    prose-a:text-indigo-600 dark:prose-a:text-indigo-400
                                     prose-pre:bg-gray-950 prose-pre:rounded-2xl prose-pre:shadow-2xl prose-pre:p-0">
                                     <ReactMarkdown
                                         remarkPlugins={[remarkGfm]}
@@ -152,7 +152,7 @@ export default function DocsIndex({ content, currentSlug, menu }: Props) {
                                         components={{
                                             pre: ({ children }) => <pre className="relative group/code">{children}</pre>,
                                             code: ({ inline, className, children, ...props }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { inline?: boolean }) => {
-                                                const content = String(children).replace(/\n$/, '');
+                                                const codeContent = String(children).replace(/\n$/, '');
 
                                                 if (!inline) {
                                                     return (
@@ -160,7 +160,7 @@ export default function DocsIndex({ content, currentSlug, menu }: Props) {
                                                             <div className="absolute right-4 top-4 z-10 opacity-0 transition-opacity group-hover/code:opacity-100">
                                                                 <button
                                                                     onClick={() => {
-                                                                        navigator.clipboard.writeText(content);
+                                                                        navigator.clipboard.writeText(codeContent);
                                                                         // Optional: Add toast notification here if available
                                                                     }}
                                                                     className="flex items-center gap-1.5 rounded-lg bg-white/10 px-2.5 py-1.5 text-[10px] font-bold text-white backdrop-blur-md transition-colors hover:bg-white/20"
