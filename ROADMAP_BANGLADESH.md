@@ -27,8 +27,15 @@ Legend: ⬜ todo · 🔄 in progress · ✅ done
 
 ## Phase 1 — Quick wins (top-left quadrant)
 
-### 1.1 ⬜ Masking SMS rail  *(matrix #1 — START HERE)*
+### 1.1 ✅ Masking SMS rail  *(matrix #1)*
 Foundational. Attendance alerts, results, fee dues, notices all ride this.
+
+> Shipped: `SmsService` (segment/cost calc for GSM + Bangla Unicode, BD number
+> normalisation/validation, template rendering, bulk send), swappable driver
+> contract + `LogDriver` (dev/fallback), reuses `notification_templates` /
+> `notification_logs` (+ SMS columns), `communication/sms` console (compose,
+> history, provider settings, test send), permission-gated routes, 17 Pest tests.
+> Next: add a real provider driver (SSL Wireless) behind the same contract.
 
 - **BD context:** parents judge schools by SMS. Use masking/branded SMS aggregators
   (SSL Wireless, Boomcast, REVE, Twenty4, BulkSMSBD). Unicode (Bangla) = 70 chars/segment.
@@ -147,5 +154,5 @@ Build 1.1 and 2.1 well — they fund everything else and competitors can't copy 
 
 ---
 
-**Status:** Phase 1.1 (Masking SMS rail) is next.
+**Status:** Phase 1.1 (Masking SMS rail) ✅ done. Next: 1.2 (Result publish by roll).
 **Last updated:** 2026-06-15

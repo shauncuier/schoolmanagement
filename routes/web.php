@@ -118,6 +118,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('leave-requests/{leave_request}/approve', [\App\Http\Controllers\LeaveRequestController::class, 'approve'])->name('leave-requests.approve');
     Route::post('leave-requests/{leave_request}/reject', [\App\Http\Controllers\LeaveRequestController::class, 'reject'])->name('leave-requests.reject');
 
+    // Communication — SMS rail
+    Route::prefix('communication')->name('communication.')->group(function () {
+        Route::middleware('permission:send-notifications')->group(function () {
+            Route::get('sms', [\App\Http\Controllers\Communication\SmsController::class, 'index'])->name('sms.index');
+            Route::post('sms/send', [\App\Http\Controllers\Communication\SmsController::class, 'send'])->name('sms.send');
+            Route::post('sms/test', [\App\Http\Controllers\Communication\SmsController::class, 'test'])->name('sms.test');
+
+            Route::post('templates', [\App\Http\Controllers\Communication\NotificationTemplateController::class, 'store'])->name('templates.store');
+            Route::put('templates/{template}', [\App\Http\Controllers\Communication\NotificationTemplateController::class, 'update'])->name('templates.update');
+            Route::delete('templates/{template}', [\App\Http\Controllers\Communication\NotificationTemplateController::class, 'destroy'])->name('templates.destroy');
+        });
+
+        // Provider configuration is an administrative action.
+        Route::middleware('permission:manage-settings')->put('sms/settings', [\App\Http\Controllers\Communication\SmsController::class, 'updateSettings'])->name('sms.settings');
+    });
+
     // Admin Routes (Super Admin Only)
     Route::prefix('admin')->name('admin.')->group(function () {
         // Schools (Tenants) Management
