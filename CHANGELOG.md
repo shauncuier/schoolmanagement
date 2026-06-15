@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-06-16
+
+### Added
+#### 📱 Masking SMS Rail (Bangladesh)
+- **SMS Service**: Provider-agnostic engine with GSM-7 / Bangla-Unicode segment and cost calculation, Bangladeshi number normalisation + validation, `{{variable}}` template rendering, and deduplicated bulk send.
+- **Swappable Drivers**: `SmsDriver` contract with a development `LogDriver`; real masking providers plug in via `config/sms.php`. Per-tenant provider config with encrypted secrets.
+- **SMS Console**: Compose with a live segment counter, delivery history, provider settings, and a test-send tool.
+
+#### 📊 Result Publishing & Public Lookup
+- **Publishing**: Publish / unpublish exam results, with optional guardian SMS notification (rides the SMS rail).
+- **Public Lookup**: Per-school result lookup by roll number — throttled, tenant-scoped by slug, with no result enumeration leak.
+
+#### 📝 Examination & Marks Entry
+- **Exam Workflow**: Exam CRUD, per-subject scheduling, and a keyboard-friendly marks-entry grid.
+- **Grading Engine**: Auto-provisioned Bangladesh GPA-5 letter scale; automatic grade / grade-point computation.
+- **Report Cards**: Consolidated generation with class + section ranking and the Bangladesh rule that failing any subject forces GPA 0.00 / fail.
+
+#### 🛡️ Roles, Settings & Fees
+- **Role Management UI**: Create / edit / delete roles and permissions (platform super-admin only — roles are global).
+- **School Settings**: Per-school general, branding and academic settings with logo / favicon upload.
+- **Auto Fee Allocation**: Fee structures allocate to eligible students automatically on creation.
+
+#### 🔍 Audit Trail
+- **Activity Log**: Append-only log of authentication events, role / permission changes, result publishing and settings changes.
+- **Viewer**: Tenant-scoped audit viewer at `/activity-logs`.
+
+### Security
+- Restricted global role management to the platform super-admin, preventing cross-tenant privilege escalation.
+- Gated school settings behind the `manage-settings` permission and fixed tenant resolution (the feature previously always returned 403).
+- Added `permission:view-*` middleware to previously auth-only resource routes (students, classes, sections, subjects, teachers, guardians, staff, admissions, attendance, timetable, fees) so non-privileged users can no longer reach admin modules.
+- Audited failed sign-in attempts (password never stored); login throttling provided by Fortify.
+
+### Changed
+- Added the Bangladesh market roadmap (`ROADMAP_BANGLADESH.md`).
+- Expanded the automated test suite to 118 passing tests.
+
+### Fixed
+- Fee-allocation due date now falls back to the current date when a structure leaves it blank (avoids a NOT NULL failure).
+- Resolved Inertia v2 payload typing errors, a missing icon import, and an always-true notification default.
+
+---
+
 ## [1.1.0] - 2025-12-28
 
 ### Added
