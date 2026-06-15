@@ -51,14 +51,15 @@ Foundational. Attendance alerts, results, fee dues, notices all ride this.
 - **Tests:** template render, segment/cost calc, tenant isolation of logs, driver swappable, fake driver in tests.
 - **Acceptance:** admin configures provider, sends a test SMS, sees it logged with segment count.
 
-### 1.2 ⬜ Result publish by roll  *(matrix #5)*
+### 1.2 ✅ Result publish by roll  *(matrix #5)*
 - **Goal:** publish exam results; parent/student fetch by roll+exam on a public tenant page; optional SMS push.
-- **Depends on:** 1.1 (SMS) + exam results data.
-- **DB:** `result_publications` (tenant_id, exam_id, published_at, published_by, is_public).
-- **Backend:** `ResultService::publish(exam)`; public lookup endpoint (throttled, no auth) keyed by EIIN/slug.
-- **UI:** public `results/lookup` page (roll + reg + exam → GPA, grade, subject marks); admin publish toggle.
-- **Security:** throttle lookups, no enumeration leak (generic "not found"), public route is tenant-scoped by domain/slug.
-- **Tests:** publish flow, lookup hit/miss, unpublished hidden, throttle.
+
+> Shipped: reused `exams.is_published` / `result_published_at` + `report_cards`
+> (no new table needed). `ResultService` publish/unpublish (flips exam + report
+> cards, optional guardian SMS push via 1.1) and `lookup()` (returns null on any
+> miss). Admin console `exams/results` (publish/unpublish, notify toggle) gated
+> by `publish-results`; public `results/{tenant:slug}` page throttled (30/min),
+> tenant-scoped by slug, generic not-found (no enumeration leak). 14 Pest tests.
 
 ### 1.3 ⬜ Finish exam & marks-entry module  *(matrix #8)*
 Tables exist; UI/logic missing. Unlocks 1.2 and report cards.
@@ -154,5 +155,5 @@ Build 1.1 and 2.1 well — they fund everything else and competitors can't copy 
 
 ---
 
-**Status:** Phase 1.1 (Masking SMS rail) ✅ done. Next: 1.2 (Result publish by roll).
+**Status:** Phases 1.1 (SMS rail) + 1.2 (Result publish) ✅ done. Next: 1.3 (Finish exam & marks entry).
 **Last updated:** 2026-06-15

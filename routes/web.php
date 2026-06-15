@@ -32,6 +32,11 @@ Route::get('docs/{slug?}', [\App\Http\Controllers\DocsController::class, 'index'
 Route::get('admissions/apply', [AdmissionController::class, 'create'])->name('admissions.apply');
 Route::post('admissions/apply', [AdmissionController::class, 'store'])->name('admissions.store');
 
+// Public Result Lookup (by roll number, per school)
+Route::get('results/{tenant:slug}', [\App\Http\Controllers\PublicResultController::class, 'show'])->name('results.show');
+Route::post('results/{tenant:slug}', [\App\Http\Controllers\PublicResultController::class, 'lookup'])
+    ->middleware('throttle:30,1')->name('results.lookup');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -132,6 +137,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Provider configuration is an administrative action.
         Route::middleware('permission:manage-settings')->put('sms/settings', [\App\Http\Controllers\Communication\SmsController::class, 'updateSettings'])->name('sms.settings');
+    });
+
+    // Examination — result publishing
+    Route::middleware('permission:publish-results')->group(function () {
+        Route::get('exams/results', [\App\Http\Controllers\Exam\ResultController::class, 'index'])->name('exams.results.index');
+        Route::post('exams/{exam}/publish', [\App\Http\Controllers\Exam\ResultController::class, 'publish'])->name('exams.publish');
+        Route::post('exams/{exam}/unpublish', [\App\Http\Controllers\Exam\ResultController::class, 'unpublish'])->name('exams.unpublish');
     });
 
     // Admin Routes (Super Admin Only)
