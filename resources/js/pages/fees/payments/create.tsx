@@ -91,6 +91,8 @@ export default function CreateFeePayment({ students = [] }: Props) {
     useEffect(() => {
         let isMounted = true;
         if (data.student_id) {
+            // Intentional: show the loading state before the async fetch begins.
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setLoadingFees(true);
             fetch(`/fees/students/${data.student_id}/fees`)
                 .then(res => res.json())
