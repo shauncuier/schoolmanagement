@@ -391,7 +391,7 @@ Bangladesh-market Phase 1 shipped (see [CHANGELOG](CHANGELOG.md) and [ROADMAP_BA
   - [x] ✅ Cash payment
   - [x] ✅ Bank transfer
   - [x] ✅ Cheque payment
-  - [ ] 🔮 Online payment gateway
+  - [x] ✅ Mobile banking / online payment (MFS, sandbox-first; real bKash/Nagad driver pending)
 - [x] ✅ Receipt generation
 - [ ] ⏳ Late fee calculation
 - [ ] ⏳ Fee refund processing
@@ -771,5 +771,5 @@ Bangladesh-market Phase 1 shipped (see [CHANGELOG](CHANGELOG.md) and [ROADMAP_BA
 ## 🔄 Last Updated
 
 **Date:** June 16, 2026  
-**Version:** v1.2.1  
+**Version:** v1.3.0  
 **Developed by:** [3s-Soft](https://3s-soft.com/)

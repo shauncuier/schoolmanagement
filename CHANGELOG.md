@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-06-16
+
+### Added
+#### 💳 MFS Fee Payment (sandbox-first)
+- **Online fee payment** via mobile financial services — the platform's biggest revenue lever.
+- **Provider-agnostic gateway** contract with a `SandboxGateway` that completes instantly (no credentials needed); real bKash/Nagad/Rocket drivers plug in via `config/payment.php`.
+- **`payment_intents`** lifecycle table; `PaymentService` creates intents (amount capped at the outstanding due), handles callbacks **idempotently**, and settles using the **server-side amount only** — creating the payment, updating the allocation, and sending an SMS receipt.
+- Payer-facing **pay** and **status** screens, gated to the fee owner or staff with `collect-fees`; a public, throttled callback/IPN endpoint.
+
+### Security
+- Payment settlement ignores client-supplied amounts (tamper-proof); callbacks are idempotent; intents expire after a configurable TTL; payer authorization restricts users to their own fees.
+
+### Changed
+- Test suite expanded to 135 passing tests.
+
+---
+
 ## [1.2.1] - 2026-06-16
 
 ### Fixed
