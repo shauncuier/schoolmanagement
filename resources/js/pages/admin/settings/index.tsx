@@ -1,5 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import type { FormDataConvertible } from '@inertiajs/core';
 import { Head, router, useForm } from '@inertiajs/react';
 import {
     Globe,
@@ -138,7 +139,7 @@ export default function SettingsIndex({ settings, systemInfo }: Props) {
     const handleFeaturesSubmit: FormEventHandler = (e) => {
         e.preventDefault();
         setIsSavingFeatures(true);
-        router.put('/admin/settings/features', features as unknown as Record<string, unknown>, {
+        router.put('/admin/settings/features', features as unknown as Record<string, FormDataConvertible>, {
             onFinish: () => setIsSavingFeatures(false),
         });
     };

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TimetableController;
@@ -35,18 +35,23 @@ Route::post('admissions/apply', [AdmissionController::class, 'store'])->name('ad
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // School Settings
-    Route::prefix('school-settings')->name('school-settings.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\SchoolSettingsController::class, 'index'])->name('index');
-        Route::put('/general', [\App\Http\Controllers\SchoolSettingsController::class, 'updateGeneral'])->name('general');
-        Route::put('/branding', [\App\Http\Controllers\SchoolSettingsController::class, 'updateBranding'])->name('branding');
-        Route::put('/academic', [\App\Http\Controllers\SchoolSettingsController::class, 'updateAcademic'])->name('academic');
-        Route::post('/logo', [\App\Http\Controllers\SchoolSettingsController::class, 'uploadLogo'])->name('logo');
-        Route::post('/favicon', [\App\Http\Controllers\SchoolSettingsController::class, 'uploadFavicon'])->name('favicon');
-    });
+    // School Settings (school-level administrators only)
+    Route::prefix('school-settings')->name('school-settings.')
+        ->middleware('permission:manage-settings')
+        ->group(function () {
+            Route::get('/', [\App\Http\Controllers\SchoolSettingsController::class, 'index'])->name('index');
+            Route::put('/general', [\App\Http\Controllers\SchoolSettingsController::class, 'updateGeneral'])->name('general');
+            Route::put('/branding', [\App\Http\Controllers\SchoolSettingsController::class, 'updateBranding'])->name('branding');
+            Route::put('/academic', [\App\Http\Controllers\SchoolSettingsController::class, 'updateAcademic'])->name('academic');
+            Route::post('/logo', [\App\Http\Controllers\SchoolSettingsController::class, 'uploadLogo'])->name('logo');
+            Route::post('/favicon', [\App\Http\Controllers\SchoolSettingsController::class, 'uploadFavicon'])->name('favicon');
+        });
 
-    // Roles & Permissions Management
-    Route::resource('roles', \App\Http\Controllers\RoleController::class);
+    // Roles & Permissions Management.
+    // Roles are global (Spatie teams disabled), so only the platform super-admin
+    // may manage them — otherwise a school admin could edit roles for every tenant.
+    Route::resource('roles', \App\Http\Controllers\RoleController::class)
+        ->middleware('role:super-admin');
 
     // Academic Year Management
     Route::resource('academic-years', AcademicYearController::class);
@@ -157,4 +162,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/settings.php';
-

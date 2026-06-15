@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tenant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -11,15 +12,29 @@ use Inertia\Response;
 class SchoolSettingsController extends Controller
 {
     /**
-     * Display the school settings page.
+     * Resolve the school (tenant) for the current request.
+     *
+     * Tenancy in this application is keyed off the authenticated user's
+     * tenant_id rather than Stancl's request-scoped tenant() helper, which is
+     * never initialised on these central routes.
      */
-    public function index(): Response
+    private function currentTenant(Request $request): Tenant
     {
-        $tenant = tenant();
+        $tenant = $request->user()?->tenant;
 
-        if (!$tenant) {
+        if (! $tenant) {
             abort(403, 'No school context found.');
         }
+
+        return $tenant;
+    }
+
+    /**
+     * Display the school settings page.
+     */
+    public function index(Request $request): Response
+    {
+        $tenant = $this->currentTenant($request);
 
         return Inertia::render('school-settings/index', [
             'school' => [
@@ -48,11 +63,7 @@ class SchoolSettingsController extends Controller
      */
     public function updateGeneral(Request $request): RedirectResponse
     {
-        $tenant = tenant();
-
-        if (!$tenant) {
-            abort(403, 'No school context found.');
-        }
+        $tenant = $this->currentTenant($request);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -77,11 +88,7 @@ class SchoolSettingsController extends Controller
      */
     public function updateBranding(Request $request): RedirectResponse
     {
-        $tenant = tenant();
-
-        if (!$tenant) {
-            abort(403, 'No school context found.');
-        }
+        $tenant = $this->currentTenant($request);
 
         $validated = $request->validate([
             'primary_color' => 'nullable|string|max:20',
@@ -100,11 +107,7 @@ class SchoolSettingsController extends Controller
      */
     public function updateAcademic(Request $request): RedirectResponse
     {
-        $tenant = tenant();
-
-        if (!$tenant) {
-            abort(403, 'No school context found.');
-        }
+        $tenant = $this->currentTenant($request);
 
         $validated = $request->validate([
             'default_grading_system' => 'nullable|string|max:50',
@@ -128,11 +131,7 @@ class SchoolSettingsController extends Controller
      */
     public function uploadLogo(Request $request): RedirectResponse
     {
-        $tenant = tenant();
-
-        if (!$tenant) {
-            abort(403, 'No school context found.');
-        }
+        $tenant = $this->currentTenant($request);
 
         $request->validate([
             'logo' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
@@ -158,11 +157,7 @@ class SchoolSettingsController extends Controller
      */
     public function uploadFavicon(Request $request): RedirectResponse
     {
-        $tenant = tenant();
-
-        if (!$tenant) {
-            abort(403, 'No school context found.');
-        }
+        $tenant = $this->currentTenant($request);
 
         $request->validate([
             'favicon' => 'required|image|mimes:ico,png|max:512',

@@ -1,5 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import type { FormDataConvertible } from '@inertiajs/core';
 import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -111,8 +112,8 @@ export default function MarkAttendance({ section, students = [], date, isMarked 
         router.post('/attendance', {
             section_id: section.id,
             date,
-            attendance: Object.values(attendance) as unknown as Record<string, unknown>[],
-        }, {
+            attendance: Object.values(attendance),
+        } as unknown as Record<string, FormDataConvertible>, {
             onStart: () => setIsSaving(true),
             onFinish: () => setIsSaving(false),
         });

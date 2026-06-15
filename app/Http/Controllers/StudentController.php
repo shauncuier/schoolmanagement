@@ -87,7 +87,7 @@ class StudentController extends Controller
             'section',
             'academicYear',
             'guardians',
-            'attendances' => fn($q) => $q->latest()->take(30),
+            'attendances' => fn ($q) => $q->latest()->take(30),
         ]);
 
         return Inertia::render('students/show', [
@@ -172,25 +172,25 @@ class StudentController extends Controller
         ];
 
         // Only add optional fields if they have values
-        if (!empty($validated['date_of_birth'])) {
+        if (! empty($validated['date_of_birth'])) {
             $studentData['date_of_birth'] = $validated['date_of_birth'];
         }
-        if (!empty($validated['gender'])) {
+        if (! empty($validated['gender'])) {
             $studentData['gender'] = $validated['gender'];
         }
-        if (!empty($validated['blood_group'])) {
+        if (! empty($validated['blood_group'])) {
             $studentData['blood_group'] = $validated['blood_group'];
         }
-        if (!empty($validated['religion'])) {
+        if (! empty($validated['religion'])) {
             $studentData['religion'] = $validated['religion'];
         }
-        if (!empty($validated['nationality'])) {
+        if (! empty($validated['nationality'])) {
             $studentData['nationality'] = $validated['nationality'];
         }
-        if (!empty($validated['present_address'])) {
+        if (! empty($validated['present_address'])) {
             $studentData['present_address'] = $validated['present_address'];
         }
-        if (!empty($validated['permanent_address'])) {
+        if (! empty($validated['permanent_address'])) {
             $studentData['permanent_address'] = $validated['permanent_address'];
         }
 
@@ -253,7 +253,7 @@ class StudentController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $student->user_id,
+            'email' => 'required|email|unique:users,email,'.$student->user_id,
             'admission_no' => 'required|string|max:50',
             'admission_date' => 'required|date',
             'class_id' => 'required|exists:classes,id',

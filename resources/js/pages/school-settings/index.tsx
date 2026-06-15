@@ -73,7 +73,7 @@ export default function SchoolSettings({ school }: Props) {
         attendance_threshold: school.settings?.academic?.attendance_threshold || 75,
         late_fee_enabled: school.settings?.academic?.late_fee_enabled || false,
         sms_notifications: school.settings?.academic?.sms_notifications || false,
-        email_notifications: school.settings?.academic?.email_notifications || true,
+        email_notifications: school.settings?.academic?.email_notifications ?? true,
     });
 
     const logoForm = useForm<{ logo: File | null }>({

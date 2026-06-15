@@ -201,7 +201,9 @@ class FeeStructureController extends Controller
     private function authorizeForTenant(FeeStructure $structure): void
     {
         $user = request()->user();
-        if ($user->tenant_id === null) return;
+        if ($user->tenant_id === null) {
+            return;
+        }
         if ($structure->tenant_id !== $user->tenant_id) {
             abort(403, 'Unauthorized access.');
         }

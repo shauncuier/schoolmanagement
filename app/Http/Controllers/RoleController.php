@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Permission;
@@ -74,13 +75,30 @@ class RoleController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:50|unique:roles,name',
+            'name' => 'required|string|max:50',
             'permissions' => 'required|array|min:1',
             'permissions.*' => 'exists:permissions,name',
         ]);
 
+        // Normalise to a slug before persisting and check uniqueness against
+        // that normalised value, otherwise two different inputs (e.g. "Test Role"
+        // and "test-role") collapse to the same slug and hit a DB-level error.
+        $name = Str::slug($validated['name']);
+
+        if ($name === '') {
+            return back()
+                ->withErrors(['name' => 'Role name must contain letters or numbers.'])
+                ->withInput();
+        }
+
+        if (Role::where('name', $name)->where('guard_name', 'web')->exists()) {
+            return back()
+                ->withErrors(['name' => 'A role with this name already exists.'])
+                ->withInput();
+        }
+
         $role = Role::create([
-            'name' => strtolower(str_replace(' ', '-', $validated['name'])),
+            'name' => $name,
             'guard_name' => 'web',
         ]);
 
@@ -208,14 +226,14 @@ class RoleController extends Controller
             // Format module name for display
             $moduleDisplay = ucwords(str_replace('-', ' ', $module));
 
-            if (!isset($grouped[$moduleDisplay])) {
+            if (! isset($grouped[$moduleDisplay])) {
                 $grouped[$moduleDisplay] = [];
             }
 
             $grouped[$moduleDisplay][] = [
                 'name' => $permission->name,
                 'action' => $action,
-                'label' => ucfirst($action) . ' ' . $moduleDisplay,
+                'label' => ucfirst($action).' '.$moduleDisplay,
             ];
         }
 

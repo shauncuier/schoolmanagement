@@ -13,8 +13,7 @@ class FeeAllocationService
     /**
      * Allocate fees to students based on a fee structure.
      *
-     * @param FeeStructure $structure
-     * @param int|null $studentId Optional specific student to allocate to
+     * @param  int|null  $studentId  Optional specific student to allocate to
      * @return int Number of allocations created
      */
     public function allocate(FeeStructure $structure, ?int $studentId = null): int
@@ -45,7 +44,7 @@ class FeeAllocationService
                     ->where('fee_structure_id', $structure->id)
                     ->exists();
 
-                if (!$exists) {
+                if (! $exists) {
                     StudentFeeAllocation::create([
                         'tenant_id' => $structure->tenant_id,
                         'student_id' => $student->id,
@@ -56,7 +55,9 @@ class FeeAllocationService
                         'net_amount' => $structure->amount,
                         'paid_amount' => 0,
                         'due_amount' => $structure->amount,
-                        'due_date' => $structure->due_date,
+                        // Allocations require a due date; fall back to today when
+                        // the structure leaves it open so the insert never fails.
+                        'due_date' => $structure->due_date ?? now()->toDateString(),
                         'status' => 'pending',
                     ]);
                     $count++;
@@ -65,7 +66,7 @@ class FeeAllocationService
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Fee allocation failed for structure {$structure->id}: " . $e->getMessage());
+            Log::error("Fee allocation failed for structure {$structure->id}: ".$e->getMessage());
             throw $e;
         }
 
@@ -82,7 +83,7 @@ class FeeAllocationService
             ->where('academic_year_id', $student->academic_year_id)
             ->where(function ($q) use ($student) {
                 $q->whereNull('class_id')
-                  ->orWhere('class_id', $student->class_id);
+                    ->orWhere('class_id', $student->class_id);
             })
             ->active()
             ->get();
