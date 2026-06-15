@@ -93,8 +93,18 @@ Tables existed; UI/logic were missing. Produces the report cards 1.2 publishes.
 
 ## Phase 2 — Moat features (high impact)
 
-### 2.1 ⬜ MFS fee payment — bKash / Nagad / Rocket  *(matrix #2)*
+### 2.1 🔄 MFS fee payment — bKash / Nagad / Rocket  *(matrix #2)*
 Biggest revenue lever. Reconciliation is the #1 admin pain.
+
+> Shipped (sandbox-first): `payment_intents` table + gateway columns on
+> `fee_payments`. Provider-agnostic `PaymentGateway` contract + `SandboxGateway`
+> (instant success, no credentials) — real bKash/Nagad/Rocket drivers plug in via
+> `config/payment.php`. `PaymentService`: create intent (amount capped at due),
+> idempotent callback handling, server-side-amount settlement (creates payment +
+> updates allocation + SMS receipt), TTL expiry. Payer-facing pay screen + status
+> page; public throttled callback/IPN. Ownership authz (own fees, or staff with
+> collect-fees). 17 Pest tests (lifecycle, idempotency, amount-tamper, partial,
+> tenant/ownership). **Next:** implement a real provider driver (bKash sandbox).
 
 - **BD context:** bKash + Nagad dominate; cards rare. Optionally aggregate via SSLCOMMERZ/aamarPay (one integration, many methods).
 - **DB:** extend `fee_payments` (gateway, gateway_txn_id, gateway_status, payload); `payment_intents`

@@ -23,6 +23,7 @@ class FeePayment extends Model
         'total_amount',
         'payment_method',
         'transaction_id',
+        'gateway',
         'bank_name',
         'cheque_number',
         'cheque_date',
@@ -82,7 +83,7 @@ class FeePayment extends Model
 
     public function getPaymentMethodLabelAttribute(): string
     {
-        return match($this->payment_method) {
+        return match ($this->payment_method) {
             'cash' => 'Cash',
             'card' => 'Card',
             'bank_transfer' => 'Bank Transfer',
@@ -101,6 +102,6 @@ class FeePayment extends Model
 
         $nextNumber = $lastPayment ? ((int) substr($lastPayment->receipt_number, -6) + 1) : 1;
 
-        return 'RCP-' . date('Y') . '-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+        return 'RCP-'.date('Y').'-'.str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
     }
 }

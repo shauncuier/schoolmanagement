@@ -37,6 +37,10 @@ Route::get('results/{tenant:slug}', [\App\Http\Controllers\PublicResultControlle
 Route::post('results/{tenant:slug}', [\App\Http\Controllers\PublicResultController::class, 'lookup'])
     ->middleware('throttle:30,1')->name('results.lookup');
 
+// Public payment gateway callback / IPN (idempotent, no auth).
+Route::match(['get', 'post'], 'fees/pay/callback/{gateway}', [\App\Http\Controllers\Fee\PaymentController::class, 'callback'])
+    ->middleware('throttle:60,1')->name('fees.pay.callback');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -122,6 +126,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('structures/{structure}/allocate', [FeeStructureController::class, 'allocate'])
             ->name('structures.allocate');
         Route::resource('structures', FeeStructureController::class)->except(['show']);
+        // Online (MFS) payment — payer-facing
+        Route::get('pay/{allocation}', [\App\Http\Controllers\Fee\PaymentController::class, 'show'])->whereNumber('allocation')->name('pay.show');
+        Route::post('pay/{allocation}', [\App\Http\Controllers\Fee\PaymentController::class, 'initiate'])->whereNumber('allocation')->name('pay.initiate');
+        Route::get('payment-status', [\App\Http\Controllers\Fee\PaymentController::class, 'status'])->name('pay.status');
+
         Route::get('payments', [FeePaymentController::class, 'index'])->name('payments.index');
         Route::get('payments/create', [FeePaymentController::class, 'create'])->name('payments.create');
         Route::post('payments', [FeePaymentController::class, 'store'])->name('payments.store');
