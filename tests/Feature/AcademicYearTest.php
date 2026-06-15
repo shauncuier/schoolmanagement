@@ -6,6 +6,7 @@ use App\Models\AcademicYear;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -14,6 +15,7 @@ class AcademicYearTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
+
     private Tenant $tenant;
 
     protected function setUp(): void
@@ -30,8 +32,9 @@ class AcademicYearTest extends TestCase
             'subscription_plan' => 'free',
         ]);
 
-        // Create role with permissions
+        // Create role with the permission the academic-year routes require
         $role = Role::create(['name' => 'school-owner', 'guard_name' => 'web']);
+        $role->givePermissionTo(Permission::create(['name' => 'view-academic-years', 'guard_name' => 'web']));
 
         // Create user
         $this->user = User::factory()->create([
@@ -55,9 +58,8 @@ class AcademicYearTest extends TestCase
             ->get('/academic-years');
 
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => 
-            $page->component('academic-years/index')
-                ->has('academicYears.data', 1)
+        $response->assertInertia(fn ($page) => $page->component('academic-years/index')
+            ->has('academicYears.data', 1)
         );
     }
 
@@ -67,8 +69,7 @@ class AcademicYearTest extends TestCase
             ->get('/academic-years/create');
 
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => 
-            $page->component('academic-years/create')
+        $response->assertInertia(fn ($page) => $page->component('academic-years/create')
         );
     }
 

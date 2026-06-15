@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ActivityLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -104,6 +105,10 @@ class RoleController extends Controller
 
         $role->syncPermissions($validated['permissions']);
 
+        app(ActivityLogger::class)->log('role.created', "Created role '{$name}'", $role, [
+            'permissions' => $validated['permissions'],
+        ]);
+
         return redirect()->route('roles.index')
             ->with('success', 'Role created successfully.');
     }
@@ -178,6 +183,10 @@ class RoleController extends Controller
 
         $role->syncPermissions($validated['permissions']);
 
+        app(ActivityLogger::class)->log('role.updated', "Updated permissions for '{$role->name}'", $role, [
+            'permissions' => $validated['permissions'],
+        ]);
+
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully.');
     }
@@ -199,7 +208,10 @@ class RoleController extends Controller
                 ->with('error', 'Cannot delete role with assigned users.');
         }
 
+        $roleName = $role->name;
         $role->delete();
+
+        app(ActivityLogger::class)->log('role.deleted', "Deleted role '{$roleName}'", null, ['name' => $roleName]);
 
         return redirect()->route('roles.index')
             ->with('success', 'Role deleted successfully.');

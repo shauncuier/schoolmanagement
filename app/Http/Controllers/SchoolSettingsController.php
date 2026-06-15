@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tenant;
+use App\Services\ActivityLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -78,6 +79,10 @@ class SchoolSettingsController extends Controller
         ]);
 
         $tenant->update($validated);
+
+        app(ActivityLogger::class)->log('settings.updated', 'Updated general school settings', $tenant, [
+            'fields' => array_keys($validated),
+        ]);
 
         return redirect()->back()
             ->with('success', 'General settings updated successfully.');

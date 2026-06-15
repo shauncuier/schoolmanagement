@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Exam;
 
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
+use App\Services\ActivityLogger;
 use App\Services\ResultService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -47,6 +48,11 @@ class ResultController extends Controller
 
         $result = $this->results->publish($exam, $request->boolean('notify'));
 
+        app(ActivityLogger::class)->log('result.published', "Published results for '{$exam->name}'", $exam, [
+            'report_cards' => $result['report_cards'],
+            'sms' => $result['sms'],
+        ]);
+
         $message = "Published results — {$result['report_cards']} report card(s).";
         if ($result['sms'] > 0) {
             $message .= " Sent {$result['sms']} SMS.";
@@ -60,6 +66,8 @@ class ResultController extends Controller
         $this->authorizeForTenant($request, $exam);
 
         $this->results->unpublish($exam);
+
+        app(ActivityLogger::class)->log('result.unpublished', "Unpublished results for '{$exam->name}'", $exam);
 
         return back()->with('success', 'Results unpublished.');
     }

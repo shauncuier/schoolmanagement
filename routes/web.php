@@ -59,53 +59,65 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->middleware('role:super-admin');
 
     // Academic Year Management
-    Route::resource('academic-years', AcademicYearController::class);
-    Route::post('academic-years/{academic_year}/set-current', [AcademicYearController::class, 'setCurrent'])
-        ->name('academic-years.set-current');
+    Route::middleware('permission:view-academic-years')->group(function () {
+        Route::resource('academic-years', AcademicYearController::class);
+        Route::post('academic-years/{academic_year}/set-current', [AcademicYearController::class, 'setCurrent'])
+            ->name('academic-years.set-current');
+    });
 
     // Class Management
-    Route::resource('classes', ClassController::class)->except(['show']);
+    Route::resource('classes', ClassController::class)->except(['show'])->middleware('permission:view-classes');
 
     // Section Management
-    Route::resource('sections', SectionController::class)->except(['show']);
+    Route::resource('sections', SectionController::class)->except(['show'])->middleware('permission:view-sections');
 
     // Subject Management
-    Route::resource('subjects', SubjectController::class)->except(['show']);
+    Route::resource('subjects', SubjectController::class)->except(['show'])->middleware('permission:view-subjects');
 
     // Student Management
-    Route::resource('students', StudentController::class);
+    Route::resource('students', StudentController::class)->middleware('permission:view-students');
 
     // Teacher Management
-    Route::resource('teachers', TeacherController::class);
+    Route::resource('teachers', TeacherController::class)->middleware('permission:view-teachers');
 
     // Guardian (Parents) Management
-    Route::resource('guardians', GuardianController::class);
+    Route::resource('guardians', GuardianController::class)->middleware('permission:view-guardians');
 
     // Staff Management
-    Route::resource('staff', StaffController::class)->except(['show']);
+    Route::resource('staff', StaffController::class)->except(['show'])->middleware('permission:view-teachers');
 
     // Admissions Management
-    Route::get('admissions', [AdmissionController::class, 'index'])->name('admissions.index');
-    Route::get('admissions/{application}', [AdmissionController::class, 'show'])->name('admissions.show');
-    Route::post('admissions/{application}/status', [AdmissionController::class, 'updateStatus'])->name('admissions.status.update');
+    Route::middleware('permission:view-students')->group(function () {
+        Route::get('admissions', [AdmissionController::class, 'index'])->name('admissions.index');
+        Route::get('admissions/{application}', [AdmissionController::class, 'show'])->name('admissions.show');
+        Route::post('admissions/{application}/status', [AdmissionController::class, 'updateStatus'])->name('admissions.status.update');
+    });
 
     // Attendance Management
-    Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-    Route::get('attendance/select-section', [AttendanceController::class, 'selectSection'])->name('attendance.select-section');
-    Route::get('attendance/mark', [AttendanceController::class, 'mark'])->name('attendance.mark');
-    Route::post('attendance', [AttendanceController::class, 'store'])->name('attendance.store');
-    Route::get('attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
+    Route::middleware('permission:view-attendance')->group(function () {
+        Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+        Route::get('attendance/select-section', [AttendanceController::class, 'selectSection'])->name('attendance.select-section');
+        Route::get('attendance/mark', [AttendanceController::class, 'mark'])->name('attendance.mark');
+        Route::post('attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+        Route::get('attendance/report', [AttendanceController::class, 'report'])->name('attendance.report');
+    });
 
     // Timetable Management
-    Route::get('timetable', [TimetableController::class, 'index'])->name('timetable.index');
-    Route::get('timetable/edit', [TimetableController::class, 'edit'])->name('timetable.edit');
-    Route::post('timetable', [TimetableController::class, 'store'])->name('timetable.store');
-    Route::get('timetable/slots', [TimetableController::class, 'slots'])->name('timetable.slots');
-    Route::post('timetable/slots', [TimetableController::class, 'storeSlot'])->name('timetable.slots.store');
-    Route::delete('timetable/slots/{slot}', [TimetableController::class, 'destroySlot'])->name('timetable.slots.destroy');
+    Route::middleware('permission:view-timetable')->group(function () {
+        Route::get('timetable', [TimetableController::class, 'index'])->name('timetable.index');
+        Route::get('timetable/edit', [TimetableController::class, 'edit'])->name('timetable.edit');
+        Route::post('timetable', [TimetableController::class, 'store'])->name('timetable.store');
+        Route::get('timetable/slots', [TimetableController::class, 'slots'])->name('timetable.slots');
+        Route::post('timetable/slots', [TimetableController::class, 'storeSlot'])->name('timetable.slots.store');
+        Route::delete('timetable/slots/{slot}', [TimetableController::class, 'destroySlot'])->name('timetable.slots.destroy');
+    });
+
+    // Audit trail
+    Route::get('activity-logs', [\App\Http\Controllers\ActivityLogController::class, 'index'])
+        ->middleware('permission:manage-settings')->name('activity-logs.index');
 
     // Fee Management
-    Route::prefix('fees')->name('fees.')->group(function () {
+    Route::prefix('fees')->name('fees.')->middleware('permission:view-fees')->group(function () {
         Route::resource('categories', FeeCategoryController::class)->except(['show']);
         Route::post('structures/{structure}/allocate', [FeeStructureController::class, 'allocate'])
             ->name('structures.allocate');

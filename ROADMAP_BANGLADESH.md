@@ -73,12 +73,21 @@ Tables existed; UI/logic were missing. Produces the report cards 1.2 publishes.
 > (entry grid). Routes gated view/create/edit-exams, enter/manage-results.
 > Pages: exams index/create/edit/show + marks grid. 13 Pest tests.
 
-### 1.4 ⬜ Audit logs + security hardening  *(matrix #13)*
-- **DB:** `activity_logs` (tenant_id, user_id, action, subject_type/id, properties, ip, ua, created_at) — or `spatie/laravel-activitylog`.
-- **Scope:** log auth events, role/permission changes, fee payments, result publish, settings changes.
-- **Also:** add `permission:` middleware to the remaining resource routes (students/classes/fees/etc. — currently auth-only);
-  add login throttle/lockout, 2FA enable (columns ready), data-export/delete (privacy).
-- **Tests:** sensitive actions logged, log is tenant-scoped + read-only, route permission gates.
+### 1.4 ✅ Audit logs + security hardening  *(matrix #13)*
+
+> Shipped: append-only `activity_logs` table + `ActivityLog` model +
+> `ActivityLogger` service. Auth events (login/logout/failed — password never
+> stored) logged via `AppServiceProvider` listeners; role create/update/delete,
+> result publish/unpublish and settings changes logged in their controllers.
+> Tenant-scoped audit viewer at `/activity-logs` (gated `manage-settings`).
+> **Closed the big hole:** added `permission:view-*` middleware to the previously
+> auth-only resource routes (students, classes, sections, subjects, teachers,
+> guardians, staff, admissions, attendance, timetable, fees) so non-privileged
+> users (e.g. students) can no longer reach admin modules. Login throttle already
+> existed (Fortify, 5/min). 10 Pest tests.
+>
+> Deferred (follow-ups): finer write-vs-read gating per action, 2FA enablement
+> UI (columns ready), GDPR-style data export/delete.
 
 ---
 
@@ -158,5 +167,5 @@ Build 1.1 and 2.1 well — they fund everything else and competitors can't copy 
 
 ---
 
-**Status:** Phase 1 core ✅ — 1.1 (SMS rail), 1.2 (Result publish), 1.3 (Exam & marks entry) done. Next: 1.4 (Audit + security hardening).
+**Status:** Phase 1 ✅ COMPLETE — 1.1 (SMS rail), 1.2 (Result publish), 1.3 (Exam & marks entry), 1.4 (Audit + security). Next: Phase 2 — 2.1 (MFS payment) or 2.2 (Bangla + report-card PDF).
 **Last updated:** 2026-06-15
