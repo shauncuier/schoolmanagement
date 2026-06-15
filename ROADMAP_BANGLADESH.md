@@ -61,14 +61,17 @@ Foundational. Attendance alerts, results, fee dues, notices all ride this.
 > by `publish-results`; public `results/{tenant:slug}` page throttled (30/min),
 > tenant-scoped by slug, generic not-found (no enumeration leak). 14 Pest tests.
 
-### 1.3 ⬜ Finish exam & marks-entry module  *(matrix #8)*
-Tables exist; UI/logic missing. Unlocks 1.2 and report cards.
+### 1.3 ✅ Finish exam & marks-entry module  *(matrix #8)*
+Tables existed; UI/logic were missing. Produces the report cards 1.2 publishes.
 
-- **Backend:** marks entry (subject-wise, bulk), auto grade/GPA from `grading_systems`+`grade_points`,
-  rank calc per class/section, pass/fail rules.
-- **UI:** exam create wizard, schedule, marks-entry grid (keyboard-friendly, low-bandwidth), result preview/publish.
-- **BD:** GPA 5.00 scale, letter grades (A+ =5.0 … F), configurable per tenant (NCTB in flux — keep it data-driven).
-- **Tests:** grade boundary calc, GPA, rank ties, bulk entry validation, tenant isolation.
+> Shipped: Exam/ExamType/GradingSystem/GradePoint/ExamSchedule/ExamResult/
+> ReportCard models. `GradingService` (auto-creates the BD GPA-5 scale,
+> percentage→grade/point). `ExamGradingService` — bulk marks entry with auto
+> grade/point, and report-card generation (totals, %, GPA, overall grade,
+> rank per class+section, **BD fail rule: any subject fail → GPA 0.00/F**).
+> ExamController (CRUD + generate), ExamScheduleController, MarksController
+> (entry grid). Routes gated view/create/edit-exams, enter/manage-results.
+> Pages: exams index/create/edit/show + marks grid. 13 Pest tests.
 
 ### 1.4 ⬜ Audit logs + security hardening  *(matrix #13)*
 - **DB:** `activity_logs` (tenant_id, user_id, action, subject_type/id, properties, ip, ua, created_at) — or `spatie/laravel-activitylog`.
@@ -155,5 +158,5 @@ Build 1.1 and 2.1 well — they fund everything else and competitors can't copy 
 
 ---
 
-**Status:** Phases 1.1 (SMS rail) + 1.2 (Result publish) ✅ done. Next: 1.3 (Finish exam & marks entry).
+**Status:** Phase 1 core ✅ — 1.1 (SMS rail), 1.2 (Result publish), 1.3 (Exam & marks entry) done. Next: 1.4 (Audit + security hardening).
 **Last updated:** 2026-06-15

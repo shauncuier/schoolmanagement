@@ -37,6 +37,11 @@ class ExamResult extends Model
         return $this->belongsTo(Subject::class);
     }
 
+    public function examSchedule(): BelongsTo
+    {
+        return $this->belongsTo(ExamSchedule::class);
+    }
+
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);

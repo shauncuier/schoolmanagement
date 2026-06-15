@@ -146,6 +146,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('exams/{exam}/unpublish', [\App\Http\Controllers\Exam\ResultController::class, 'unpublish'])->name('exams.unpublish');
     });
 
+    // Examination — management, scheduling & marks entry
+    Route::get('exams', [\App\Http\Controllers\Exam\ExamController::class, 'index'])
+        ->middleware('permission:view-exams')->name('exams.index');
+
+    Route::middleware('permission:create-exams,edit-exams,manage-exams')->group(function () {
+        Route::get('exams/create', [\App\Http\Controllers\Exam\ExamController::class, 'create'])->name('exams.create');
+        Route::post('exams', [\App\Http\Controllers\Exam\ExamController::class, 'store'])->name('exams.store');
+        Route::get('exams/{exam}/edit', [\App\Http\Controllers\Exam\ExamController::class, 'edit'])->whereNumber('exam')->name('exams.edit');
+        Route::put('exams/{exam}', [\App\Http\Controllers\Exam\ExamController::class, 'update'])->whereNumber('exam')->name('exams.update');
+        Route::delete('exams/{exam}', [\App\Http\Controllers\Exam\ExamController::class, 'destroy'])->whereNumber('exam')->name('exams.destroy');
+        Route::post('exams/{exam}/schedules', [\App\Http\Controllers\Exam\ExamScheduleController::class, 'store'])->whereNumber('exam')->name('exams.schedules.store');
+        Route::delete('exam-schedules/{schedule}', [\App\Http\Controllers\Exam\ExamScheduleController::class, 'destroy'])->name('exam-schedules.destroy');
+    });
+
+    Route::get('exams/{exam}', [\App\Http\Controllers\Exam\ExamController::class, 'show'])
+        ->whereNumber('exam')->middleware('permission:view-exams')->name('exams.show');
+
+    Route::middleware('permission:enter-results,manage-results')->group(function () {
+        Route::get('exam-schedules/{schedule}/marks', [\App\Http\Controllers\Exam\MarksController::class, 'edit'])->name('exam-schedules.marks.edit');
+        Route::put('exam-schedules/{schedule}/marks', [\App\Http\Controllers\Exam\MarksController::class, 'update'])->name('exam-schedules.marks.update');
+        Route::post('exams/{exam}/report-cards', [\App\Http\Controllers\Exam\ExamController::class, 'generateReportCards'])->whereNumber('exam')->name('exams.report-cards.generate');
+    });
+
     // Admin Routes (Super Admin Only)
     Route::prefix('admin')->name('admin.')->group(function () {
         // Schools (Tenants) Management
