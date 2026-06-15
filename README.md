@@ -8,7 +8,7 @@
 
 A comprehensive, multi-tenant **School Management System** built with Laravel 12, React 19 and Inertia.js. It runs as a single SaaS installation serving many schools, and is being tailored for the **Bangladesh education market** — masking SMS, result lookup by roll number, GPA-5 grading, and MFS-ready fee collection.
 
-> 📄 Release notes: [CHANGELOG.md](CHANGELOG.md) · 🗺️ Direction: [ROADMAP_BANGLADESH.md](ROADMAP_BANGLADESH.md) · 📋 Progress: [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md)
+> 📄 Release notes: [CHANGELOG.md](CHANGELOG.md) · 🗺️ Plan, status & issues: [PROJECT_PLAN.md](PROJECT_PLAN.md) · 🏛️ Architecture: [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md)
 
 ---
 
@@ -32,7 +32,7 @@ A comprehensive, multi-tenant **School Management System** built with Laravel 12
 - 🔐 **Role-based access control** (Spatie) with per-route permission gating and a tenant-scoped **audit trail**.
 
 ### 🔄 Planned
-Timetable polish, MFS payment (bKash/Nagad/Rocket), Bangla (i18n) UI + bilingual report-card PDF, parent/student mobile apps, library/transport/hostel, OMR scanning, and analytics. See the [roadmap](ROADMAP_BANGLADESH.md).
+Timetable polish, MFS payment (bKash/Nagad/Rocket), Bangla (i18n) UI + bilingual report-card PDF, parent/student mobile apps, library/transport/hostel, OMR scanning, and analytics. See the [project plan](PROJECT_PLAN.md).
 
 ---
 

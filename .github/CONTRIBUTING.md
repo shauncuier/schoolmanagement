@@ -88,7 +88,7 @@ composer dev
 
 1. Ensure your code follows the project's coding standards
 2. Update the README.md if needed
-3. Update the IMPLEMENTATION_CHECKLIST.md if you've completed a feature
+3. Update PROJECT_PLAN.md (status/issues) if you've completed a feature
 4. Make sure all tests pass
 5. Request review from maintainers
 
@@ -176,7 +176,7 @@ To create a new release and trigger the deployment workflow:
 ## 📞 Need Help?
 
 - Check the [README.md](README.md) for documentation
-- Review the [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md) for project status
+- Review the [PROJECT_PLAN.md](../PROJECT_PLAN.md) for project status
 - Open an issue for questions
 
 ---

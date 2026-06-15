@@ -6,7 +6,7 @@ Thank you for using the School Management System! We're here to help you get the
 
 Before reaching out, please check our documentation:
 - [README.md](../README.md) - Project overview and installation
-- [IMPLEMENTATION_CHECKLIST.md](../IMPLEMENTATION_CHECKLIST.md) - Project status and roadmap
+- [PROJECT_PLAN.md](../PROJECT_PLAN.md) - Project status, plan, and issues
 - [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute to the project
 
 ## 💬 Community Support
