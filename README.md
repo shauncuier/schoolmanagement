@@ -1,42 +1,38 @@
 # 🏫 School Management System (SchoolSync)
 
-![Version](https://img.shields.io/badge/version-v1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-v1.2.1-blue.svg)
 ![Laravel](https://img.shields.io/badge/Laravel-12-red.svg)
-![React](https://img.shields.io/badge/React-18-61dafb.svg)
+![React](https://img.shields.io/badge/React-19-61dafb.svg)
+![Tests](https://img.shields.io/badge/tests-118%20passing-success.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-red.svg)
 
-A comprehensive, enterprise-grade **Multi-Tenant School Management System** built with modern technologies. This SaaS-ready platform enables educational institutions to manage all aspects of school operations from a single, unified interface.
+A comprehensive, multi-tenant **School Management System** built with Laravel 12, React 19 and Inertia.js. It runs as a single SaaS installation serving many schools, and is being tailored for the **Bangladesh education market** — masking SMS, result lookup by roll number, GPA-5 grading, and MFS-ready fee collection.
+
+> 📄 Release notes: [CHANGELOG.md](CHANGELOG.md) · 🗺️ Direction: [ROADMAP_BANGLADESH.md](ROADMAP_BANGLADESH.md) · 📋 Progress: [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md)
 
 ---
 
-## 🌟 Features Overview
+## 🌟 Features
 
-### 🎖️ Platform Admin (Super Admin)
-- **📊 Global Dashboard**: Real-time platform analytics (Total Schools, Users, Revenue).
-- **🏢 School Management**: Cross-tenant CRUD, registration, and domain mapping.
-- **🎨 Branding Engine**: Live preview for school-specific primary/secondary colors.
-- **💳 Subscription Management**: Multi-tier plans (Free, Basic, Standard, Premium), expiry controls, and extensions.
-- **👥 Global User Directory**: Manage every user across the platform with soft-delete recovery.
-- **⚙️ System Hub**: Configure SMTP, Security Policies, Feature Toggles, and clear system cache.
+### ✅ Implemented
 
-### 🏫 School Operations
-- **🎓 Student Management** - Admissions, profiles, promotions, transfers, alumni
-- **👨‍🏫 Teacher Management** - Staff profiles, assignments, performance tracking
-- **📚 Academic Management** - Classes, sections, subjects, curriculum
-- **📅 Attendance System** - Manual, QR, biometric, RFID integration ready
-- **📝 Examination & Grading** - Multiple exam types, GPA/CGPA, report cards
-- **💰 Fee Management** - Fee structures, payments, discounts, receipts
-- **📆 Timetable Management** - Period slots, teacher allocation, room scheduling
-- **📢 Communication System** - Notices, messages, SMS/Email notifications
-- **👨‍👩‍👧 Parent Portal** - Performance tracking, attendance, fee status
-- **🔐 Role-Based Access Control** - Granular permissions per user role
+**Platform (Super Admin)**
+- Cross-tenant school (tenant) management, registration, and per-school branding (colors, logo, favicon).
+- Subscription plans (Free / Basic / Standard / Premium) with expiry and extension controls.
+- Global user directory with soft-delete recovery; system settings (SMTP, security policy, feature toggles, cache).
 
-### Enterprise Features
-- **🏢 Multi-Tenancy** - Single installation, multiple schools
-- **🌐 Multi-Language (i18n)** - Support for multiple languages
-- **🌙 Dark/Light Mode** - Theme switching capability
-- **📱 Mobile Responsive** - Works on all devices
-- **🔒 Security** - JWT authentication, 2FA ready, audit logs
+**School operations**
+- 🎓 **Student & guardian management** — admissions workflow, profiles, fee auto-allocation on enrolment.
+- 👨‍🏫 **Teacher & staff management** and academic structure (academic years, classes, sections, subjects).
+- 📅 **Attendance** — daily marking, bulk entry, leave requests.
+- 📝 **Examinations & grading** — exam CRUD, per-subject scheduling, marks-entry grid, an auto-provisioned **Bangladesh GPA-5** scale, automatic grade/point calculation, and ranked report-card generation (fail-any-subject → GPA 0.00 rule).
+- 📊 **Result publishing** — publish/unpublish results; **public lookup by roll number** (throttled, no enumeration leak) with optional guardian SMS.
+- 💰 **Fee management** — categories, structures, allocations, payments, and receipts.
+- 📱 **Masking SMS rail** — provider-agnostic engine with GSM-7/Bangla-Unicode segment & cost calculation, BD number validation, templates, bulk send, and a delivery-history console.
+- 🔐 **Role-based access control** (Spatie) with per-route permission gating and a tenant-scoped **audit trail**.
+
+### 🔄 Planned
+Timetable polish, MFS payment (bKash/Nagad/Rocket), Bangla (i18n) UI + bilingual report-card PDF, parent/student mobile apps, library/transport/hostel, OMR scanning, and analytics. See the [roadmap](ROADMAP_BANGLADESH.md).
 
 ---
 
@@ -44,175 +40,129 @@ A comprehensive, enterprise-grade **Multi-Tenant School Management System** buil
 
 | Layer | Technology |
 |-------|------------|
-| **Backend Framework** | Laravel 12 |
-| **Frontend Framework** | React 18 + TypeScript |
-| **Full-Stack Bridge** | Inertia.js 2.0 |
-| **Authentication** | Laravel Fortify |
+| **Backend** | Laravel 12 (PHP 8.2+) |
+| **Frontend** | React 19 + TypeScript 5.7 |
+| **Full-stack bridge** | Inertia.js 2.1 + Laravel Wayfinder |
+| **Authentication** | Laravel Fortify (session-based, 2FA-ready) |
 | **Authorization** | Spatie Laravel Permission |
-| **Multi-Tenancy** | Stancl/Tenancy |
-| **Database** | SQLite (dev) / PostgreSQL/MySQL (prod) |
-| **API Security** | Laravel Sanctum |
-| **Build Tool** | Vite |
-| **Testing** | Pest PHP |
-
----
-
-## 📋 User Roles & Stakeholders
-
-### Core Users
-| Role | Description |
-|------|-------------|
-| **Super Admin** | Platform owner with full system access |
-| **School Owner** | School-level administrative access |
-| **Principal** | School head with management capabilities |
-| **Vice Principal** | Deputy school head |
-| **Academic Coordinator** | Curriculum and academic management |
-| **Admin Officer** | Administrative operations |
-| **Teacher** | Subject teaching and class management |
-| **Class Teacher** | Designated class coordinator |
-| **Student** | Learning and academic activities |
-| **Parent/Guardian** | Child's progress monitoring |
-| **Accountant** | Financial management |
-| **Librarian** | Library operations |
-| **HR Manager** | Staff and payroll management |
-| **IT Support** | Technical administration |
-
-### External Integrations
-- Payment Gateways (Stripe, bKash, etc.)
-- SMS/Email Providers
-- Biometric Devices
-- Government Portals
-- Third-party LMS/ERP
-
----
-
-## 🗄️ Database Schema
-
-### Core Tables
-
-```
-📁 Authentication & Users
-├── users
-├── tenants
-├── domains
-├── roles
-├── permissions
-└── model_has_roles
-
-📁 Academic Structure
-├── academic_years
-├── classes
-├── sections
-├── subjects
-├── class_subjects
-├── teachers
-└── teacher_subject_assignments
-
-📁 Student Management
-├── guardians
-├── students
-├── student_guardian
-└── student_class_history
-
-📁 Attendance System
-├── attendances
-├── teacher_attendances
-└── leave_requests
-
-📁 Examination & Assessment
-├── exam_types
-├── grading_systems
-├── grade_points
-├── exams
-├── exam_schedules
-├── exam_results
-└── report_cards
-
-📁 Fee Management
-├── fee_categories
-├── fee_structures
-├── discounts
-├── student_fee_allocations
-├── fee_payments
-└── fee_refunds
-
-📁 Timetable & Communication
-├── timetable_slots
-├── timetables
-├── notices
-├── messages
-├── notification_templates
-├── notification_logs
-└── events
-```
+| **Multi-tenancy** | Stancl/Tenancy (tenant-scoped data isolation) |
+| **API tokens** | Laravel Sanctum |
+| **Database** | MySQL (prod) · SQLite (dev & tests) |
+| **Build tool** | Vite |
+| **Testing** | Pest 4 (118 feature/unit tests) |
+| **CI/CD** | GitHub Actions |
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-- PHP 8.2+
-- Composer 2.x
-- Node.js 18+ & npm
-- Database (SQLite/MySQL/PostgreSQL)
+- PHP 8.2+ and Composer 2.x
+- Node.js 18+ and npm
+- A database (SQLite for local, MySQL/PostgreSQL for production)
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-repo/schoolmanagement.git
+git clone https://github.com/shauncuier/schoolmanagement.git
 cd schoolmanagement
 
-# Install dependencies
+# Dependencies
 composer install
 npm install
 
-# Environment setup
+# Environment
 cp .env.example .env
 php artisan key:generate
 
-# Database setup
-php artisan migrate
-php artisan db:seed
+# Database — creates schema and realistic demo data
+php artisan migrate:fresh --seed
 
-# Build assets
+# Generate typed route/action helpers (Wayfinder), then build
+php artisan wayfinder:generate --with-form
 npm run build
 
-# Start development server
+# Run it (server + queue + vite)
 composer dev
 ```
 
-### 🔑 Test Credentials
+> SQLite is the default. For MySQL/PostgreSQL, set `DB_CONNECTION` and the `DB_*`
+> values in `.env`, then run `php artisan migrate:fresh --seed`.
 
-Once you have seeded the database, you can use the following credentials for testing:
+### 🔑 Demo Credentials (after seeding)
 
 | Role | Email | Password |
 |------|-------|----------|
-| **Super Admin** | `admin@schoolsync.com` | `password` |
-| **School Admin** | `school@demo.com` | `password` |
-| **Principal** | `principal@demo.com` | `password` |
-| **Teacher** | `teacher@demo.com` | `password` |
-| **Student** | `student@demo.com` | `password` |
-| **Parent** | `parent@demo.com` | `password` |
-| **Accountant** | `accountant@demo.com` | `password` |
+| Super Admin | `admin@schoolsync.com` | `password` |
+| School Owner | `school@demo.com` | `password` |
+| Principal | `principal@demo.com` | `password` |
+| Teacher | `teacher@demo.com` | `password` |
+| Student | `student@demo.com` | `password` |
+| Parent | `parent@demo.com` | `password` |
+| Accountant | `accountant@demo.com` | `password` |
+
+The seed builds a working demo school: 30 students, teachers, guardians, fee allocations + payments, a published exam with marks and ranked report cards, SMS templates, and attendance.
 
 ---
 
-### Development Commands
+## 🧪 Development & Testing
 
 ```bash
-# Start all development services (server + queue + vite)
-composer dev
+composer dev                 # server + queue + vite
+composer test                # full Pest suite (SQLite in-memory)
+php artisan test             # same, directly
 
-# Run tests
-composer test
+./vendor/bin/pint            # format PHP (Laravel Pint)
+npm run types                # TypeScript check (run wayfinder:generate first on a fresh checkout)
+npm run lint                 # ESLint
+npm run build                # production assets
+```
 
-# Format code
-./vendor/bin/pint
+> The `@/routes` and `@/actions` imports are generated by Wayfinder and are
+> git-ignored. On a fresh checkout run `php artisan wayfinder:generate --with-form`
+> (or `npm run build`) before `npm run types`.
 
-# Run with SSR
-composer dev:ssr
+---
+
+## 🔐 Security
+
+- ✅ Password hashing (Bcrypt)
+- ✅ Session authentication via Fortify; login throttling (5/min per email+IP)
+- ✅ Role- and permission-based access control, with `permission:`/`role:` route gating
+- ✅ Cross-tenant isolation (role management restricted to the platform super-admin)
+- ✅ Audit trail (auth events, role/permission changes, result publishing, settings)
+- ✅ CSRF protection, encrypted provider secrets
+- 🔄 Two-factor authentication (columns + Fortify wiring ready)
+- 🔄 GDPR-style data export/delete (planned)
+
+---
+
+## 🌐 Multi-Tenancy
+
+Tenancy is keyed off the authenticated user's `tenant_id` — a single shared
+database with per-tenant data isolation enforced through tenant scoping and
+route gating. The platform **super-admin** (no tenant) operates across all
+schools; every other user is bound to one school. Per-school branding (colors,
+logo, favicon) and settings are stored on the tenant record.
+
+> A `domains` table is present (Stancl/Tenancy) for future per-school domain
+> routing; current routing is central with tenant resolved from the user.
+
+---
+
+## 🗄️ Database Schema (overview)
+
+```
+Auth & tenancy     users · tenants · domains · roles · permissions · activity_logs
+Academic           academic_years · classes · sections · subjects · teachers
+Students           students · guardians · student_guardian · student_class_history
+Attendance         attendances · teacher_attendances · leave_requests
+Examinations       exam_types · grading_systems · grade_points · exams ·
+                   exam_schedules · exam_results · report_cards
+Fees               fee_categories · fee_structures · discounts ·
+                   student_fee_allocations · fee_payments · fee_refunds
+Communication      notices · messages · notification_templates · notification_logs · events
+Admissions         admission_applications
 ```
 
 ---
@@ -220,181 +170,45 @@ composer dev:ssr
 ## 📁 Project Structure
 
 ```
-schoolmanagement/
-├── app/
-│   ├── Actions/          # Business logic actions
-│   ├── Http/
-│   │   ├── Controllers/  # Request handlers
-│   │   ├── Middleware/   # Request middleware
-│   │   └── Requests/     # Form request validation
-│   ├── Models/           # Eloquent models
-│   └── Providers/        # Service providers
-├── bootstrap/            # Framework bootstrap
-├── config/               # Configuration files
-├── database/
-│   ├── factories/        # Model factories
-│   ├── migrations/       # Database migrations
-│   └── seeders/          # Database seeders
-├── public/               # Public assets
-├── resources/
-│   ├── css/              # Stylesheets
-│   ├── js/
-│   │   ├── components/   # React components
-│   │   ├── hooks/        # Custom React hooks
-│   │   ├── layouts/      # Page layouts
-│   │   ├── pages/        # Inertia pages
-│   │   └── types/        # TypeScript types
-│   └── views/            # Blade templates
-├── routes/
-│   ├── web.php           # Web routes
-│   ├── tenant.php        # Multi-tenant routes
-│   └── settings.php      # Settings routes
-├── storage/              # File storage
-└── tests/                # Test files
+app/
+├── Http/Controllers/   # incl. Communication/ (SMS) and Exam/ (results, marks)
+├── Models/
+├── Services/           # FeeAllocation, ResultService, Sms/, Exam/ (grading), ActivityLogger
+└── Providers/
+database/
+├── migrations/
+├── seeders/            # DatabaseSeeder → SampleDataSeeder → DemoOperationsSeeder
+└── factories/
+resources/js/
+├── components/ · hooks/ · layouts/ · pages/ · types/
+routes/                 # web.php · tenant.php · settings.php
+tests/Feature/          # 118 Pest tests
+.github/workflows/      # ci.yml (tests + types + lint + build) · release.yml
 ```
 
 ---
 
-## 🔐 Security Features
+## 📦 Versioning & Releases
 
-- ✅ Password Hashing (Bcrypt/Argon2)
-- ✅ JWT Authentication with Refresh Tokens
-- ✅ Role-Based Access Control (RBAC)
-- ✅ Permission-Based Access Control (PBAC)
-- ✅ CSRF Protection
-- ✅ XSS Prevention
-- ✅ SQL Injection Protection
-- 🔄 Two-Factor Authentication (Ready)
-- 🔄 Audit Logs (Planned)
-- 🔄 IP/Device Tracking (Planned)
-
----
-
-## 🌐 Multi-Tenancy Architecture
-
-This system uses **Domain-Based Multi-Tenancy** powered by Stancl/Tenancy:
-
-- **Central Domain**: Main application (super admin)
-- **Tenant Domains**: Individual school subdomains
-- **Data Isolation**: Each tenant's data is isolated
-- **Custom Branding**: Per-school themes and logos
-
-```
-example.com           → Central Application
-school1.example.com   → Tenant: School 1
-school2.example.com   → Tenant: School 2
-```
-
----
-
-## 📊 Reporting & Analytics
-
-### Available Reports
-- Student Performance Analytics
-- Attendance Trends & Statistics
-- Financial Reports (Collections, Dues)
-- Teacher Performance Metrics
-- Class-wise Comparison
-
-### Export Formats
-- PDF
-- Excel (.xlsx)
-- CSV
-
----
-
-## 🔄 API Integration Ready
-
-The system is designed to integrate with:
-
-| Integration Type | Examples |
-|-----------------|----------|
-| Payment Gateways | Stripe, PayPal, bKash, Razorpay |
-| SMS Providers | Twilio, Nexmo, Local SMS APIs |
-| Email Services | SMTP, Mailgun, SendGrid |
-| Biometric Devices | ZKTeco, Hikvision |
-| GPS Tracking | For transport management |
-| Government Portals | Education board data sync |
-
----
-
-## 📱 Client Applications (Planned)
-
-| Platform | Status | Description |
-|----------|--------|-------------|
-| Web App (Admin/Staff) | ✅ Active | Main administrative interface |
-| Mobile App - Student | 🔄 Planned | Student portal for learning |
-| Mobile App - Parent | 🔄 Planned | Parent monitoring app |
-| Mobile App - Teacher | 🔄 Planned | Teacher management app |
-| Public Website | 🔄 Planned | Admission, notices |
-
----
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-composer test
-
-# Run specific test file
-./vendor/bin/pest tests/Feature/ExampleTest.php
-
-# Run with coverage
-./vendor/bin/pest --coverage
-```
-
----
-
-## 📈 Deployment Options
-
-| Model | Description |
-|-------|-------------|
-| **Cloud SaaS** | Multi-tenant cloud deployment |
-| **On-Premise** | Single-tenant local installation |
-| **Hybrid** | Mix of cloud and local |
-
-### Recommended Infrastructure
-- Docker containerization
-- CI/CD pipelines (GitHub Actions)
-- Auto-scaling capable
-- Load balancer ready
-- Blue-green deployment support
+Semantic Versioning, tracked in git tags, [CHANGELOG.md](CHANGELOG.md), and
+`package.json`. Tagging `v*` triggers the release workflow. Current: **v1.2.1**.
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Branch from `main` (`git checkout -b feat/your-feature`).
+2. Make the change with tests; run `composer test`, `./vendor/bin/pint`, `npm run types`, `npm run lint`, `npm run build`.
+3. Open a pull request — CI must pass.
 
 ---
 
 ## 📄 License
 
-This project is proprietary software owned by **3s-Soft**. See the [LICENSE](LICENSE) file for details.
-
----
+Proprietary software owned by **3s-Soft**. See [LICENSE](LICENSE).
 
 ## 📞 Support
+- 📧 support@3s-soft.com
+- 🌐 [3s-soft.com](https://3s-soft.com)
 
-For support, please contact:
-- 📧 Email: support@3s-soft.com
-- 🌐 Website: [3s-soft.com](https://3s-soft.com)
-- � Documentation: [docs.3s-soft.com](https://docs.3s-soft.com)
-
----
-
-## 🗺️ Roadmap & Architecture
-
-- [System Architecture](SYSTEM_ARCHITECTURE.md) - Full technical specification and feature list
-- [Implementation Progress](IMPLEMENTATION_CHECKLIST.md) - Detailed development progress and upcoming features
-
----
-
-<p align="center">
-  Developed by <a href="https://3s-soft.com/">3s-Soft</a><br>
-  Made with ❤️ for Education
-</p>
+<p align="center">Developed by <a href="https://3s-soft.com/">3s-Soft</a> · Made with ❤️ for Education</p>
