@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-06-16
+
+### Added
+- **Notices & announcements** — create, edit, and publish notices with audience targeting (all / students / teachers / parents / staff / a specific class) and an optional **SMS broadcast** to that audience through the masking SMS rail.
+
+### Security
+- Notice management is permission-gated (`view-notices` to read, `create/edit/manage-notices` to write); records are tenant-scoped, and the SMS broadcast only fires when a notice transitions to published.
+
+### Changed
+- Test suite expanded to 147 passing tests.
+
+---
+
 ## [1.5.0] - 2026-06-16
 
 ### Added
