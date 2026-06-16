@@ -22,6 +22,7 @@ class StudentFeeAllocation extends Model
         'net_amount',
         'paid_amount',
         'due_amount',
+        'late_fee',
         'due_date',
         'status',
     ];
@@ -32,6 +33,7 @@ class StudentFeeAllocation extends Model
         'net_amount' => 'decimal:2',
         'paid_amount' => 'decimal:2',
         'due_amount' => 'decimal:2',
+        'late_fee' => 'decimal:2',
         'due_date' => 'date',
     ];
 

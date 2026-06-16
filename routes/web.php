@@ -26,6 +26,7 @@ use App\Http\Controllers\FeeRefundController;
 use App\Http\Controllers\FeeReportController;
 use App\Http\Controllers\FeeStructureController;
 use App\Http\Controllers\GuardianController;
+use App\Http\Controllers\LateFeeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PublicResultController;
@@ -188,6 +189,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('discounts/{discount}', [DiscountController::class, 'destroy'])->whereNumber('discount')->name('discounts.destroy');
             Route::post('allocations/{allocation}/discount', [DiscountController::class, 'applyToAllocation'])->whereNumber('allocation')->name('allocations.discount.apply');
             Route::delete('allocations/{allocation}/discount', [DiscountController::class, 'removeFromAllocation'])->whereNumber('allocation')->name('allocations.discount.remove');
+            Route::post('late-fees/run', [LateFeeController::class, 'run'])->name('late-fees.run');
         });
     });
 
