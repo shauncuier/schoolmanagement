@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-06-16
+
+### Added
+- **Fee refunds** — process partial or full refunds against a payment. The refund reduces the allocation's paid amount, recomputes its outstanding due and status, and marks the payment refunded once fully refunded. Over-refunds (including cumulative across multiple partial refunds) are rejected.
+
+### Security
+- Refunds are gated by the `process-refunds` permission and tenant-scoped.
+
+### Changed
+- Test suite expanded to 164 passing tests.
+
+---
+
 ## [1.7.0] - 2026-06-16
 
 ### Added
