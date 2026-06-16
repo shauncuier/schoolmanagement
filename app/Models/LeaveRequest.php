@@ -90,8 +90,9 @@ class LeaveRequest extends Model
     public function getRequesterNameAttribute(): string
     {
         if ($this->requestable_type === Student::class) {
-            return $this->requestable->first_name . ' ' . $this->requestable->last_name;
+            return $this->requestable->first_name.' '.$this->requestable->last_name;
         }
+
         return $this->requestable->name ?? 'Unknown';
     }
 

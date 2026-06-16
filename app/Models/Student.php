@@ -148,6 +148,7 @@ class Student extends Model
     {
         $class = $this->schoolClass?->name ?? '';
         $section = $this->section?->name ?? '';
+
         return trim("{$class} - {$section}", ' -');
     }
 

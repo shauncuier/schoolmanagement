@@ -34,8 +34,6 @@ return new class extends Migration
             $table->index(['class_id', 'section_id', 'date']);
         });
 
-
-
         // Teacher Attendance
         Schema::create('teacher_attendances', function (Blueprint $table) {
             $table->id();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LeaveRequest;
 use App\Models\Student;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -61,16 +62,16 @@ class LeaveRequestController extends Controller
         // Stats
         $stats = [
             'pending' => LeaveRequest::query()
-                ->when($tenantId, fn($q) => $q->forTenant($tenantId))
+                ->when($tenantId, fn ($q) => $q->forTenant($tenantId))
                 ->pending()
                 ->count(),
             'approved' => LeaveRequest::query()
-                ->when($tenantId, fn($q) => $q->forTenant($tenantId))
+                ->when($tenantId, fn ($q) => $q->forTenant($tenantId))
                 ->approved()
                 ->whereMonth('created_at', now()->month)
                 ->count(),
             'rejected' => LeaveRequest::query()
-                ->when($tenantId, fn($q) => $q->forTenant($tenantId))
+                ->when($tenantId, fn ($q) => $q->forTenant($tenantId))
                 ->rejected()
                 ->whereMonth('created_at', now()->month)
                 ->count(),
@@ -91,14 +92,14 @@ class LeaveRequestController extends Controller
 
         // Get students for dropdown
         $students = Student::query()
-            ->when($tenantId, fn($q) => $q->forTenant($tenantId))
+            ->when($tenantId, fn ($q) => $q->forTenant($tenantId))
             ->where('status', 'active')
             ->orderBy('first_name')
             ->get(['id', 'first_name', 'last_name', 'admission_number']);
 
         // Get staff/users for dropdown
         $staff = User::query()
-            ->when($tenantId, fn($q) => $q->where('tenant_id', $tenantId))
+            ->when($tenantId, fn ($q) => $q->where('tenant_id', $tenantId))
             ->orderBy('name')
             ->get(['id', 'name', 'email']);
 
@@ -121,10 +122,10 @@ class LeaveRequestController extends Controller
         ]);
 
         $user = $request->user();
-        
+
         // Calculate total days
-        $startDate = \Carbon\Carbon::parse($validated['start_date']);
-        $endDate = \Carbon\Carbon::parse($validated['end_date']);
+        $startDate = Carbon::parse($validated['start_date']);
+        $endDate = Carbon::parse($validated['end_date']);
         $totalDays = $startDate->diffInDays($endDate) + 1;
 
         LeaveRequest::create([

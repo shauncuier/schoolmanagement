@@ -23,13 +23,14 @@ class SampleDataSeeder extends Seeder
     {
         // Get the demo tenant
         $tenant = Tenant::where('slug', 'demo-school')->first();
-        
-        if (!$tenant) {
+
+        if (! $tenant) {
             $this->command->warn('Demo tenant not found. Run DatabaseSeeder first.');
+
             return;
         }
 
-        $this->command->info('Creating sample data for: ' . $tenant->name);
+        $this->command->info('Creating sample data for: '.$tenant->name);
 
         // Create Academic Year
         $academicYear = $this->createAcademicYear($tenant);
@@ -67,7 +68,8 @@ class SampleDataSeeder extends Seeder
             ]
         );
 
-        $this->command->info('  ✓ Academic Year: ' . $academicYear->name);
+        $this->command->info('  ✓ Academic Year: '.$academicYear->name);
+
         return $academicYear;
     }
 
@@ -104,7 +106,8 @@ class SampleDataSeeder extends Seeder
             $subjects[] = $subject;
         }
 
-        $this->command->info('  ✓ Subjects: ' . count($subjects) . ' created');
+        $this->command->info('  ✓ Subjects: '.count($subjects).' created');
+
         return $subjects;
     }
 
@@ -165,7 +168,8 @@ class SampleDataSeeder extends Seeder
             ];
         }
 
-        $this->command->info('  ✓ Classes: ' . count($classData) . ' with ' . count($sectionNames) . ' sections each');
+        $this->command->info('  ✓ Classes: '.count($classData).' with '.count($sectionNames).' sections each');
+
         return $result;
     }
 
@@ -185,7 +189,7 @@ class SampleDataSeeder extends Seeder
 
         $teachers = [];
         $sectionIndex = 0;
-        
+
         foreach ($teacherData as $data) {
             // Create user account
             $user = User::firstOrCreate(
@@ -199,7 +203,7 @@ class SampleDataSeeder extends Seeder
                 ]
             );
 
-            if (!$user->hasRole('teacher')) {
+            if (! $user->hasRole('teacher')) {
                 $user->assignRole('teacher');
             }
 
@@ -210,7 +214,7 @@ class SampleDataSeeder extends Seeder
                     'user_id' => $user->id,
                 ],
                 [
-                    'employee_id' => 'TCH' . str_pad(count($teachers) + 1, 3, '0', STR_PAD_LEFT),
+                    'employee_id' => 'TCH'.str_pad(count($teachers) + 1, 3, '0', STR_PAD_LEFT),
                     'qualification' => 'M.Ed',
                     'specialization' => $data['subject'],
                     'employment_type' => 'full-time',
@@ -231,7 +235,8 @@ class SampleDataSeeder extends Seeder
             $teachers[] = $teacher;
         }
 
-        $this->command->info('  ✓ Teachers: ' . count($teachers) . ' created');
+        $this->command->info('  ✓ Teachers: '.count($teachers).' created');
+
         return $teachers;
     }
 
@@ -241,11 +246,11 @@ class SampleDataSeeder extends Seeder
     private function createStudentsAndGuardians(Tenant $tenant, AcademicYear $academicYear, array $classesWithSections): void
     {
         $firstNames = ['Emma', 'Liam', 'Olivia', 'Noah', 'Ava', 'Ethan', 'Sophia', 'Mason', 'Isabella', 'Lucas',
-                       'Mia', 'Aiden', 'Charlotte', 'James', 'Amelia', 'Oliver', 'Harper', 'Benjamin', 'Evelyn', 'Elijah'];
-        
-        $lastNames = ['Anderson', 'Brown', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 
-                      'Lopez', 'Gonzalez', 'Wilson', 'Moore', 'Taylor', 'Thomas', 'Jackson', 'White', 'Harris', 
-                      'Martin', 'Thompson', 'Young'];
+            'Mia', 'Aiden', 'Charlotte', 'James', 'Amelia', 'Oliver', 'Harper', 'Benjamin', 'Evelyn', 'Elijah'];
+
+        $lastNames = ['Anderson', 'Brown', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez',
+            'Lopez', 'Gonzalez', 'Wilson', 'Moore', 'Taylor', 'Thomas', 'Jackson', 'White', 'Harris',
+            'Martin', 'Thompson', 'Young'];
 
         $studentCount = 0;
         $guardianCount = 0;
@@ -255,11 +260,11 @@ class SampleDataSeeder extends Seeder
 
         foreach ($limitedClasses as $classData) {
             $class = $classData['class'];
-            
+
             foreach ($classData['sections'] as $section) {
                 // Create 5 students per section
                 $numStudents = 5;
-                
+
                 for ($i = 0; $i < $numStudents; $i++) {
                     $firstName = $firstNames[array_rand($firstNames)];
                     $lastName = $lastNames[array_rand($lastNames)];
@@ -267,12 +272,13 @@ class SampleDataSeeder extends Seeder
                     $uniqueId = $studentCount + 1;
 
                     // Check if student with this email already exists
-                    $studentEmail = 'student' . $uniqueId . '@demo.com';
-                    $parentEmail = 'parent' . $uniqueId . '@demo.com';
-                    
+                    $studentEmail = 'student'.$uniqueId.'@demo.com';
+                    $parentEmail = 'parent'.$uniqueId.'@demo.com';
+
                     $existingStudent = User::where('email', $studentEmail)->first();
                     if ($existingStudent) {
                         $studentCount++;
+
                         continue; // Skip if already exists
                     }
 
@@ -281,13 +287,13 @@ class SampleDataSeeder extends Seeder
                         ['email' => $parentEmail],
                         [
                             'tenant_id' => $tenant->id,
-                            'name' => 'Mr./Mrs. ' . $lastName,
+                            'name' => 'Mr./Mrs. '.$lastName,
                             'password' => Hash::make('password'),
                             'email_verified_at' => now(),
                             'status' => 'active',
                         ]
                     );
-                    if (!$guardianUser->hasRole('parent')) {
+                    if (! $guardianUser->hasRole('parent')) {
                         $guardianUser->assignRole('parent');
                     }
 
@@ -311,13 +317,13 @@ class SampleDataSeeder extends Seeder
                         ['email' => $studentEmail],
                         [
                             'tenant_id' => $tenant->id,
-                            'name' => $firstName . ' ' . $lastName,
+                            'name' => $firstName.' '.$lastName,
                             'password' => Hash::make('password'),
                             'email_verified_at' => now(),
                             'status' => 'active',
                         ]
                     );
-                    if (!$studentUser->hasRole('student')) {
+                    if (! $studentUser->hasRole('student')) {
                         $studentUser->assignRole('student');
                     }
 
@@ -329,7 +335,7 @@ class SampleDataSeeder extends Seeder
                             'user_id' => $studentUser->id,
                         ],
                         [
-                            'admission_no' => 'STU' . str_pad($uniqueId, 5, '0', STR_PAD_LEFT),
+                            'admission_no' => 'STU'.str_pad($uniqueId, 5, '0', STR_PAD_LEFT),
                             'class_id' => $class->id,
                             'section_id' => $section->id,
                             'academic_year_id' => $academicYear->id,
@@ -342,7 +348,7 @@ class SampleDataSeeder extends Seeder
                     );
 
                     // Link student to guardian via pivot table if not already linked
-                    if (!$student->guardians()->where('guardian_id', $guardian->id)->exists()) {
+                    if (! $student->guardians()->where('guardian_id', $guardian->id)->exists()) {
                         $student->guardians()->attach($guardian->id, [
                             'relationship' => $guardian->relation_type,
                             'is_emergency_contact' => true,
@@ -355,7 +361,7 @@ class SampleDataSeeder extends Seeder
             }
         }
 
-        $this->command->info('  ✓ Students: ' . $studentCount . ' created');
-        $this->command->info('  ✓ Guardians: ' . $guardianCount . ' created');
+        $this->command->info('  ✓ Students: '.$studentCount.' created');
+        $this->command->info('  ✓ Guardians: '.$guardianCount.' created');
     }
 }

@@ -35,7 +35,7 @@ class TimetableController extends Controller
         $classes = $classQuery
             ->active()
             ->ordered()
-            ->with(['sections' => fn($q) => $q->where('is_active', true)])
+            ->with(['sections' => fn ($q) => $q->where('is_active', true)])
             ->get();
 
         $selectedSectionId = $request->input('section_id');
@@ -44,7 +44,7 @@ class TimetableController extends Controller
 
         if ($selectedSectionId) {
             $selectedSection = Section::with(['schoolClass'])->find($selectedSectionId);
-            
+
             // Get timetable for the section
             $slotQuery = TimetableSlot::query()->active()->ordered();
             if ($tenantId) {
@@ -55,11 +55,11 @@ class TimetableController extends Controller
             $timetableQuery = Timetable::query()
                 ->where('section_id', $selectedSectionId)
                 ->with(['slot', 'subject', 'teacher']);
-            
+
             if ($tenantId) {
                 $timetableQuery->forTenant($tenantId);
             }
-            
+
             $entries = $timetableQuery->get();
 
             // Organize by day and slot
@@ -67,7 +67,7 @@ class TimetableController extends Controller
             foreach ($days as $day) {
                 $timetableData[$day] = [];
                 foreach ($slots as $slot) {
-                    $entry = $entries->first(fn($e) => $e->day === $day && $e->timetable_slot_id === $slot->id);
+                    $entry = $entries->first(fn ($e) => $e->day === $day && $e->timetable_slot_id === $slot->id);
                     $timetableData[$day][$slot->id] = $entry;
                 }
             }
@@ -78,7 +78,7 @@ class TimetableController extends Controller
             'selectedSection' => $selectedSection,
             'timetableData' => $timetableData,
             'slots' => TimetableSlot::query()
-                ->when($tenantId, fn($q) => $q->forTenant($tenantId))
+                ->when($tenantId, fn ($q) => $q->forTenant($tenantId))
                 ->active()
                 ->ordered()
                 ->get(),
@@ -116,7 +116,7 @@ class TimetableController extends Controller
 
         // Get teachers
         $teacherQuery = User::query()
-            ->whereHas('roles', fn($q) => $q->whereIn('name', ['teacher', 'class-teacher']));
+            ->whereHas('roles', fn ($q) => $q->whereIn('name', ['teacher', 'class-teacher']));
         if ($tenantId) {
             $teacherQuery->where('tenant_id', $tenantId);
         }
@@ -137,7 +137,7 @@ class TimetableController extends Controller
         foreach ($days as $day) {
             $timetableData[$day] = [];
             foreach ($slots as $slot) {
-                $entry = $entries->first(fn($e) => $e->day === $day && $e->timetable_slot_id === $slot->id);
+                $entry = $entries->first(fn ($e) => $e->day === $day && $e->timetable_slot_id === $slot->id);
                 $timetableData[$day][$slot->id] = [
                     'id' => $entry?->id,
                     'subject_id' => $entry?->subject_id ?? '',
@@ -191,6 +191,7 @@ class TimetableController extends Controller
                     'timetable_slot_id' => $entry['slot_id'],
                     'day' => $entry['day'],
                 ])->delete();
+
                 continue;
             }
 
@@ -270,7 +271,7 @@ class TimetableController extends Controller
     public function destroySlot(TimetableSlot $slot): RedirectResponse
     {
         $user = request()->user();
-        
+
         if ($user->tenant_id && $slot->tenant_id !== $user->tenant_id) {
             abort(403);
         }

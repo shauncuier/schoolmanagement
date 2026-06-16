@@ -25,7 +25,7 @@ class SectionController extends Controller
         $sectionQuery = Section::query();
         $classQuery = SchoolClass::query();
         $yearQuery = AcademicYear::query();
-        
+
         if ($tenantId) {
             $sectionQuery->forTenant($tenantId);
             $classQuery->forTenant($tenantId);
@@ -64,7 +64,7 @@ class SectionController extends Controller
         $classQuery = SchoolClass::query();
         $yearQuery = AcademicYear::query();
         $teacherQuery = User::query();
-        
+
         if ($tenantId) {
             $classQuery->forTenant($tenantId);
             $yearQuery->forTenant($tenantId);
@@ -74,7 +74,7 @@ class SectionController extends Controller
         $classes = $classQuery->active()->ordered()->get();
         $academicYears = $yearQuery->orderByDesc('start_date')->get();
         $teachers = $teacherQuery
-            ->whereHas('roles', fn($q) => $q->whereIn('name', ['teacher', 'class-teacher']))
+            ->whereHas('roles', fn ($q) => $q->whereIn('name', ['teacher', 'class-teacher']))
             ->get(['id', 'name']);
 
         return Inertia::render('sections/create', [
@@ -135,7 +135,7 @@ class SectionController extends Controller
         $classQuery = SchoolClass::query();
         $yearQuery = AcademicYear::query();
         $teacherQuery = User::query();
-        
+
         if ($tenantId) {
             $classQuery->forTenant($tenantId);
             $yearQuery->forTenant($tenantId);
@@ -145,7 +145,7 @@ class SectionController extends Controller
         $classes = $classQuery->active()->ordered()->get();
         $academicYears = $yearQuery->orderByDesc('start_date')->get();
         $teachers = $teacherQuery
-            ->whereHas('roles', fn($q) => $q->whereIn('name', ['teacher', 'class-teacher']))
+            ->whereHas('roles', fn ($q) => $q->whereIn('name', ['teacher', 'class-teacher']))
             ->get(['id', 'name']);
 
         return Inertia::render('sections/edit', [
@@ -205,12 +205,12 @@ class SectionController extends Controller
     private function authorizeForTenant(Section $section): void
     {
         $user = request()->user();
-        
+
         // Super-admin can access all
         if ($user->tenant_id === null) {
             return;
         }
-        
+
         if ($section->tenant_id !== $user->tenant_id) {
             abort(403, 'Unauthorized access to this section.');
         }

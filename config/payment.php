@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\Payment\Drivers\SandboxGateway;
+
 return [
 
     /*
@@ -24,7 +26,7 @@ return [
     'default' => env('PAYMENT_GATEWAY', 'sandbox'),
 
     'drivers' => [
-        'sandbox' => \App\Services\Payment\Drivers\SandboxGateway::class,
+        'sandbox' => SandboxGateway::class,
     ],
 
     'currency' => 'BDT',

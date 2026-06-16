@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\Sms\Drivers\LogDriver;
+
 return [
 
     /*
@@ -27,7 +29,7 @@ return [
     */
 
     'drivers' => [
-        'log' => \App\Services\Sms\Drivers\LogDriver::class,
+        'log' => LogDriver::class,
     ],
 
     /*

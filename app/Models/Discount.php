@@ -50,16 +50,16 @@ class Discount extends Model
         if ($this->type === 'percentage') {
             return round(($amount * $this->value) / 100, 2);
         }
-        
+
         return min($this->value, $amount);
     }
 
     public function getDisplayValueAttribute(): string
     {
         if ($this->type === 'percentage') {
-            return $this->value . '%';
+            return $this->value.'%';
         }
-        
-        return '৳' . number_format($this->value, 2);
+
+        return '৳'.number_format($this->value, 2);
     }
 }

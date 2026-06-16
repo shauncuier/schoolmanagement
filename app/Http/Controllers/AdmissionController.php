@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Domains\Students\Services\AdmissionService;
+use App\Models\AcademicYear;
 use App\Models\AdmissionApplication;
 use App\Models\SchoolClass;
-use App\Models\AcademicYear;
-use App\Domains\Students\Services\AdmissionService;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class AdmissionController extends Controller
 {
@@ -79,7 +79,7 @@ class AdmissionController extends Controller
             'address' => 'nullable|string',
         ]);
 
-        $validated['application_no'] = 'ADM-' . date('Y') . '-' . strtoupper(Str::random(6));
+        $validated['application_no'] = 'ADM-'.date('Y').'-'.strtoupper(Str::random(6));
         $validated['status'] = 'pending';
 
         AdmissionApplication::create($validated);
@@ -112,6 +112,7 @@ class AdmissionController extends Controller
 
         if ($validated['status'] === 'approved') {
             $this->admissionService->convertToStudent($application);
+
             return Redirect::route('students.index')->with('success', 'Application approved and student created.');
         }
 

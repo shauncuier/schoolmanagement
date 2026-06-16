@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AdmissionApplication extends Model
 {
-    use HasFactory, TenantAware, SoftDeletes;
+    use HasFactory, SoftDeletes, TenantAware;
 
     protected $fillable = [
         'tenant_id',

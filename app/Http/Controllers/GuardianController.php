@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guardian;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,7 +22,7 @@ class GuardianController extends Controller
 
         // Build query
         $query = Guardian::query()->with(['user', 'students']);
-        
+
         if ($tenantId) {
             $query->forTenant($tenantId);
         }
@@ -79,7 +80,7 @@ class GuardianController extends Controller
     {
         $user = $request->user();
         $tenantId = $user->tenant_id;
-        
+
         // Get available students for linking
         $studentsQuery = Student::query()->with(['section.schoolClass']);
         if ($tenantId) {
@@ -116,7 +117,7 @@ class GuardianController extends Controller
 
         // Create user account for guardian
         $password = $validated['password'] ?? 'password123';
-        $guardianUser = \App\Models\User::create([
+        $guardianUser = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
@@ -134,20 +135,20 @@ class GuardianController extends Controller
             'is_active' => true,
         ];
 
-        if (!empty($validated['occupation'])) {
+        if (! empty($validated['occupation'])) {
             $guardianData['occupation'] = $validated['occupation'];
         }
-        if (!empty($validated['workplace'])) {
+        if (! empty($validated['workplace'])) {
             $guardianData['workplace'] = $validated['workplace'];
         }
-        if (!empty($validated['annual_income'])) {
+        if (! empty($validated['annual_income'])) {
             $guardianData['annual_income'] = $validated['annual_income'];
         }
 
         $guardian = Guardian::create($guardianData);
 
         // Link students (children)
-        if (!empty($validated['student_ids'])) {
+        if (! empty($validated['student_ids'])) {
             $guardian->students()->attach($validated['student_ids'], [
                 'relationship' => $validated['relation_type'],
                 'is_emergency_contact' => $validated['is_primary_contact'] ?? false,
@@ -167,10 +168,10 @@ class GuardianController extends Controller
         $this->authorizeForTenant($guardian);
 
         $guardian->load(['user', 'students']);
-        
+
         $user = $request->user();
         $tenantId = $user->tenant_id;
-        
+
         // Get available students for linking
         $studentsQuery = Student::query()->with(['section.schoolClass']);
         if ($tenantId) {
@@ -195,7 +196,7 @@ class GuardianController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $guardian->user_id,
+            'email' => 'required|email|unique:users,email,'.$guardian->user_id,
             'phone' => 'nullable|string|max:20',
             'occupation' => 'nullable|string|max:100',
             'workplace' => 'nullable|string|max:200',

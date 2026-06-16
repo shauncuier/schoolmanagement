@@ -6,6 +6,7 @@ use App\Models\AcademicYear;
 use App\Models\SchoolClass;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\User;
 use App\Services\FeeAllocationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -151,7 +152,7 @@ class StudentController extends Controller
         $user = $request->user();
 
         // Create user account for student
-        $studentUser = \App\Models\User::create([
+        $studentUser = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt('password'), // Default password

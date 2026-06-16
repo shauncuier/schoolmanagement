@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,7 +21,7 @@ class TeacherController extends Controller
 
         // Build query
         $query = Teacher::query()->with(['user']);
-        
+
         if ($tenantId) {
             $query->forTenant($tenantId);
         }
@@ -78,7 +79,7 @@ class TeacherController extends Controller
         $teacher->load([
             'user',
             'classesTaught.schoolClass',
-            'attendances' => fn($q) => $q->latest()->take(30),
+            'attendances' => fn ($q) => $q->latest()->take(30),
         ]);
 
         return Inertia::render('teachers/show', [
@@ -120,7 +121,7 @@ class TeacherController extends Controller
 
         // Create user account for teacher
         $password = $validated['password'] ?? 'password123';
-        $teacherUser = \App\Models\User::create([
+        $teacherUser = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($password),
@@ -137,25 +138,25 @@ class TeacherController extends Controller
         ];
 
         // Only add optional fields if they have values
-        if (!empty($validated['employee_id'])) {
+        if (! empty($validated['employee_id'])) {
             $teacherData['employee_id'] = $validated['employee_id'];
         }
-        if (!empty($validated['designation'])) {
+        if (! empty($validated['designation'])) {
             $teacherData['designation'] = $validated['designation'];
         }
-        if (!empty($validated['department'])) {
+        if (! empty($validated['department'])) {
             $teacherData['department'] = $validated['department'];
         }
-        if (!empty($validated['joining_date'])) {
+        if (! empty($validated['joining_date'])) {
             $teacherData['joining_date'] = $validated['joining_date'];
         }
-        if (!empty($validated['qualification'])) {
+        if (! empty($validated['qualification'])) {
             $teacherData['qualification'] = $validated['qualification'];
         }
-        if (!empty($validated['specialization'])) {
+        if (! empty($validated['specialization'])) {
             $teacherData['specialization'] = $validated['specialization'];
         }
-        if (!empty($validated['salary'])) {
+        if (! empty($validated['salary'])) {
             $teacherData['salary'] = $validated['salary'];
         }
 
@@ -173,7 +174,7 @@ class TeacherController extends Controller
         $this->authorizeForTenant($teacher);
 
         $teacher->load(['user.roles']);
-        
+
         // Get the teacher's current role
         $currentRole = $teacher->user->roles->first()?->name ?? 'teacher';
 
@@ -193,7 +194,7 @@ class TeacherController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $teacher->user_id,
+            'email' => 'required|email|unique:users,email,'.$teacher->user_id,
             'employee_id' => 'nullable|string|max:50',
             'designation' => 'nullable|string|max:100',
             'department' => 'nullable|string|max:100',
@@ -213,7 +214,7 @@ class TeacherController extends Controller
         ]);
 
         // Update role if changed
-        if (!empty($validated['role'])) {
+        if (! empty($validated['role'])) {
             $teacher->user->syncRoles([$validated['role']]);
         }
 

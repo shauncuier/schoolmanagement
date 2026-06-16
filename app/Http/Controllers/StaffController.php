@@ -21,17 +21,17 @@ class StaffController extends Controller
 
         // Build query for users who are staff (not student/parent/teacher)
         $staffRoles = ['admin', 'school-owner', 'principal', 'vice-principal', 'academic-coordinator', 'admin-officer', 'accountant', 'librarian', 'transport-manager', 'hostel-manager', 'inventory-manager', 'it-support', 'hr-manager'];
-        
+
         $query = User::query()
-            ->whereHas('roles', fn($q) => $q->whereIn('name', $staffRoles));
-        
+            ->whereHas('roles', fn ($q) => $q->whereIn('name', $staffRoles));
+
         if ($tenantId) {
             $query->where('tenant_id', $tenantId);
         }
 
         // Apply filters
         if ($request->filled('role')) {
-            $query->whereHas('roles', fn($q) => $q->where('name', $request->input('role')));
+            $query->whereHas('roles', fn ($q) => $q->where('name', $request->input('role')));
         }
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -128,7 +128,7 @@ class StaffController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $staff->id,
+            'email' => 'required|email|unique:users,email,'.$staff->id,
             'phone' => 'nullable|string|max:20',
             'role' => 'required|exists:roles,name',
         ]);

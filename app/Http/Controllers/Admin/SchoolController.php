@@ -118,7 +118,7 @@ class SchoolController extends Controller
             'status' => 'nullable|in:active,inactive,pending,suspended',
         ]);
 
-        DB::transaction(function () use ($validated, $request) {
+        DB::transaction(function () use ($validated) {
             // Generate tenant ID
             $tenantId = Str::uuid()->toString();
 

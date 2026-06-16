@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
-use App\Models\Teacher;
+use App\Models\Attendance;
 use App\Models\SchoolClass;
 use App\Models\Section;
-use App\Models\Attendance;
+use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\Tenant;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -23,7 +25,7 @@ class DashboardController extends Controller
         $tenantId = $user->tenant_id;
 
         // If super admin without tenant, show platform stats
-        if ($user->isSuperAdmin() && !$tenantId) {
+        if ($user->isSuperAdmin() && ! $tenantId) {
             return $this->superAdminDashboard();
         }
 
@@ -40,15 +42,16 @@ class DashboardController extends Controller
      */
     private function superAdminDashboard(): Response
     {
-        $totalSchools = \App\Models\Tenant::count();
-        $totalUsers = \App\Models\User::count();
-        $activeSubscriptions = \App\Models\Tenant::whereNotNull('subscription_plan')
+        $totalSchools = Tenant::count();
+        $totalUsers = User::count();
+        $activeSubscriptions = Tenant::whereNotNull('subscription_plan')
             ->where('subscription_plan', '!=', 'free')
             ->count();
-            
+
         // Mock revenue calculation for demo based on plan prices
-        $revenue = \App\Models\Tenant::all()->sum(function($tenant) {
+        $revenue = Tenant::all()->sum(function ($tenant) {
             $prices = ['free' => 0, 'basic' => 999, 'standard' => 2499, 'premium' => 4999];
+
             return $prices[$tenant->subscription_plan] ?? 0;
         });
 
@@ -59,7 +62,7 @@ class DashboardController extends Controller
                 'total_users' => $totalUsers,
                 'active_subscriptions' => $activeSubscriptions,
                 'monthly_revenue' => $revenue,
-                'recent_schools' => \App\Models\Tenant::latest()->take(5)->get()->map(function($tenant) {
+                'recent_schools' => Tenant::latest()->take(5)->get()->map(function ($tenant) {
                     return [
                         'id' => $tenant->id,
                         'name' => $tenant->name,
@@ -76,7 +79,7 @@ class DashboardController extends Controller
      */
     private function getSchoolStats(?string $tenantId): array
     {
-        if (!$tenantId) {
+        if (! $tenantId) {
             return $this->getEmptyStats();
         }
 
@@ -101,8 +104,8 @@ class DashboardController extends Controller
 
         $attendanceTotal = $todayAttendance->total ?? 0;
         $attendancePresent = $todayAttendance->present ?? 0;
-        $attendancePercentage = $attendanceTotal > 0 
-            ? round(($attendancePresent / $attendanceTotal) * 100, 1) 
+        $attendancePercentage = $attendanceTotal > 0
+            ? round(($attendancePresent / $attendanceTotal) * 100, 1)
             : 0;
 
         return [

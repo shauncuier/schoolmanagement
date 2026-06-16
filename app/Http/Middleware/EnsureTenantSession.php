@@ -22,17 +22,17 @@ class EnsureTenantSession
         }
 
         // For regular users, ensure they have a tenant
-        if ($user && !$user->tenant_id) {
+        if ($user && ! $user->tenant_id) {
             abort(403, 'User is not associated with any school.');
         }
 
         // Check if tenant is active
-        if ($user && $user->tenant && !$user->tenant->isActive()) {
+        if ($user && $user->tenant && ! $user->tenant->isActive()) {
             abort(403, 'Your school account is currently inactive. Please contact support.');
         }
 
         // Check subscription
-        if ($user && $user->tenant && !$user->tenant->hasActiveSubscription()) {
+        if ($user && $user->tenant && ! $user->tenant->hasActiveSubscription()) {
             abort(403, 'Your school subscription has expired. Please renew to continue.');
         }
 

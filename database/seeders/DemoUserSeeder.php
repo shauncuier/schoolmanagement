@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -71,7 +71,7 @@ class DemoUserSeeder extends Seeder
                 ]
             );
 
-            if (!$user->hasRole($userData['role'])) {
+            if (! $user->hasRole($userData['role'])) {
                 $user->assignRole($userData['role']);
             }
         }

@@ -146,7 +146,7 @@ class UserController extends Controller
             'tenant_id' => $validated['tenant_id'],
         ]);
 
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $user->update(['password' => Hash::make($validated['password'])]);
         }
 

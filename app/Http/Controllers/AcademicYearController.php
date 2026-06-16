@@ -131,12 +131,12 @@ class AcademicYearController extends Controller
     private function authorizeForTenant(AcademicYear $academicYear): void
     {
         $user = request()->user();
-        
+
         // Super-admin can access all
         if ($user->tenant_id === null) {
             return;
         }
-        
+
         if ($academicYear->tenant_id !== $user->tenant_id) {
             abort(403, 'Unauthorized access to this academic year.');
         }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AcademicYear;
 use App\Models\FeePayment;
 use App\Models\Student;
 use App\Models\StudentFeeAllocation;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,7 +20,7 @@ class FeePaymentController extends Controller
 
         $query = FeePayment::query()
             ->with(['student', 'allocation.feeStructure.feeCategory', 'collector']);
-        
+
         if ($tenantId) {
             $query->forTenant($tenantId);
         }
@@ -50,7 +50,7 @@ class FeePaymentController extends Controller
         }
 
         if ($request->filled('to_date')) {
-            $query->where('paid_at', '<=', $request->input('to_date') . ' 23:59:59');
+            $query->where('paid_at', '<=', $request->input('to_date').' 23:59:59');
         }
 
         $payments = $query->orderBy('paid_at', 'desc')->paginate(20);
@@ -87,8 +87,8 @@ class FeePaymentController extends Controller
         // Get students with pending fees
         $studentsQuery = Student::query()
             ->with(['section.schoolClass'])
-            ->whereHas('feeAllocations', fn($q) => $q->pending());
-        
+            ->whereHas('feeAllocations', fn ($q) => $q->pending());
+
         if ($tenantId) {
             $studentsQuery->where('tenant_id', $tenantId);
         }
@@ -100,7 +100,7 @@ class FeePaymentController extends Controller
         ]);
     }
 
-    public function getStudentFees(Request $request, Student $student): \Illuminate\Http\JsonResponse
+    public function getStudentFees(Request $request, Student $student): JsonResponse
     {
         $allocations = StudentFeeAllocation::where('student_id', $student->id)
             ->with(['feeStructure.feeCategory'])
@@ -128,7 +128,7 @@ class FeePaymentController extends Controller
 
         $user = $request->user();
         $allocation = StudentFeeAllocation::findOrFail($validated['allocation_id']);
-        
+
         // Calculate late fee if overdue
         $lateFee = 0;
         if ($allocation->due_date && $allocation->due_date < now()) {
@@ -189,7 +189,9 @@ class FeePaymentController extends Controller
     private function authorizeForTenant(FeePayment $payment): void
     {
         $user = request()->user();
-        if ($user->tenant_id === null) return;
+        if ($user->tenant_id === null) {
+            return;
+        }
         if ($payment->tenant_id !== $user->tenant_id) {
             abort(403, 'Unauthorized access.');
         }

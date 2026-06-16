@@ -115,6 +115,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getDisplayNameAttribute(): string
     {
         $role = $this->roles->first()?->name ?? 'User';
+
         return "{$this->name} ({$role})";
     }
 }

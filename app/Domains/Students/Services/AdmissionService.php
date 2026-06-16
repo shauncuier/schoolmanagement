@@ -3,9 +3,9 @@
 namespace App\Domains\Students\Services;
 
 use App\Models\AdmissionApplication;
+use App\Models\Guardian;
 use App\Models\Student;
 use App\Models\User;
-use App\Models\Guardian;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -20,8 +20,8 @@ class AdmissionService
         return DB::transaction(function () use ($application) {
             // 1. Create Student User
             $studentUser = User::create([
-                'name' => $application->first_name . ' ' . $application->last_name,
-                'email' => $application->email ?? (strtolower($application->first_name . '.' . $application->last_name . $application->id) . '@school.com'),
+                'name' => $application->first_name.' '.$application->last_name,
+                'email' => $application->email ?? (strtolower($application->first_name.'.'.$application->last_name.$application->id).'@school.com'),
                 'password' => Hash::make(Str::random(12)),
                 'tenant_id' => $application->tenant_id,
             ]);
@@ -36,7 +36,7 @@ class AdmissionService
                     'tenant_id' => $application->tenant_id,
                 ]
             );
-            if (!$guardianUser->hasRole('parent')) {
+            if (! $guardianUser->hasRole('parent')) {
                 $guardianUser->assignRole('parent');
             }
 
@@ -88,6 +88,7 @@ class AdmissionService
             'Mother' => 'mother',
             'Guardian' => 'guardian',
         ];
+
         return $map[$relation] ?? 'other';
     }
 }

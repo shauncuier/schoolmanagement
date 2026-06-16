@@ -86,7 +86,7 @@ class StudentFeeAllocation extends Model
 
     public function getStatusBadgeAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'pending' => 'warning',
             'partial' => 'info',
             'paid' => 'success',
@@ -100,13 +100,13 @@ class StudentFeeAllocation extends Model
     {
         $this->paid_amount += $paymentAmount;
         $this->due_amount = max(0, $this->net_amount - $this->paid_amount);
-        
+
         if ($this->due_amount <= 0) {
             $this->status = 'paid';
         } elseif ($this->paid_amount > 0) {
             $this->status = 'partial';
         }
-        
+
         $this->save();
     }
 }

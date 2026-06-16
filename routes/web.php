@@ -1,14 +1,32 @@
 <?php
 
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\Admin\SchoolController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\SubscriptionController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\Communication\NotificationTemplateController;
+use App\Http\Controllers\Communication\SmsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocsController;
+use App\Http\Controllers\Exam\ExamController;
+use App\Http\Controllers\Exam\ExamScheduleController;
+use App\Http\Controllers\Exam\MarksController;
+use App\Http\Controllers\Exam\ResultController;
+use App\Http\Controllers\Fee\PaymentController;
 use App\Http\Controllers\FeeCategoryController;
 use App\Http\Controllers\FeePaymentController;
+use App\Http\Controllers\FeeReportController;
 use App\Http\Controllers\FeeStructureController;
 use App\Http\Controllers\GuardianController;
+use App\Http\Controllers\LeaveRequestController;
+use App\Http\Controllers\PublicResultController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SchoolSettingsController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
@@ -26,19 +44,19 @@ Route::get('/', function () {
 })->name('home');
 
 // Documentation
-Route::get('docs/{slug?}', [\App\Http\Controllers\DocsController::class, 'index'])->name('docs');
+Route::get('docs/{slug?}', [DocsController::class, 'index'])->name('docs');
 
 // Admissions Public Form
 Route::get('admissions/apply', [AdmissionController::class, 'create'])->name('admissions.apply');
 Route::post('admissions/apply', [AdmissionController::class, 'store'])->name('admissions.store');
 
 // Public Result Lookup (by roll number, per school)
-Route::get('results/{tenant:slug}', [\App\Http\Controllers\PublicResultController::class, 'show'])->name('results.show');
-Route::post('results/{tenant:slug}', [\App\Http\Controllers\PublicResultController::class, 'lookup'])
+Route::get('results/{tenant:slug}', [PublicResultController::class, 'show'])->name('results.show');
+Route::post('results/{tenant:slug}', [PublicResultController::class, 'lookup'])
     ->middleware('throttle:30,1')->name('results.lookup');
 
 // Public payment gateway callback / IPN (idempotent, no auth).
-Route::match(['get', 'post'], 'fees/pay/callback/{gateway}', [\App\Http\Controllers\Fee\PaymentController::class, 'callback'])
+Route::match(['get', 'post'], 'fees/pay/callback/{gateway}', [PaymentController::class, 'callback'])
     ->middleware('throttle:60,1')->name('fees.pay.callback');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -48,18 +66,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('school-settings')->name('school-settings.')
         ->middleware('permission:manage-settings')
         ->group(function () {
-            Route::get('/', [\App\Http\Controllers\SchoolSettingsController::class, 'index'])->name('index');
-            Route::put('/general', [\App\Http\Controllers\SchoolSettingsController::class, 'updateGeneral'])->name('general');
-            Route::put('/branding', [\App\Http\Controllers\SchoolSettingsController::class, 'updateBranding'])->name('branding');
-            Route::put('/academic', [\App\Http\Controllers\SchoolSettingsController::class, 'updateAcademic'])->name('academic');
-            Route::post('/logo', [\App\Http\Controllers\SchoolSettingsController::class, 'uploadLogo'])->name('logo');
-            Route::post('/favicon', [\App\Http\Controllers\SchoolSettingsController::class, 'uploadFavicon'])->name('favicon');
+            Route::get('/', [SchoolSettingsController::class, 'index'])->name('index');
+            Route::put('/general', [SchoolSettingsController::class, 'updateGeneral'])->name('general');
+            Route::put('/branding', [SchoolSettingsController::class, 'updateBranding'])->name('branding');
+            Route::put('/academic', [SchoolSettingsController::class, 'updateAcademic'])->name('academic');
+            Route::post('/logo', [SchoolSettingsController::class, 'uploadLogo'])->name('logo');
+            Route::post('/favicon', [SchoolSettingsController::class, 'uploadFavicon'])->name('favicon');
         });
 
     // Roles & Permissions Management.
     // Roles are global (Spatie teams disabled), so only the platform super-admin
     // may manage them — otherwise a school admin could edit roles for every tenant.
-    Route::resource('roles', \App\Http\Controllers\RoleController::class)
+    Route::resource('roles', RoleController::class)
         ->middleware('role:super-admin');
 
     // Academic Year Management
@@ -117,7 +135,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Audit trail
-    Route::get('activity-logs', [\App\Http\Controllers\ActivityLogController::class, 'index'])
+    Route::get('activity-logs', [ActivityLogController::class, 'index'])
         ->middleware('permission:manage-settings')->name('activity-logs.index');
 
     // Fee Management
@@ -127,108 +145,108 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('structures.allocate');
         Route::resource('structures', FeeStructureController::class)->except(['show']);
         // Online (MFS) payment — payer-facing
-        Route::get('pay/{allocation}', [\App\Http\Controllers\Fee\PaymentController::class, 'show'])->whereNumber('allocation')->name('pay.show');
-        Route::post('pay/{allocation}', [\App\Http\Controllers\Fee\PaymentController::class, 'initiate'])->whereNumber('allocation')->name('pay.initiate');
-        Route::get('payment-status', [\App\Http\Controllers\Fee\PaymentController::class, 'status'])->name('pay.status');
+        Route::get('pay/{allocation}', [PaymentController::class, 'show'])->whereNumber('allocation')->name('pay.show');
+        Route::post('pay/{allocation}', [PaymentController::class, 'initiate'])->whereNumber('allocation')->name('pay.initiate');
+        Route::get('payment-status', [PaymentController::class, 'status'])->name('pay.status');
 
         Route::get('payments', [FeePaymentController::class, 'index'])->name('payments.index');
         Route::get('payments/create', [FeePaymentController::class, 'create'])->name('payments.create');
         Route::post('payments', [FeePaymentController::class, 'store'])->name('payments.store');
         Route::get('payments/{payment}/receipt', [FeePaymentController::class, 'receipt'])->name('payments.receipt');
         Route::get('students/{student}/fees', [FeePaymentController::class, 'getStudentFees'])->name('students.fees');
-        Route::get('reports', [\App\Http\Controllers\FeeReportController::class, 'index'])->name('reports.index');
+        Route::get('reports', [FeeReportController::class, 'index'])->name('reports.index');
     });
 
     // Leave Requests
-    Route::resource('leave-requests', \App\Http\Controllers\LeaveRequestController::class)->except(['edit', 'update']);
-    Route::post('leave-requests/{leave_request}/approve', [\App\Http\Controllers\LeaveRequestController::class, 'approve'])->name('leave-requests.approve');
-    Route::post('leave-requests/{leave_request}/reject', [\App\Http\Controllers\LeaveRequestController::class, 'reject'])->name('leave-requests.reject');
+    Route::resource('leave-requests', LeaveRequestController::class)->except(['edit', 'update']);
+    Route::post('leave-requests/{leave_request}/approve', [LeaveRequestController::class, 'approve'])->name('leave-requests.approve');
+    Route::post('leave-requests/{leave_request}/reject', [LeaveRequestController::class, 'reject'])->name('leave-requests.reject');
 
     // Communication — SMS rail
     Route::prefix('communication')->name('communication.')->group(function () {
         Route::middleware('permission:send-notifications')->group(function () {
-            Route::get('sms', [\App\Http\Controllers\Communication\SmsController::class, 'index'])->name('sms.index');
-            Route::post('sms/send', [\App\Http\Controllers\Communication\SmsController::class, 'send'])->name('sms.send');
-            Route::post('sms/test', [\App\Http\Controllers\Communication\SmsController::class, 'test'])->name('sms.test');
+            Route::get('sms', [SmsController::class, 'index'])->name('sms.index');
+            Route::post('sms/send', [SmsController::class, 'send'])->name('sms.send');
+            Route::post('sms/test', [SmsController::class, 'test'])->name('sms.test');
 
-            Route::post('templates', [\App\Http\Controllers\Communication\NotificationTemplateController::class, 'store'])->name('templates.store');
-            Route::put('templates/{template}', [\App\Http\Controllers\Communication\NotificationTemplateController::class, 'update'])->name('templates.update');
-            Route::delete('templates/{template}', [\App\Http\Controllers\Communication\NotificationTemplateController::class, 'destroy'])->name('templates.destroy');
+            Route::post('templates', [NotificationTemplateController::class, 'store'])->name('templates.store');
+            Route::put('templates/{template}', [NotificationTemplateController::class, 'update'])->name('templates.update');
+            Route::delete('templates/{template}', [NotificationTemplateController::class, 'destroy'])->name('templates.destroy');
         });
 
         // Provider configuration is an administrative action.
-        Route::middleware('permission:manage-settings')->put('sms/settings', [\App\Http\Controllers\Communication\SmsController::class, 'updateSettings'])->name('sms.settings');
+        Route::middleware('permission:manage-settings')->put('sms/settings', [SmsController::class, 'updateSettings'])->name('sms.settings');
     });
 
     // Examination — result publishing
     Route::middleware('permission:publish-results')->group(function () {
-        Route::get('exams/results', [\App\Http\Controllers\Exam\ResultController::class, 'index'])->name('exams.results.index');
-        Route::post('exams/{exam}/publish', [\App\Http\Controllers\Exam\ResultController::class, 'publish'])->name('exams.publish');
-        Route::post('exams/{exam}/unpublish', [\App\Http\Controllers\Exam\ResultController::class, 'unpublish'])->name('exams.unpublish');
+        Route::get('exams/results', [ResultController::class, 'index'])->name('exams.results.index');
+        Route::post('exams/{exam}/publish', [ResultController::class, 'publish'])->name('exams.publish');
+        Route::post('exams/{exam}/unpublish', [ResultController::class, 'unpublish'])->name('exams.unpublish');
     });
 
     // Examination — management, scheduling & marks entry
-    Route::get('exams', [\App\Http\Controllers\Exam\ExamController::class, 'index'])
+    Route::get('exams', [ExamController::class, 'index'])
         ->middleware('permission:view-exams')->name('exams.index');
 
     Route::middleware('permission:create-exams,edit-exams,manage-exams')->group(function () {
-        Route::get('exams/create', [\App\Http\Controllers\Exam\ExamController::class, 'create'])->name('exams.create');
-        Route::post('exams', [\App\Http\Controllers\Exam\ExamController::class, 'store'])->name('exams.store');
-        Route::get('exams/{exam}/edit', [\App\Http\Controllers\Exam\ExamController::class, 'edit'])->whereNumber('exam')->name('exams.edit');
-        Route::put('exams/{exam}', [\App\Http\Controllers\Exam\ExamController::class, 'update'])->whereNumber('exam')->name('exams.update');
-        Route::delete('exams/{exam}', [\App\Http\Controllers\Exam\ExamController::class, 'destroy'])->whereNumber('exam')->name('exams.destroy');
-        Route::post('exams/{exam}/schedules', [\App\Http\Controllers\Exam\ExamScheduleController::class, 'store'])->whereNumber('exam')->name('exams.schedules.store');
-        Route::delete('exam-schedules/{schedule}', [\App\Http\Controllers\Exam\ExamScheduleController::class, 'destroy'])->name('exam-schedules.destroy');
+        Route::get('exams/create', [ExamController::class, 'create'])->name('exams.create');
+        Route::post('exams', [ExamController::class, 'store'])->name('exams.store');
+        Route::get('exams/{exam}/edit', [ExamController::class, 'edit'])->whereNumber('exam')->name('exams.edit');
+        Route::put('exams/{exam}', [ExamController::class, 'update'])->whereNumber('exam')->name('exams.update');
+        Route::delete('exams/{exam}', [ExamController::class, 'destroy'])->whereNumber('exam')->name('exams.destroy');
+        Route::post('exams/{exam}/schedules', [ExamScheduleController::class, 'store'])->whereNumber('exam')->name('exams.schedules.store');
+        Route::delete('exam-schedules/{schedule}', [ExamScheduleController::class, 'destroy'])->name('exam-schedules.destroy');
     });
 
-    Route::get('exams/{exam}', [\App\Http\Controllers\Exam\ExamController::class, 'show'])
+    Route::get('exams/{exam}', [ExamController::class, 'show'])
         ->whereNumber('exam')->middleware('permission:view-exams')->name('exams.show');
 
     Route::middleware('permission:enter-results,manage-results')->group(function () {
-        Route::get('exam-schedules/{schedule}/marks', [\App\Http\Controllers\Exam\MarksController::class, 'edit'])->name('exam-schedules.marks.edit');
-        Route::put('exam-schedules/{schedule}/marks', [\App\Http\Controllers\Exam\MarksController::class, 'update'])->name('exam-schedules.marks.update');
-        Route::post('exams/{exam}/report-cards', [\App\Http\Controllers\Exam\ExamController::class, 'generateReportCards'])->whereNumber('exam')->name('exams.report-cards.generate');
+        Route::get('exam-schedules/{schedule}/marks', [MarksController::class, 'edit'])->name('exam-schedules.marks.edit');
+        Route::put('exam-schedules/{schedule}/marks', [MarksController::class, 'update'])->name('exam-schedules.marks.update');
+        Route::post('exams/{exam}/report-cards', [ExamController::class, 'generateReportCards'])->whereNumber('exam')->name('exams.report-cards.generate');
     });
 
     // Admin Routes (Super Admin Only)
     Route::prefix('admin')->name('admin.')->group(function () {
         // Schools (Tenants) Management
-        Route::resource('schools', \App\Http\Controllers\Admin\SchoolController::class);
-        Route::post('schools/{school}/toggle-status', [\App\Http\Controllers\Admin\SchoolController::class, 'toggleStatus'])
+        Route::resource('schools', SchoolController::class);
+        Route::post('schools/{school}/toggle-status', [SchoolController::class, 'toggleStatus'])
             ->name('schools.toggle-status');
 
         // Users Management
-        Route::get('users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
-        Route::get('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'show'])->name('users.show');
-        Route::get('users/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('users.edit');
-        Route::put('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
-        Route::post('users/{user}/toggle-status', [\App\Http\Controllers\Admin\UserController::class, 'toggleStatus'])
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::post('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
             ->name('users.toggle-status');
-        Route::post('users/{user}/restore', [\App\Http\Controllers\Admin\UserController::class, 'restore'])->name('users.restore');
-        Route::delete('users/{user}/force-delete', [\App\Http\Controllers\Admin\UserController::class, 'forceDelete'])
+        Route::post('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
+        Route::delete('users/{user}/force-delete', [UserController::class, 'forceDelete'])
             ->name('users.force-delete');
 
         // Subscriptions Management
-        Route::get('subscriptions', [\App\Http\Controllers\Admin\SubscriptionController::class, 'index'])
+        Route::get('subscriptions', [SubscriptionController::class, 'index'])
             ->name('subscriptions.index');
-        Route::put('subscriptions/{tenant}', [\App\Http\Controllers\Admin\SubscriptionController::class, 'update'])
+        Route::put('subscriptions/{tenant}', [SubscriptionController::class, 'update'])
             ->name('subscriptions.update');
-        Route::post('subscriptions/{tenant}/extend', [\App\Http\Controllers\Admin\SubscriptionController::class, 'extend'])
+        Route::post('subscriptions/{tenant}/extend', [SubscriptionController::class, 'extend'])
             ->name('subscriptions.extend');
-        Route::post('subscriptions/{tenant}/cancel', [\App\Http\Controllers\Admin\SubscriptionController::class, 'cancel'])
+        Route::post('subscriptions/{tenant}/cancel', [SubscriptionController::class, 'cancel'])
             ->name('subscriptions.cancel');
 
         // System Settings
-        Route::get('settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
-        Route::put('settings/general', [\App\Http\Controllers\Admin\SettingsController::class, 'updateGeneral'])
+        Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+        Route::put('settings/general', [SettingsController::class, 'updateGeneral'])
             ->name('settings.general');
-        Route::put('settings/email', [\App\Http\Controllers\Admin\SettingsController::class, 'updateEmail'])
+        Route::put('settings/email', [SettingsController::class, 'updateEmail'])
             ->name('settings.email');
-        Route::put('settings/features', [\App\Http\Controllers\Admin\SettingsController::class, 'updateFeatures'])
+        Route::put('settings/features', [SettingsController::class, 'updateFeatures'])
             ->name('settings.features');
-        Route::put('settings/security', [\App\Http\Controllers\Admin\SettingsController::class, 'updateSecurity'])
+        Route::put('settings/security', [SettingsController::class, 'updateSecurity'])
             ->name('settings.security');
-        Route::post('settings/clear-cache', [\App\Http\Controllers\Admin\SettingsController::class, 'clearCache'])
+        Route::post('settings/clear-cache', [SettingsController::class, 'clearCache'])
             ->name('settings.clear-cache');
     });
 });

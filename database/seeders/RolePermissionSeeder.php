@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -14,7 +15,7 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Define all permissions
         $permissions = $this->getPermissions();
@@ -29,7 +30,7 @@ class RolePermissionSeeder extends Seeder
 
         foreach ($roles as $roleName => $rolePermissions) {
             $role = Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'web']);
-            
+
             if ($rolePermissions === '*') {
                 // Super admin gets all permissions
                 $role->syncPermissions(Permission::all());
@@ -48,14 +49,14 @@ class RolePermissionSeeder extends Seeder
             // Dashboard
             'view-dashboard',
             'view-analytics',
-            
+
             // Tenant/School Management (Super Admin)
             'manage-tenants',
             'view-tenants',
             'create-tenants',
             'edit-tenants',
             'delete-tenants',
-            
+
             // User Management
             'manage-users',
             'view-users',
@@ -63,42 +64,42 @@ class RolePermissionSeeder extends Seeder
             'edit-users',
             'delete-users',
             'impersonate-users',
-            
+
             // Role & Permission Management
             'manage-roles',
             'view-roles',
             'create-roles',
             'edit-roles',
             'delete-roles',
-            
+
             // Academic Year Management
             'manage-academic-years',
             'view-academic-years',
             'create-academic-years',
             'edit-academic-years',
             'delete-academic-years',
-            
+
             // Class Management
             'manage-classes',
             'view-classes',
             'create-classes',
             'edit-classes',
             'delete-classes',
-            
+
             // Section Management
             'manage-sections',
             'view-sections',
             'create-sections',
             'edit-sections',
             'delete-sections',
-            
+
             // Subject Management
             'manage-subjects',
             'view-subjects',
             'create-subjects',
             'edit-subjects',
             'delete-subjects',
-            
+
             // Student Management
             'manage-students',
             'view-students',
@@ -108,7 +109,7 @@ class RolePermissionSeeder extends Seeder
             'promote-students',
             'transfer-students',
             'view-student-details',
-            
+
             // Teacher Management
             'manage-teachers',
             'view-teachers',
@@ -116,28 +117,28 @@ class RolePermissionSeeder extends Seeder
             'edit-teachers',
             'delete-teachers',
             'assign-subjects',
-            
+
             // Parent/Guardian Management
             'manage-guardians',
             'view-guardians',
             'create-guardians',
             'edit-guardians',
             'delete-guardians',
-            
+
             // Attendance Management
             'manage-attendance',
             'view-attendance',
             'mark-attendance',
             'edit-attendance',
             'view-attendance-reports',
-            
+
             // Leave Management
             'manage-leaves',
             'view-leaves',
             'apply-leave',
             'approve-leave',
             'reject-leave',
-            
+
             // Examination Management
             'manage-exams',
             'view-exams',
@@ -145,7 +146,7 @@ class RolePermissionSeeder extends Seeder
             'edit-exams',
             'delete-exams',
             'schedule-exams',
-            
+
             // Results & Grades
             'manage-results',
             'view-results',
@@ -154,7 +155,7 @@ class RolePermissionSeeder extends Seeder
             'publish-results',
             'view-report-cards',
             'generate-report-cards',
-            
+
             // Fee Management
             'manage-fees',
             'view-fees',
@@ -164,14 +165,14 @@ class RolePermissionSeeder extends Seeder
             'collect-fees',
             'view-fee-reports',
             'process-refunds',
-            
+
             // Timetable Management
             'manage-timetable',
             'view-timetable',
             'create-timetable',
             'edit-timetable',
             'delete-timetable',
-            
+
             // Notice & Communication
             'manage-notices',
             'view-notices',
@@ -179,41 +180,41 @@ class RolePermissionSeeder extends Seeder
             'edit-notices',
             'delete-notices',
             'send-notifications',
-            
+
             // Messages
             'manage-messages',
             'view-messages',
             'send-messages',
-            
+
             // Events & Calendar
             'manage-events',
             'view-events',
             'create-events',
             'edit-events',
             'delete-events',
-            
+
             // Reports
             'view-reports',
             'generate-reports',
             'export-reports',
-            
+
             // Settings
             'manage-settings',
             'view-settings',
             'edit-settings',
-            
+
             // Library (Future)
             'manage-library',
             'view-library',
-            
+
             // Transport (Future)
             'manage-transport',
             'view-transport',
-            
+
             // Hostel (Future)
             'manage-hostel',
             'view-hostel',
-            
+
             // Inventory (Future)
             'manage-inventory',
             'view-inventory',
@@ -228,7 +229,7 @@ class RolePermissionSeeder extends Seeder
         return [
             // Platform Level Roles
             'super-admin' => '*', // All permissions
-            
+
             // School Level Roles
             'school-owner' => [
                 'view-dashboard', 'view-analytics',
@@ -248,7 +249,7 @@ class RolePermissionSeeder extends Seeder
                 'view-reports', 'generate-reports', 'export-reports',
                 'manage-settings', 'view-settings', 'edit-settings',
             ],
-            
+
             'principal' => [
                 'view-dashboard', 'view-analytics',
                 'view-users', 'create-users', 'edit-users',
@@ -271,7 +272,7 @@ class RolePermissionSeeder extends Seeder
                 'view-reports', 'generate-reports', 'export-reports',
                 'view-settings',
             ],
-            
+
             'vice-principal' => [
                 'view-dashboard', 'view-analytics',
                 'view-users',
@@ -291,7 +292,7 @@ class RolePermissionSeeder extends Seeder
                 'view-events', 'create-events', 'edit-events',
                 'view-reports',
             ],
-            
+
             'admin-officer' => [
                 'view-dashboard',
                 'view-users', 'create-users', 'edit-users',
@@ -308,7 +309,7 @@ class RolePermissionSeeder extends Seeder
                 'view-notices', 'create-notices',
                 'view-events', 'create-events',
             ],
-            
+
             'academic-coordinator' => [
                 'view-dashboard',
                 'view-academic-years',
@@ -321,7 +322,7 @@ class RolePermissionSeeder extends Seeder
                 'view-results', 'enter-results', 'edit-results',
                 'manage-timetable', 'view-timetable', 'create-timetable', 'edit-timetable',
             ],
-            
+
             'teacher' => [
                 'view-dashboard',
                 'view-classes',
@@ -337,7 +338,7 @@ class RolePermissionSeeder extends Seeder
                 'view-messages', 'send-messages',
                 'view-events',
             ],
-            
+
             'class-teacher' => [
                 'view-dashboard',
                 'view-classes',
@@ -353,7 +354,7 @@ class RolePermissionSeeder extends Seeder
                 'view-messages', 'send-messages',
                 'view-events',
             ],
-            
+
             'student' => [
                 'view-dashboard',
                 'view-attendance',
@@ -366,7 +367,7 @@ class RolePermissionSeeder extends Seeder
                 'view-events',
                 'view-library',
             ],
-            
+
             'parent' => [
                 'view-dashboard',
                 'view-students', 'view-student-details',
@@ -379,33 +380,33 @@ class RolePermissionSeeder extends Seeder
                 'view-messages', 'send-messages',
                 'view-events',
             ],
-            
+
             'accountant' => [
                 'view-dashboard',
                 'view-students',
                 'manage-fees', 'view-fees', 'create-fee-structure', 'edit-fee-structure', 'collect-fees', 'view-fee-reports', 'process-refunds',
                 'view-reports', 'generate-reports', 'export-reports',
             ],
-            
+
             'librarian' => [
                 'view-dashboard',
                 'view-students',
                 'view-teachers',
                 'manage-library', 'view-library',
             ],
-            
+
             'transport-manager' => [
                 'view-dashboard',
                 'view-students',
                 'manage-transport', 'view-transport',
             ],
-            
+
             'hostel-manager' => [
                 'view-dashboard',
                 'view-students',
                 'manage-hostel', 'view-hostel',
             ],
-            
+
             'hr-manager' => [
                 'view-dashboard',
                 'manage-users', 'view-users', 'create-users', 'edit-users',
@@ -413,7 +414,7 @@ class RolePermissionSeeder extends Seeder
                 'view-attendance',
                 'manage-leaves', 'view-leaves', 'approve-leave', 'reject-leave',
             ],
-            
+
             'it-support' => [
                 'view-dashboard',
                 'view-users',

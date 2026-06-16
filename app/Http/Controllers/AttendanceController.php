@@ -26,7 +26,7 @@ class AttendanceController extends Controller
         // Build queries
         $classQuery = SchoolClass::query();
         $sectionQuery = Section::query();
-        
+
         if ($tenantId) {
             $classQuery->forTenant($tenantId);
             $sectionQuery->forTenant($tenantId);
@@ -41,7 +41,7 @@ class AttendanceController extends Controller
             if ($tenantId) {
                 $query->forTenant($tenantId);
             }
-            
+
             $attendanceSummary[$class->id] = [
                 'total' => $query->count(),
                 'present' => (clone $query)->withStatus('present')->count(),
@@ -73,7 +73,7 @@ class AttendanceController extends Controller
         $date = $request->input('date', now()->format('Y-m-d'));
 
         $section = Section::with(['schoolClass', 'academicYear'])->findOrFail($sectionId);
-        
+
         // Authorize tenant access
         if ($tenantId && $section->tenant_id !== $tenantId) {
             abort(403, 'Unauthorized access to this section.');
@@ -84,11 +84,11 @@ class AttendanceController extends Controller
             ->where('section_id', $sectionId)
             ->with('user')
             ->active();
-        
+
         if ($tenantId) {
             $studentQuery->forTenant($tenantId);
         }
-        
+
         $students = $studentQuery->orderBy('roll_number')->get();
 
         // Get existing attendance for this date
@@ -100,6 +100,7 @@ class AttendanceController extends Controller
         // Merge attendance data with students
         $studentsWithAttendance = $students->map(function ($student) use ($existingAttendance) {
             $attendance = $existingAttendance->get($student->id);
+
             return [
                 'id' => $student->id,
                 'name' => $student->user?->name ?? 'Unknown',
@@ -168,7 +169,7 @@ class AttendanceController extends Controller
         }
 
         return redirect()->route('attendance.index')
-            ->with('success', 'Attendance marked successfully for ' . $section->schoolClass->name . ' - ' . $section->name);
+            ->with('success', 'Attendance marked successfully for '.$section->schoolClass->name.' - '.$section->name);
     }
 
     /**
@@ -199,13 +200,13 @@ class AttendanceController extends Controller
         ];
 
         $attendanceData = [];
-        
+
         if ($filters['section_id']) {
             $query = Attendance::query()
                 ->where('section_id', $filters['section_id'])
                 ->betweenDates($filters['start_date'], $filters['end_date'])
                 ->with(['student.user']);
-            
+
             if ($tenantId) {
                 $query->forTenant($tenantId);
             }
@@ -214,6 +215,7 @@ class AttendanceController extends Controller
                 ->groupBy('student_id')
                 ->map(function ($records, $studentId) {
                     $first = $records->first();
+
                     return [
                         'student_id' => $studentId,
                         'student_name' => $first->student?->user?->name ?? 'Unknown',
@@ -221,7 +223,7 @@ class AttendanceController extends Controller
                         'present' => $records->where('status', 'present')->count(),
                         'absent' => $records->where('status', 'absent')->count(),
                         'late' => $records->where('status', 'late')->count(),
-                        'percentage' => $records->count() > 0 
+                        'percentage' => $records->count() > 0
                             ? round(($records->whereIn('status', ['present', 'late'])->count() / $records->count()) * 100, 1)
                             : 0,
                     ];
@@ -246,7 +248,7 @@ class AttendanceController extends Controller
         $tenantId = $user->tenant_id;
 
         $classQuery = SchoolClass::query();
-        
+
         if ($tenantId) {
             $classQuery->forTenant($tenantId);
         }
@@ -254,7 +256,7 @@ class AttendanceController extends Controller
         $classes = $classQuery
             ->active()
             ->ordered()
-            ->with(['sections' => fn($q) => $q->where('is_active', true)])
+            ->with(['sections' => fn ($q) => $q->where('is_active', true)])
             ->get();
 
         return Inertia::render('attendance/select-section', [

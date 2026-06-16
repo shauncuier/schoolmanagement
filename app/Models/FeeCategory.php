@@ -53,7 +53,7 @@ class FeeCategory extends Model
 
     public function getFrequencyLabelAttribute(): string
     {
-        return match($this->frequency) {
+        return match ($this->frequency) {
             'one_time' => 'One Time',
             'monthly' => 'Monthly',
             'quarterly' => 'Quarterly',

@@ -66,6 +66,6 @@ class TimetableSlot extends Model
      */
     public function getTimeRangeAttribute(): string
     {
-        return $this->start_time?->format('h:i A') . ' - ' . $this->end_time?->format('h:i A');
+        return $this->start_time?->format('h:i A').' - '.$this->end_time?->format('h:i A');
     }
 }

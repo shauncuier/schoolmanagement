@@ -55,7 +55,7 @@ class ClassController extends Controller
         $user = $request->user();
 
         // Set default order if not provided
-        if (!isset($validated['order'])) {
+        if (! isset($validated['order'])) {
             $maxOrder = SchoolClass::forTenant($user->tenant_id)->max('order') ?? 0;
             $validated['order'] = $maxOrder + 1;
         }
@@ -132,12 +132,12 @@ class ClassController extends Controller
     private function authorizeForTenant(SchoolClass $class): void
     {
         $user = request()->user();
-        
+
         // Super-admin can access all
         if ($user->tenant_id === null) {
             return;
         }
-        
+
         if ($class->tenant_id !== $user->tenant_id) {
             abort(403, 'Unauthorized access to this class.');
         }

@@ -33,7 +33,7 @@ return new class extends Migration
             $table->id();
             $table->string('tenant_id')->index();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            
+
             // Admission Info
             $table->string('admission_no')->nullable();
             $table->date('admission_date')->nullable();
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->foreignId('class_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('section_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('academic_year_id')->nullable()->constrained()->onDelete('set null');
-            
+
             // Personal Info
             $table->date('date_of_birth')->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
@@ -50,23 +50,23 @@ return new class extends Migration
             $table->string('nationality')->default('Bangladeshi');
             $table->string('national_id')->nullable();
             $table->string('birth_certificate_no')->nullable();
-            
+
             // Contact Info
             $table->text('present_address')->nullable();
             $table->text('permanent_address')->nullable();
-            
+
             // Previous School
             $table->string('previous_school')->nullable();
             $table->string('previous_class')->nullable();
-            
+
             // Documents
             $table->string('photo')->nullable();
             $table->json('documents')->nullable(); // Array of document paths
-            
+
             // Status
             $table->enum('status', ['active', 'inactive', 'graduated', 'transferred', 'dropout'])->default('active');
             $table->text('remarks')->nullable();
-            
+
             $table->timestamps();
             $table->softDeletes();
 

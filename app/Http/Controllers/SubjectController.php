@@ -129,12 +129,12 @@ class SubjectController extends Controller
     private function authorizeForTenant(Subject $subject): void
     {
         $user = request()->user();
-        
+
         // Super-admin can access all
         if ($user->tenant_id === null) {
             return;
         }
-        
+
         if ($subject->tenant_id !== $user->tenant_id) {
             abort(403, 'Unauthorized access to this subject.');
         }
