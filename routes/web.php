@@ -25,6 +25,7 @@ use App\Http\Controllers\FeeReportController;
 use App\Http\Controllers\FeeStructureController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\LeaveRequestController;
+use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PublicResultController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolSettingsController;
@@ -142,6 +143,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Report card PDF (staff preview any; student/parent own published card)
     Route::get('report-cards/{reportCard}/pdf', [ReportCardController::class, 'download'])
         ->whereNumber('reportCard')->middleware('permission:view-report-cards')->name('report-cards.pdf');
+
+    // Notices & announcements
+    Route::get('notices', [NoticeController::class, 'index'])
+        ->middleware('permission:view-notices')->name('notices.index');
+    Route::middleware('permission:create-notices,edit-notices,manage-notices')->group(function () {
+        Route::get('notices/create', [NoticeController::class, 'create'])->name('notices.create');
+        Route::post('notices', [NoticeController::class, 'store'])->name('notices.store');
+        Route::get('notices/{notice}/edit', [NoticeController::class, 'edit'])->whereNumber('notice')->name('notices.edit');
+        Route::put('notices/{notice}', [NoticeController::class, 'update'])->whereNumber('notice')->name('notices.update');
+        Route::delete('notices/{notice}', [NoticeController::class, 'destroy'])->whereNumber('notice')->name('notices.destroy');
+    });
 
     // Fee Management
     Route::prefix('fees')->name('fees.')->middleware('permission:view-fees')->group(function () {
