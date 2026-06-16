@@ -12,6 +12,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\Communication\NotificationTemplateController;
 use App\Http\Controllers\Communication\SmsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\DocsController;
 use App\Http\Controllers\Exam\ExamController;
 use App\Http\Controllers\Exam\ExamScheduleController;
@@ -172,6 +173,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('payments/{payment}/receipt', [FeePaymentController::class, 'receipt'])->name('payments.receipt');
         Route::get('students/{student}/fees', [FeePaymentController::class, 'getStudentFees'])->name('students.fees');
         Route::get('reports', [FeeReportController::class, 'index'])->name('reports.index');
+
+        // Discounts (fee managers only)
+        Route::middleware('permission:manage-fees,create-fee-structure')->group(function () {
+            Route::get('discounts', [DiscountController::class, 'index'])->name('discounts.index');
+            Route::post('discounts', [DiscountController::class, 'store'])->name('discounts.store');
+            Route::delete('discounts/{discount}', [DiscountController::class, 'destroy'])->whereNumber('discount')->name('discounts.destroy');
+            Route::post('allocations/{allocation}/discount', [DiscountController::class, 'applyToAllocation'])->whereNumber('allocation')->name('allocations.discount.apply');
+            Route::delete('allocations/{allocation}/discount', [DiscountController::class, 'removeFromAllocation'])->whereNumber('allocation')->name('allocations.discount.remove');
+        });
     });
 
     // Leave Requests

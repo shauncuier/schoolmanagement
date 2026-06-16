@@ -37,7 +37,7 @@ Legend: ✅ done · 🔄 partial · ⏳ planned · 🔮 future
 | Attendance | ✅ | 90 | Daily + bulk marking, leave requests (no analytics, biometric) |
 | Examination & grading | ✅ | 90 | Exam CRUD, scheduling, marks grid, **GPA-5 auto-grading**, ranking, report-card generation (no PDF, bulk upload, practical, re-eval) |
 | Result publishing | ✅ | 100 | Publish/unpublish, **public lookup by roll** (throttled), optional SMS |
-| Fee management | 🔄 | 80 | Categories, structures, allocations, payments, receipts, reports; **MFS online payment built but disabled (cash-only)**; discounts/refunds/late-fee UI pending |
+| Fee management | 🔄 | 85 | Categories, structures, allocations, payments, receipts, reports, **discounts**; **MFS online payment built but disabled (cash-only)**; refunds/late-fee UI pending |
 | SMS / Communication | 🔄 | 55 | **Masking SMS rail**, templates, console, **notices/announcements** with SMS broadcast (no email, push, internal messaging) |
 | Audit & Security | ✅ | 90 | Activity log (auth/role/result/settings), IP capture, route gating, throttle |
 | Timetable | ⏳ | 15 | Slots + basic store; no full builder |
@@ -84,7 +84,7 @@ Concrete open items (priority order). Pull these into GitHub issues as needed.
 - [ ] **Real MFS gateway driver** (bKash/Nagad sandbox API) behind the existing `PaymentGateway` contract; re-enable `PAYMENT_ONLINE_ENABLED`.
 - [x] **Report-card PDF** ✅ — board-style PDF (DomPDF) with school branding, gated download. *Follow-up: Bangla/bilingual rendering needs a headless-Chrome renderer; add a UI download link.*
 - [x] **Notices/announcements UI** ✅ — CRUD with audience targeting + optional SMS broadcast to the audience. *Events table still has no UI.*
-- [ ] **Fee depth** — discount, refund, and late-fee calculation UI (tables exist).
+- [x] **Fee discounts** ✅ — percentage/fixed discount management + apply/remove on an allocation with net/due recompute. *Refund and late-fee calculation still pending.*
 
 ### Medium
 - [ ] **Bangla (i18n)** UI + localized validation/SMS.
