@@ -8,13 +8,13 @@
 > [SYSTEM_ARCHITECTURE](SYSTEM_ARCHITECTURE.md) (long-form vision/spec) ·
 > [DEVELOPER_GUIDE](DEVELOPER_GUIDE.md) · [docs/](docs/) (user guides).
 
-**Version:** v1.3.0 · **Updated:** 2026-06-16 · **Tests:** 136 passing · **CI:** green · **DB:** MySQL (prod) / SQLite (dev+tests)
+**Version:** v1.4.0 · **Updated:** 2026-06-16 · **Tests:** 136 passing · **CI:** green · **DB:** MySQL (prod) / SQLite (dev+tests)
 
 ---
 
 ## 1. Overview
 
-Multi-tenant School Management System (Laravel 12 · React 19 · Inertia 2 · Spatie permissions · Stancl tenancy), tailored for the **Bangladesh education market** (masking SMS, GPA-5 grading, result lookup by roll, MFS-ready fees).
+Multi-tenant School Management System (Laravel 13 · React 19 · Inertia 2 · Spatie permissions · Stancl tenancy), tailored for the **Bangladesh education market** (masking SMS, GPA-5 grading, result lookup by roll, MFS-ready fees).
 
 **Code inventory:** 37 controllers · 31 models · 13 services · 18 migrations · 23 page groups · 136 automated tests.
 

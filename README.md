@@ -1,12 +1,12 @@
 # 🏫 School Management System (SchoolSync)
 
-![Version](https://img.shields.io/badge/version-v1.2.1-blue.svg)
-![Laravel](https://img.shields.io/badge/Laravel-12-red.svg)
+![Version](https://img.shields.io/badge/version-v1.4.0-blue.svg)
+![Laravel](https://img.shields.io/badge/Laravel-13-red.svg)
 ![React](https://img.shields.io/badge/React-19-61dafb.svg)
-![Tests](https://img.shields.io/badge/tests-118%20passing-success.svg)
+![Tests](https://img.shields.io/badge/tests-136%20passing-success.svg)
 ![License](https://img.shields.io/badge/license-Proprietary-red.svg)
 
-A comprehensive, multi-tenant **School Management System** built with Laravel 12, React 19 and Inertia.js. It runs as a single SaaS installation serving many schools, and is being tailored for the **Bangladesh education market** — masking SMS, result lookup by roll number, GPA-5 grading, and MFS-ready fee collection.
+A comprehensive, multi-tenant **School Management System** built with Laravel 13, React 19 and Inertia.js. It runs as a single SaaS installation serving many schools, and is being tailored for the **Bangladesh education market** — masking SMS, result lookup by roll number, GPA-5 grading, and MFS-ready fee collection.
 
 > 📄 Release notes: [CHANGELOG.md](CHANGELOG.md) · 🗺️ Plan, status & issues: [PROJECT_PLAN.md](PROJECT_PLAN.md) · 🏛️ Architecture: [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md)
 
@@ -40,7 +40,7 @@ Timetable polish, MFS payment (bKash/Nagad/Rocket), Bangla (i18n) UI + bilingual
 
 | Layer | Technology |
 |-------|------------|
-| **Backend** | Laravel 12 (PHP 8.2+) |
+| **Backend** | Laravel 13 (PHP 8.2+) |
 | **Frontend** | React 19 + TypeScript 5.7 |
 | **Full-stack bridge** | Inertia.js 2.1 + Laravel Wayfinder |
 | **Authentication** | Laravel Fortify (session-based, 2FA-ready) |

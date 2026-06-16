@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-06-16
+
+### Changed
+- **Upgraded to Laravel 13** (`laravel/framework` ^13.0, `laravel/tinker` ^3.0); `composer update` refreshed the first-party stack and brought PHPUnit 12 / Pest 4 transitively. No application code changes were required — the only high-impact 13.x change (the `VerifyCsrfToken` → `PreventRequestForgery` middleware rename) is not referenced here. All 136 tests pass on 13.15.0.
+- Applied Laravel Pint 1.29 formatting across the codebase (line endings, import ordering, imported class references) — formatting only.
+
+---
+
 ## [1.3.0] - 2026-06-16
 
 ### Added
