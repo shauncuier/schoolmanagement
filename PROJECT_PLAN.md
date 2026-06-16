@@ -8,7 +8,7 @@
 > [SYSTEM_ARCHITECTURE](SYSTEM_ARCHITECTURE.md) (long-form vision/spec) ·
 > [DEVELOPER_GUIDE](DEVELOPER_GUIDE.md) · [docs/](docs/) (user guides).
 
-**Version:** v1.8.0 · **Updated:** 2026-06-16 · **Tests:** 164 passing · **CI:** green · **DB:** MySQL (prod) / SQLite (dev+tests)
+**Version:** v1.9.0 · **Updated:** 2026-06-16 · **Tests:** 171 passing · **CI:** green · **DB:** MySQL (prod) / SQLite (dev+tests)
 
 ---
 
@@ -37,7 +37,7 @@ Legend: ✅ done · 🔄 partial · ⏳ planned · 🔮 future
 | Attendance | ✅ | 90 | Daily + bulk marking, leave requests (no analytics, biometric) |
 | Examination & grading | ✅ | 90 | Exam CRUD, scheduling, marks grid, **GPA-5 auto-grading**, ranking, report-card generation (no PDF, bulk upload, practical, re-eval) |
 | Result publishing | ✅ | 100 | Publish/unpublish, **public lookup by roll** (throttled), optional SMS |
-| Fee management | 🔄 | 90 | Categories, structures, allocations, payments, receipts, reports, **discounts**, **refunds**; **MFS online payment built but disabled (cash-only)**; late-fee calc pending |
+| Fee management | 🔄 | 95 | Categories, structures, allocations, payments, receipts, reports, **discounts**, **refunds**, **late fees**; **MFS online payment built but disabled (cash-only)** |
 | SMS / Communication | 🔄 | 55 | **Masking SMS rail**, templates, console, **notices/announcements** with SMS broadcast (no email, push, internal messaging) |
 | Audit & Security | ✅ | 90 | Activity log (auth/role/result/settings), IP capture, route gating, throttle |
 | Timetable | ⏳ | 15 | Slots + basic store; no full builder |
