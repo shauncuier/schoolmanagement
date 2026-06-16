@@ -22,6 +22,7 @@ use App\Http\Controllers\Exam\ResultController;
 use App\Http\Controllers\Fee\PaymentController;
 use App\Http\Controllers\FeeCategoryController;
 use App\Http\Controllers\FeePaymentController;
+use App\Http\Controllers\FeeRefundController;
 use App\Http\Controllers\FeeReportController;
 use App\Http\Controllers\FeeStructureController;
 use App\Http\Controllers\GuardianController;
@@ -173,6 +174,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('payments/{payment}/receipt', [FeePaymentController::class, 'receipt'])->name('payments.receipt');
         Route::get('students/{student}/fees', [FeePaymentController::class, 'getStudentFees'])->name('students.fees');
         Route::get('reports', [FeeReportController::class, 'index'])->name('reports.index');
+
+        // Refunds (process-refunds permission)
+        Route::middleware('permission:process-refunds')->group(function () {
+            Route::get('refunds', [FeeRefundController::class, 'index'])->name('refunds.index');
+            Route::post('payments/{payment}/refund', [FeeRefundController::class, 'store'])->whereNumber('payment')->name('payments.refund');
+        });
 
         // Discounts (fee managers only)
         Route::middleware('permission:manage-fees,create-fee-structure')->group(function () {
