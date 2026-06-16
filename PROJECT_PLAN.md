@@ -61,7 +61,7 @@ Sequenced by impact vs effort — localization rail first, polish later. One fea
 
 ### Phase 2 — Moat features 🔄 IN PROGRESS
 - 🔄 **2.1 MFS fee payment** — provider-agnostic gateway + sandbox done & tested; **currently disabled (cash-only)**. *Next: real bKash/Nagad driver + re-enable.*
-- ⏳ **2.2 Bangla (i18n) UI + bilingual report-card PDF** — server-side PDF from existing report cards; Noto Sans Bengali; language toggle.
+- 🔄 **2.2 Bangla (i18n) UI + report-card PDF** — ✅ board-style report-card PDF (DomPDF) shipped; ⏳ Bangla i18n UI + bilingual PDF (needs headless-Chrome renderer) pending.
 - ⏳ **2.3 Online admission + MFS admission fee** — extends admissions + payment.
 
 ### Phase 3 — Retention & depth ⏳
@@ -82,7 +82,7 @@ Concrete open items (priority order). Pull these into GitHub issues as needed.
 
 ### High
 - [ ] **Real MFS gateway driver** (bKash/Nagad sandbox API) behind the existing `PaymentGateway` contract; re-enable `PAYMENT_ONLINE_ENABLED`.
-- [ ] **Report-card PDF** (deferred from 1.3) — bilingual, board-style, school branding.
+- [x] **Report-card PDF** ✅ — board-style PDF (DomPDF) with school branding, gated download. *Follow-up: Bangla/bilingual rendering needs a headless-Chrome renderer; add a UI download link.*
 - [ ] **Notices/announcements UI** — tables (`notices`, `events`) exist, no controller/page yet.
 - [ ] **Fee depth** — discount, refund, and late-fee calculation UI (tables exist).
 

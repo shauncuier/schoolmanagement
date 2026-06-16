@@ -16,6 +16,7 @@ use App\Http\Controllers\DocsController;
 use App\Http\Controllers\Exam\ExamController;
 use App\Http\Controllers\Exam\ExamScheduleController;
 use App\Http\Controllers\Exam\MarksController;
+use App\Http\Controllers\Exam\ReportCardController;
 use App\Http\Controllers\Exam\ResultController;
 use App\Http\Controllers\Fee\PaymentController;
 use App\Http\Controllers\FeeCategoryController;
@@ -137,6 +138,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Audit trail
     Route::get('activity-logs', [ActivityLogController::class, 'index'])
         ->middleware('permission:manage-settings')->name('activity-logs.index');
+
+    // Report card PDF (staff preview any; student/parent own published card)
+    Route::get('report-cards/{reportCard}/pdf', [ReportCardController::class, 'download'])
+        ->whereNumber('reportCard')->middleware('permission:view-report-cards')->name('report-cards.pdf');
 
     // Fee Management
     Route::prefix('fees')->name('fees.')->middleware('permission:view-fees')->group(function () {
