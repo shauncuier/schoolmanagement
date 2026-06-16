@@ -8,7 +8,7 @@
 > [SYSTEM_ARCHITECTURE](SYSTEM_ARCHITECTURE.md) (long-form vision/spec) ·
 > [DEVELOPER_GUIDE](DEVELOPER_GUIDE.md) · [docs/](docs/) (user guides).
 
-**Version:** v1.6.0 · **Updated:** 2026-06-16 · **Tests:** 147 passing · **CI:** green · **DB:** MySQL (prod) / SQLite (dev+tests)
+**Version:** v1.7.0 · **Updated:** 2026-06-16 · **Tests:** 156 passing · **CI:** green · **DB:** MySQL (prod) / SQLite (dev+tests)
 
 ---
 

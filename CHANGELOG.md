@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-06-16
+
+### Added
+- **Fee discounts** — manage percentage or fixed discounts and apply/remove them on a student's fee allocation, automatically recomputing the net amount, outstanding due, and status. Fixed discounts are capped at the original amount.
+
+### Security
+- Discount management and application are gated by `manage-fees` and tenant-scoped; percentage discounts above 100% are rejected.
+
+### Changed
+- Test suite expanded to 156 passing tests.
+
+---
+
 ## [1.6.0] - 2026-06-16
 
 ### Added
